@@ -14,7 +14,11 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Link from "next/link";
 
+import axios from "axios";
+import { toast } from "react-toastify";
+
 import { useLocation } from "react-router-dom";
+import { useRouter } from "next/router";
 
 const Copyright = (props: any) => {
   return (
@@ -34,28 +38,48 @@ const Copyright = (props: any) => {
 const theme = createTheme();
 
 const Register: NextPage = () => {
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
-  // const [name, setName] = useState("");
-  // const [lastName, setLastName] = useState("");
-  // const [user, loading] = useAuthState(auth);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  // const location = useLocation();
+  const router = useRouter();
 
-  // useEffect(() => {
-  //   if (loading) return;
-  //   if (user) location.pathname.startsWith("/dahboard");
-  // }, [user, loading]);
+  const user = "";
+  //when the user is present and the state changes, pushing back to home page.
+  useEffect(() => {
+    if (user === null) router.push("/");
+  }, [user]);
 
-  // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault();
-  //   const data = new FormData(event.currentTarget);
-  //   console.log({
-  //     email: data.get("email"),
-  //     password: data.get("password"),
-  //   });
-  //   // registerWithEmailAndPassword(name, email, password);
-  // };
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    //event handler for submitting the register form
+    event.preventDefault(); //so page doesnt reload
+    //now send all data to backend to save to db
+    try {
+      setLoading(true);
+      console.table({ name, email, password });
+      const { data } = await axios.post(
+        `${process.env.NEXT_PUBLIC_API}/register`,
+        {
+          name,
+          email,
+          password,
+        }
+      );
+      console.log("REGISTER RESPONSE", data);
+      //gonna do the toast alert here
+      toast.success("Registertation successful. please log in");
+
+      setName("");
+      setEmail("");
+      setPassword("");
+      setLoading(false);
+    } catch (err: any) {
+      toast.error(err.response.data);
+      setLoading(false);
+    }
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -80,6 +104,7 @@ const Register: NextPage = () => {
             noValidate
             // onSubmit={handleSubmit}
             sx={{ mt: 3 }}
+            onSubmit={handleSubmit}
           >
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
@@ -91,8 +116,8 @@ const Register: NextPage = () => {
                   id="firstName"
                   label="First Name"
                   autoFocus
-                  // value={name}
-                  // onChange={(e) => setName(e.target.value)}
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -103,8 +128,8 @@ const Register: NextPage = () => {
                   label="Last Name"
                   name="lastName"
                   autoComplete="family-name"
-                  // value={lastName}
-                  // onChange={(e) => setLastName(e.target.value)}
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -115,8 +140,8 @@ const Register: NextPage = () => {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
-                  // value={email}
-                  // onChange={(e) => setEmail(e.target.value)}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -128,8 +153,8 @@ const Register: NextPage = () => {
                   type="password"
                   id="password"
                   autoComplete="new-password"
-                  // value={password}
-                  // onChange={(e) => setPassword(e.target.value)}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -149,6 +174,7 @@ const Register: NextPage = () => {
             >
               Sign Up
             </Button>
+
             {/* <Button onClick={signInWithGoogle}>Register With Google</Button> */}
             <Grid container justifyContent="flex-end">
               <Grid item>
