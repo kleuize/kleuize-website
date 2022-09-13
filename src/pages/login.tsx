@@ -34,7 +34,7 @@ const Copyright = (props: any) => {
 
 const theme = createTheme();
 
-const login: NextPage = () => {
+const Login: NextPage = () => {
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -115,4 +115,4 @@ const login: NextPage = () => {
   );
 };
 
-export default login;
+export default Login;

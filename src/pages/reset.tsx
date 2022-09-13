@@ -37,7 +37,7 @@ const Copyright = (props: any) => {
 
 const theme = createTheme();
 
-const reset: NextPage = () => {
+const Reset: NextPage = () => {
   //   const [email, setEmail] = useState("");
   //   const [user, loading] = useAuthState(auth);
   //   const navigate = useNavigate();
@@ -102,4 +102,4 @@ const reset: NextPage = () => {
   );
 };
 
-export default reset;
+export default Reset;

@@ -19,6 +19,8 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 // import { auth, logout } from "../../firebase";
 import Link from "next/link";
 import Image from "next/image";
+import styles from "../styles/Home.module.css";
+import Logo from "../../public/kleuize.svg";
 
 declare module "@mui/material/styles" {
   interface Theme {
@@ -82,16 +84,18 @@ const ResponsiveAppBar = () => {
               component="a"
               href="/"
               sx={{
-                mr: "32%",
+                mr: "25%",
                 display: { xs: "none", md: "flex" },
                 fontFamily: "monospace",
-                fontWeight: 700,
+                fontWeight: 900,
                 letterSpacing: ".3rem",
-                color: "active",
+                color: "#08104d",
                 textDecoration: "none",
               }}
             >
-              <Image src="/kleuize.svg" alt="logo" width={72} height={16} />
+              <span className={styles.logo}>
+                <Image src="/kleuize.svg" alt="logo" width={150} height={25} />
+              </span>
             </Typography>
 
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -149,7 +153,9 @@ const ResponsiveAppBar = () => {
                 textDecoration: "none",
               }}
             >
-              <Image src="/kleuize.svg" alt="logo" width={72} height={16} />
+              <span className={styles.logo}>
+                <Image src="/kleuize.svg" alt="logo" width={72} height={16} />
+              </span>
               {/* {<Logo />} */}
             </Typography>
             <Box
