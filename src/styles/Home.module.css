@@ -104,8 +104,8 @@
 }
 
 .logo {
-  height: 1em;
-  margin-left: 0.5rem;
+  height: 1.5em;
+  color: #08104d;
 }
 
 @media (max-width: 600px) {
@@ -124,6 +124,6 @@
     background: #111;
   }
   .logo img {
-    filter: invert(1);
+    color: #08104d;
   }
 }

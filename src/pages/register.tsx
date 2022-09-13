@@ -33,7 +33,7 @@ const Copyright = (props: any) => {
 
 const theme = createTheme();
 
-const register: NextPage = () => {
+const Register: NextPage = () => {
   // const [email, setEmail] = useState("");
   // const [password, setPassword] = useState("");
   // const [name, setName] = useState("");
@@ -163,4 +163,4 @@ const register: NextPage = () => {
   );
 };
 
-export default register;
+export default Register;
