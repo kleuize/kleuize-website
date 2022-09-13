@@ -59,14 +59,11 @@ const Register: NextPage = () => {
     try {
       setLoading(true);
       console.table({ name, email, password });
-      const { data } = await axios.post(
-        `${process.env.NEXT_PUBLIC_API}/register`,
-        {
-          name,
-          email,
-          password,
-        }
-      );
+      const { data } = await axios.post(`/api/register`, {
+        name,
+        email,
+        password,
+      });
       console.log("REGISTER RESPONSE", data);
       //gonna do the toast alert here
       toast.success("Registertation successful. please log in");
