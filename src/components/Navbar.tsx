@@ -1,5 +1,4 @@
-// import { Logo } from "../../assets/Kleuize.svg";
-import * as React from "react";
+import { useState, useContext } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -14,13 +13,13 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-// import { Link } from "react-router-dom";
-// import { useAuthState } from "react-firebase-hooks/auth";
-// import { auth, logout } from "../../firebase";
 import Link from "next/link";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
-import Logo from "../../public/kleuize.svg";
+import { UserContext } from "../context/UserContext";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { useRouter } from "next/router";
 
 declare module "@mui/material/styles" {
   interface Theme {
@@ -38,16 +37,21 @@ declare module "@mui/material/styles" {
 const pages = ["About", "Lecture", "Contact"];
 
 const ResponsiveAppBar = () => {
-  //   const [user] = useAuthState(auth);
+  const { state, dispatch } = useContext(UserContext);
+  const { user } = state;
+  const router = useRouter();
+  const logout = async () => {
+    dispatch({
+      type: "LOGOUT",
+    });
+    window.localStorage.removeItem("user");
+    const { data } = await axios.get("/api/logout");
+    toast(data.message);
+    router.push("/login");
+  };
 
-  let user = true;
-
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
-    null
-  );
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null
-  );
+  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -156,7 +160,6 @@ const ResponsiveAppBar = () => {
               <span className={styles.logo}>
                 <Image src="/kleuize.svg" alt="logo" width={72} height={16} />
               </span>
-              {/* {<Logo />} */}
             </Typography>
             <Box
               sx={{
@@ -209,11 +212,11 @@ const ResponsiveAppBar = () => {
                   <MenuItem onClick={handleCloseUserMenu}>
                     <Typography textAlign="center">
                       <Link href="/profile" style={{ textDecoration: "none" }}>
-                        ACCOUNT
+                        Account
                       </Link>
                     </Typography>
                     <Typography textAlign="center">
-                      {/* <Button onClick={() => console.log("logout come here")}>Logout</Button> */}
+                      <Button onClick={logout}>Logout</Button>
                     </Typography>
                   </MenuItem>
                 ) : (
