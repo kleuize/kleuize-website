@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -12,9 +12,12 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-
-import { useNavigate } from "react-router-dom";
 import Link from "next/link";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { useRouter } from "next/router";
+import { SyncOutlined } from "@mui/icons-material";
+import { UserContext } from "../context/UserContext";
 
 const Copyright = (props: any) => {
   return (
@@ -35,6 +38,44 @@ const Copyright = (props: any) => {
 const theme = createTheme();
 
 const Login: NextPage = () => {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const { state, dispatch } = useContext(UserContext);
+
+  console.log("STATE", dispatch);
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    //event handler for submitting the register form
+    event.preventDefault(); //so page doesnt reload
+    //now send all data to backend to save to db
+    try {
+      setLoading(true);
+      console.table({ email, password });
+      const { data } = await axios.post(`/api/login`, {
+        email,
+        password,
+      });
+      console.log("LOGİN RESPONSE", data);
+
+      dispatch({
+        type: "LOGIN",
+        payload: data,
+      });
+
+      window.localStorage.setItem("user", JSON.stringify(data));
+      //gonna do the toast alert here
+      toast.success("Registertation successful. please log in");
+
+      setEmail("");
+      setPassword("");
+      setLoading(false);
+    } catch (err: any) {
+      toast.error(err.response.data);
+      setLoading(false);
+    }
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -55,7 +96,7 @@ const Login: NextPage = () => {
           </Typography>
           <Box
             component="form"
-            // onSubmit={handleSubmit}
+            onSubmit={handleSubmit}
             noValidate
             sx={{ mt: 1 }}
           >
@@ -68,8 +109,8 @@ const Login: NextPage = () => {
               name="email"
               autoComplete="email"
               autoFocus
-              //   value={email}
-              //   onChange={(e) => setEmail(e.target.value)}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
             <TextField
               margin="normal"
@@ -80,8 +121,8 @@ const Login: NextPage = () => {
               type="password"
               id="password"
               autoComplete="current-password"
-              //   value={password}
-              //   onChange={(e) => setPassword(e.target.value)}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
@@ -93,10 +134,10 @@ const Login: NextPage = () => {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              disabled={!email || !password || loading}
             >
-              Sign In
+              {loading ? <SyncOutlined /> : "Sign In"}
             </Button>
-            <Button>Login With Google</Button>
             <Grid container>
               <Grid item xs>
                 <Link href={"/reset"}>Forgot password?</Link>
