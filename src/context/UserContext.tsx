@@ -62,6 +62,16 @@ export const UserProvider = ({ children }: any) => {
     }
   );
 
+  useEffect(() => {
+    const getCsrfToken = async () => {
+      const { data } = await axios.get("/api/csrf-token");
+      console.log("CSRF", data);
+      //@ts-ignore
+      axios.defaults.headers["X-CSRF-TOKEN"] = data.getCsrfToken;
+    };
+    getCsrfToken();
+  }, []);
+
   return (
     <UserContext.Provider value={{ state, dispatch }}>
       {children}
