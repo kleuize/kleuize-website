@@ -211,8 +211,8 @@ const ResponsiveAppBar = () => {
                 {user ? (
                   <MenuItem onClick={handleCloseUserMenu}>
                     <Typography textAlign="center">
-                      <Link href="/profile" style={{ textDecoration: "none" }}>
-                        Account
+                      <Link href="/user" style={{ textDecoration: "none" }}>
+                        Dashboard
                       </Link>
                     </Typography>
                     <Typography textAlign="center">
