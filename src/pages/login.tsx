@@ -44,7 +44,8 @@ const Login: NextPage = () => {
 
   const { state, dispatch } = useContext(UserContext);
 
-  console.log("STATE", dispatch);
+  const router = useRouter();
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     //event handler for submitting the register form
     event.preventDefault(); //so page doesnt reload
@@ -56,14 +57,16 @@ const Login: NextPage = () => {
         email,
         password,
       });
-      console.log("LOGİN RESPONSE", data);
 
       dispatch({
         type: "LOGIN",
         payload: data,
       });
 
+      //localStorage
       window.localStorage.setItem("user", JSON.stringify(data));
+      //redirect home page
+      router.push("/");
       //gonna do the toast alert here
       toast.success("Registertation successful. please log in");
 
