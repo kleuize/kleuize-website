@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -13,12 +13,10 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Link from "next/link";
-
 import axios from "axios";
 import { toast } from "react-toastify";
-
-import { useLocation } from "react-router-dom";
 import { useRouter } from "next/router";
+import { UserContext } from "../context/UserContext";
 
 const Copyright = (props: any) => {
   return (
@@ -44,9 +42,11 @@ const Register: NextPage = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const {
+    state: { user },
+  } = useContext(UserContext);
   const router = useRouter();
 
-  const user = "";
   //when the user is present and the state changes, pushing back to home page.
   useEffect(() => {
     if (user === null) router.push("/");

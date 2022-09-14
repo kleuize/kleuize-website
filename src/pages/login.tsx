@@ -42,9 +42,16 @@ const Login: NextPage = () => {
   const [password, setPassword] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
-  const { state, dispatch } = useContext(UserContext);
+  const {
+    state: { user },
+    dispatch,
+  } = useContext(UserContext);
 
   const router = useRouter();
+
+  useEffect(() => {
+    if (user !== null) router.push("/");
+  }, [user]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     //event handler for submitting the register form
