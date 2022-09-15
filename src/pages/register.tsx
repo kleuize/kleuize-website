@@ -17,6 +17,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { UserContext } from "../context/UserContext";
+import { useRotateIconStyles } from "../styles/RotesteIcon";
+import { SyncOutlined } from "@mui/icons-material";
 
 const Copyright = (props: any) => {
   return (
@@ -41,6 +43,8 @@ const Register: NextPage = () => {
   const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const classes = useRotateIconStyles();
 
   const {
     state: { user },
@@ -169,7 +173,11 @@ const Register: NextPage = () => {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign Up
+              {loading ? (
+                <SyncOutlined className={classes.rotateIcon} />
+              ) : (
+                "Sign In"
+              )}
             </Button>
 
             {/* <Button onClick={signInWithGoogle}>Register With Google</Button> */}
