@@ -16,8 +16,9 @@ import Link from "next/link";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
-import { SyncOutlined } from "@mui/icons-material";
+import { EnhancedEncryptionRounded, SendToMobile, SyncOutlined } from "@mui/icons-material";
 import { UserContext } from "../context/UserContext";
+import { useRotateIconStyles } from "../styles/RotesteIcon";
 
 const Copyright = (props: any) => {
   return (
@@ -38,6 +39,9 @@ const Copyright = (props: any) => {
 const theme = createTheme();
 
 const Login: NextPage = () => {
+
+  const classes = useRotateIconStyles();
+
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -146,7 +150,11 @@ const Login: NextPage = () => {
               sx={{ mt: 3, mb: 2 }}
               disabled={!email || !password || loading}
             >
-              {loading ? <SyncOutlined /> : "Sign In"}
+              {loading ? (
+                <SyncOutlined className={classes.rotateIcon} />
+              ) : (
+                "Sign In"
+              )}
             </Button>
             <Grid container>
               <Grid item xs>
