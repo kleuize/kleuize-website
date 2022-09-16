@@ -17,7 +17,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { UserContext } from "../context/UserContext";
-import { useRotateIconStyles } from "../styles/RotesteIcon";
+import { useRotateIconStyles } from "../styles/RotetesIcon";
 import { SyncOutlined } from "@mui/icons-material";
 
 const Copyright = (props: any) => {
@@ -53,7 +53,7 @@ const Register: NextPage = () => {
 
   //when the user is present and the state changes, pushing back to home page.
   useEffect(() => {
-    if (user === null) router.push("/");
+    if (user !== null) router.push("/");
   }, [user]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {

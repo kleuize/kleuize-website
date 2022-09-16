@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import type { NextPage } from "next";
+import axios from "axios";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -11,11 +12,11 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Link from "next/link";
-
-// import { Link, useNavigate } from "react-router-dom";
-// import { useAuthState } from "react-firebase-hooks/auth";
-// import Spinner from "../../components/spinner";
-// import { auth, sendPasswordReset } from "../../firebase";
+import { useRouter } from "next/router";
+import { UserContext } from "../context/UserContext";
+import { toast } from "react-toastify";
+import { SyncOutlined } from "@mui/icons-material";
+import { useRotateIconStyles } from "../styles/RotetesIcon";
 
 const Copyright = (props: any) => {
   return (
@@ -38,14 +39,56 @@ const Copyright = (props: any) => {
 const theme = createTheme();
 
 const Reset: NextPage = () => {
-  //   const [email, setEmail] = useState("");
-  //   const [user, loading] = useAuthState(auth);
-  //   const navigate = useNavigate();
-  //   useEffect(() => {
-  //     if (loading) return;
-  //     <Spinner />;
-  //     if (user) navigate("/dashboard");
-  //   }, [user, loading]);
+  const [email, setEmail] = useState<string>("");
+  const [success, setSuccess] = useState<boolean>(false);
+  const [code, setCode] = useState<string>("");
+  const [newPassword, setNewPassword] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const classes = useRotateIconStyles();
+
+  const {
+    state: { user },
+  } = useContext(UserContext);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (user !== null) router.push("/");
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const { data } = await axios.post("/api/forgot-password", { email });
+      setSuccess(true);
+      toast("Check your email for the secret code");
+      setLoading(false);
+    } catch (err: any) {
+      setLoading(false);
+      toast(err.response.data);
+    }
+  };
+
+  const handleResetPassword = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      const { data } = await axios.post("/api/reset-password", {
+        email,
+        code,
+        newPassword,
+      });
+      setEmail("");
+      setCode("");
+      setNewPassword("");
+      setLoading(false);
+    } catch (err: any) {
+      setLoading(false);
+      toast(err.response.data);
+    }
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -63,9 +106,14 @@ const Reset: NextPage = () => {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Forget Password
           </Typography>
-          <Box component="form" noValidate sx={{ mt: 1 }}>
+          <Box
+            component="form"
+            noValidate
+            sx={{ mt: 1 }}
+            onSubmit={success ? handleResetPassword : handleSubmit}
+          >
             <TextField
               margin="normal"
               required
@@ -75,23 +123,53 @@ const Reset: NextPage = () => {
               name="email"
               autoComplete="email"
               autoFocus
-              //   value={email}
-              //   onChange={(e) => setEmail(e.target.value)}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
-
+            {success && (
+              <>
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="text"
+                  label="Enter secret code"
+                  name="code"
+                  autoFocus
+                  value={code}
+                  onChange={(e) => setCode(e.target.value)}
+                />
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="password"
+                  label="New Password"
+                  name="password"
+                  autoComplete="password"
+                  autoFocus
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                />
+              </>
+            )}
             <Button
-              //   onClick={() => sendPasswordReset(email)}
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              disabled={loading || !email}
             >
-              Send Password Reset Email
+              {loading ? (
+                <SyncOutlined className={classes.rotateIcon} />
+              ) : (
+                "Send Password Reset Email"
+              )}
             </Button>
 
             <Grid container>
               <Grid item>
-                <Link href="/login">{"Do you have an account? Sign Up"}</Link>
+                <Link href="/login">{"Do you have an account? Sign In"}</Link>
               </Grid>
             </Grid>
           </Box>
