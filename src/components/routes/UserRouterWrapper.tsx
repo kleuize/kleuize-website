@@ -3,6 +3,8 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { SyncOutlined } from "@mui/icons-material";
 import { useRotateIconStyles } from "../../styles/RotetesIcon";
+import UserNav from "../nav/UserNav";
+import Box from "@mui/material/Box";
 
 export const UserRouterWrapper = ({ children }: any) => {
   const classes = useRotateIconStyles();
@@ -28,7 +30,16 @@ export const UserRouterWrapper = ({ children }: any) => {
 
   return (
     <>
-      {ok ? <SyncOutlined className={classes.rotateIcon} /> : <>{children}</>}
+      {ok ? (
+        <SyncOutlined className={classes.rotateIcon} />
+      ) : (
+        <Box>
+          <Box>
+            <UserNav />
+          </Box>
+          <Box>{children}</Box>
+        </Box>
+      )}
     </>
   );
 };
