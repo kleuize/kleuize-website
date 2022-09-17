@@ -36,7 +36,7 @@ declare module "@mui/material/styles" {
   }
 }
 
-const pages = ["About", "Lecture", "Contact"];
+const pages = ["About", "Course", "Contact"];
 
 const ResponsiveAppBar = () => {
   const [current, setCurrent] = useState<string>("");
@@ -119,7 +119,7 @@ const ResponsiveAppBar = () => {
                   <IconButton onClick={(e: any) => setCurrent(e.key)}>
                     <GroupOutlinedIcon />
                     <Link href="/user/become-instructor">
-                      <a>Become Instructor</a>
+                      Become Instructor
                     </Link>
                   </IconButton>
                 </MenuItem>
