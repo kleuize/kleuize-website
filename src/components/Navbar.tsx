@@ -20,6 +20,8 @@ import { UserContext } from "../context/UserContext";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
+import AssignmentTurnedInOutlinedIcon from "@mui/icons-material/AssignmentTurnedInOutlined";
+import GroupOutlinedIcon from "@mui/icons-material/GroupOutlined";
 
 declare module "@mui/material/styles" {
   interface Theme {
@@ -37,6 +39,7 @@ declare module "@mui/material/styles" {
 const pages = ["About", "Lecture", "Contact"];
 
 const ResponsiveAppBar = () => {
+  const [current, setCurrent] = useState<string>("");
   const { state, dispatch } = useContext(UserContext);
   const { user } = state;
   const router = useRouter();
@@ -101,7 +104,27 @@ const ResponsiveAppBar = () => {
                 <Image src="/kleuize.svg" alt="logo" width={150} height={25} />
               </span>
             </Typography>
-
+            <Box>
+              {user && user.role && user.role.includes("Instructor") ? (
+                <MenuItem key="/instructor/course/create">
+                  <IconButton onClick={(e: any) => setCurrent(e.key)}>
+                    <AssignmentTurnedInOutlinedIcon />
+                    <Link href="/instructor/course/create">
+                      <a>Create Course</a>
+                    </Link>
+                  </IconButton>
+                </MenuItem>
+              ) : (
+                <MenuItem key="/user/become-instructor">
+                  <IconButton onClick={(e: any) => setCurrent(e.key)}>
+                    <GroupOutlinedIcon />
+                    <Link href="/user/become-instructor">
+                      <a>Become Instructor</a>
+                    </Link>
+                  </IconButton>
+                </MenuItem>
+              )}
+            </Box>
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
               <IconButton
                 size="large"
