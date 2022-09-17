@@ -20,6 +20,7 @@ export const UserRouterWrapper = ({ children }: any) => {
   const fetchUser = async () => {
     try {
       const { data } = await axios.get("/api/current-user");
+      console.log(data);
       if (data.ok) setOk(true);
     } catch (err) {
       console.log(err);
@@ -30,7 +31,7 @@ export const UserRouterWrapper = ({ children }: any) => {
 
   return (
     <>
-      {ok ? (
+      {!ok ? (
         <SyncOutlined className={classes.rotateIcon} />
       ) : (
         <Box>
