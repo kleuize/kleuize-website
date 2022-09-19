@@ -3,13 +3,11 @@ import { useContext, useState } from "react";
 import Box from "@mui/material/Box";
 import type { NextPage } from "next";
 import { toast } from "react-toastify";
-import { UserRouterWrapper } from "../../components/routes/UserRouterWrapper";
-import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { UserContext } from "../../context/UserContext";
 
 const BecomeInstructor: NextPage = () => {
-  const location = useLocation();
+
   const [loading, setLoading] = useState(false);
   const {
     state: { user },

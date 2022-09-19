@@ -251,6 +251,14 @@ const ResponsiveAppBar = () => {
                     </Typography>
                   </MenuItem>
                 )}
+                {user && user.role && user.role.includes("Instructor") && (
+                  <MenuItem key="/instructor">
+                    <IconButton onClick={(e: any) => setCurrent(e.key)}>
+                      <GroupOutlinedIcon />
+                      <Link href="/instructor">Instructor</Link>
+                    </IconButton>
+                  </MenuItem>
+                )}
               </Menu>
             </Box>
           </Toolbar>
