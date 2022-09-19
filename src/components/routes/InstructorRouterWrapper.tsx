@@ -1,31 +1,29 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { SyncOutlined } from "@mui/icons-material";
 import { useRotateIconStyles } from "../../styles/RotetesIcon";
-import UserNav from "../nav/UserNav";
+import { SyncOutlined } from "@mui/icons-material";
 import Box from "@mui/material/Box";
+import InstructorNav from "../nav/InstructorNav";
 
-export const UserRouterWrapper = ({ children }: any) => {
+const InstructorRouteWrapper = ({ children }: any) => {
   const classes = useRotateIconStyles();
-  // state
   const [ok, setOk] = useState<boolean>(false);
-  // router
   const router = useRouter();
 
   useEffect(() => {
-    fetchUser();
+    fetchInstructor();
   }, []);
 
-  const fetchUser = async () => {
+  const fetchInstructor = async () => {
     try {
-      const { data } = await axios.get("/api/current-user");
-      console.log(data);
+      const { data } = await axios.get("/api/current-instructor");
+      console.log("INSTRUCTOR ROUTE => ", data);
       if (data.ok) setOk(true);
     } catch (err) {
       console.log(err);
       setOk(false);
-      router.push("/login");
+      router.push("/");
     }
   };
 
@@ -36,11 +34,15 @@ export const UserRouterWrapper = ({ children }: any) => {
       ) : (
         <Box>
           <Box>
-            <UserNav />
+            <Box>
+              <InstructorNav />
+            </Box>
+            <Box>{children}</Box>
           </Box>
-          <Box>{children}</Box>
         </Box>
       )}
     </>
   );
 };
+
+export default InstructorRouteWrapper;
