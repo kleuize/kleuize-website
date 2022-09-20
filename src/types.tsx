@@ -1,7 +1,7 @@
 export interface ICreateCourseProps {
-  name?: string;
+  courseName?: string;
   description?: string;
-  price?: string;
+  price?: number;
   uploading?: boolean;
   paid?: boolean;
   category?: string;

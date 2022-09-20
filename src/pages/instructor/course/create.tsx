@@ -1,5 +1,4 @@
 import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
 import axios from "axios";
 import type { NextPage } from "next";
 import { useState } from "react";
@@ -7,12 +6,15 @@ import { ICreateCourseProps } from "../../../types";
 import { useRouter } from "next/router";
 import Resizer from "react-image-file-resizer";
 import { toast } from "react-toastify";
+import Container from "@mui/material/Container";
+import Box from "@mui/material/Box";
+import { CourseCreateForm } from "../../../components/form/CourseCreateForm";
 
 const CreateCourse: NextPage = () => {
   const [values, setValues] = useState<ICreateCourseProps>({
-    name: "",
+    courseName: "",
     description: "",
-    price: "9.99",
+    price: 9.99,
     uploading: false,
     paid: true,
     category: "",
@@ -30,9 +32,6 @@ const CreateCourse: NextPage = () => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
-  interface HTMLInputEvent extends Event {
-    target: HTMLInputElement & EventTarget;
-  }
 
   const handleImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     const target = event.target;
@@ -90,9 +89,18 @@ const CreateCourse: NextPage = () => {
   };
 
   return (
-    <Box>
-      <Typography>Create Course</Typography>
-      <Box>
+    <Container component="main" maxWidth="lg">
+      <Box
+        sx={{
+          marginTop: 8,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Typography variant="h4" color={"blue"}>
+          Yeni Kurs Oluştur
+        </Typography>
         <CourseCreateForm
           handleSubmit={handleSubmit}
           handleImage={handleImage}
@@ -104,9 +112,7 @@ const CreateCourse: NextPage = () => {
           handleImageRemove={handleImageRemove}
         />
       </Box>
-      <pre>{JSON.stringify(values, null, 4)}</pre>
-      <pre>{JSON.stringify(image, null, 4)}</pre>
-    </Box>
+    </Container>
   );
 };
 
