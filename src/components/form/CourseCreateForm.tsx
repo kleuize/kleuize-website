@@ -106,11 +106,8 @@ export const CourseCreateForm = ({
             <Grid item xs={12} sm={12}>
               <TextField
                 fullWidth
-                type="text"
+                label="Kategori"
                 name="category"
-                id="outlined-basic"
-                autoFocus
-                placeholder="Kategori"
                 value={values.category}
                 onChange={handleChange}
               />
@@ -133,7 +130,7 @@ export const CourseCreateForm = ({
               )}
             </Grid>
             <Grid item xs={12} sm={12}>
-              <Box sx={{ marginTop: -2, marginLeft: 1.35, marginRight: 0.5 }}>
+              <Box sx={{ marginTop: -2, marginLeft: 1.35 }}>
                 <FormControlLabel
                   control={
                     <TextField
@@ -144,7 +141,7 @@ export const CourseCreateForm = ({
                       hidden
                     />
                   }
-                  label={` ${uploadButtonText}`}
+                  label={`  ${uploadButtonText}`}
                 />
               </Box>
             </Grid>
