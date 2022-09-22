@@ -134,7 +134,7 @@ const ResponsiveAppBar = () => {
                 }}
               >
                 {user ? (
-                  <>
+                  <MenuItem>
                     <Link href="/course">
                       <MenuItem key="course">
                         <Typography
@@ -188,9 +188,9 @@ const ResponsiveAppBar = () => {
                         </MenuItem>
                       </Link>
                     )}
-                  </>
+                  </MenuItem>
                 ) : (
-                  <>
+                  <MenuItem>
                     <Link href="/course">
                       <MenuItem key="course">
                         <Typography
@@ -221,7 +221,7 @@ const ResponsiveAppBar = () => {
                         </Typography>
                       </MenuItem>
                     </Link>
-                  </>
+                  </MenuItem>
                 )}
               </Menu>
             </Box>

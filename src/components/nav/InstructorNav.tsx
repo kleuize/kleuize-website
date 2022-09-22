@@ -52,30 +52,21 @@ const InstructorNav = () => {
 
   return (
     <Box sx={{ width: "100%", mt: 2 }}>
-      <Box sx={{ width: "20%", mt: 2 }}>
-        <Typography> Eğitimci Paneli</Typography>
-      </Box>
-      <Box sx={{ width: "80%", mt: 2 }}>
-        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            aria-label="instructor-panel"
-            centered
-          >
-            <Tab label="Dashboard" {...a11yProps(0)} href="/instructor" />
-            <Tab
-              label="Yeni Kurs"
-              {...a11yProps(1)}
-              href="/instructor/course/create"
-            />
-            <Tab
-              label="Ödemeler"
-              {...a11yProps(2)}
-              href="/instructor/revenue"
-            />
-          </Tabs>
-        </Box>
+      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          aria-label="instructor-panel"
+          centered
+        >
+          <Tab label="Dashboard" {...a11yProps(0)} href="/instructor" />
+          <Tab
+            label="Yeni Kurs"
+            {...a11yProps(1)}
+            href="/instructor/course/create"
+          />
+          <Tab label="Ödemeler" {...a11yProps(2)} href="/instructor/revenue" />
+        </Tabs>
       </Box>
     </Box>
   );
