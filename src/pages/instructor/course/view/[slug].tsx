@@ -15,6 +15,9 @@ import Button from "@mui/material/Button";
 import { FileUploadOutlined } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
+import { AddLessonForm } from "../../../../components/form/AddLessonForm";
+
+import { toast } from "react-toastify";
 
 export interface ICourseViewProps {
   _id?: string;
@@ -24,6 +27,7 @@ export interface ICourseViewProps {
   lessons?: any;
   published?: boolean;
   description?: string;
+  instructor?: any;
 }
 
 const style = {
@@ -46,7 +50,6 @@ const CourseView: NextPage = () => {
     title: "",
     content: "",
     quiz: {},
-    video: {},
   });
 
   const [uploading, setUploading] = useState(false);
@@ -62,12 +65,115 @@ const CourseView: NextPage = () => {
   }, [slug]);
 
   useEffect(() => {
-    course;
+    course && studentCount();
   }, [course]);
 
   const loadCourse = async () => {
     const { data } = await axios.get(`/api/course/${slug}`);
     setCourse(data);
+  };
+
+  const studentCount = async () => {
+    const { data } = await axios.post(`/api/instructor/student-count`, {
+      courseId: course._id,
+    });
+    console.log("STUDENT COUNT => ", data);
+    setStudents(data.length);
+  };
+
+  const handleAddLesson = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const { data } = await axios.post(
+        `/api/course/lesson/${slug}/${course.instructor._id}`,
+        values
+      );
+      setValues({ ...values, title: "", content: "", quiz: {} });
+      setProgress(0);
+      setUploadButtonText("Upload Quiz");
+      setVisible(false);
+      setCourse(data);
+      toast("Lesson added");
+    } catch (error) {
+      console.log(error);
+      toast("Lesson add failed");
+    }
+  };
+
+  const handleQuiz = async (event: React.ChangeEvent<HTMLFormElement>) => {
+    try {
+      const target = event.target;
+      const file: File = (target.files as FileList)[0];
+      setUploadButtonText(file.name);
+      const quizData = new FormData();
+      quizData.append("quiz", file);
+      const { data } = await axios.post(
+        `/api/course/quiz-uploaded/${course.instructor._id}`,
+        quizData,
+        {
+          onUploadProgress: (e) => {
+            setProgress(Math.round((100 * e.loaded) / e.total));
+          },
+        }
+      );
+      setValues({ ...values, quiz: data });
+      setUploading(false);
+    } catch (error) {
+      console.log(error);
+      setUploading(false);
+      toast("Video upload failed");
+    }
+  };
+
+  const handleQuizRemove = async () => {
+    try {
+      setUploading(true);
+      const { data } = await axios.post(
+        `/api/course/quiz-remove/${course.instructor._id}`,
+        values.quiz
+      );
+      console.log(data);
+      setValues({ ...values, quiz: {} });
+      setUploading(false);
+      setUploadButtonText("Başka soru yükle");
+    } catch (error) {
+      setUploading(false);
+      toast("Video remove failed");
+    }
+  };
+
+  const handleUnpublish = async (
+    e: React.FormEvent<HTMLFormElement>,
+    courseId: any
+  ) => {
+    try {
+      let answer = window.confirm(
+        "Kursunuzu yayından kaldırdıktan sonra, kullanıcıların kaydolması mümkün olmayacaktır."
+      );
+      if (!answer) return;
+      const { data } = await axios.put(`/api/course/unpublish/${courseId}`);
+      setCourse(data);
+      toast("Kursunuz yayınlanmamış");
+    } catch (error) {
+      toast("Kurs yayınlanamadı. Yeniden deneyin");
+    }
+  };
+
+  const handlePublish = async (
+    e: React.FormEvent<HTMLFormElement>,
+    courseId: any
+  ) => {
+    try {
+      let answer = window.confirm(
+        "Kursunuzu yayınladıktan sonra, kullanıcıların kaydolabilmesi için yayında olacak"
+      );
+      if (!answer) return;
+      const { data } = await axios.put(`/api/course/publish/${courseId}`);
+      setCourse(data);
+      toast("Tebrikler! Kursunuz yayınlandı.");
+    } catch (error) {
+      toast("Kurs yayınlanamadı. Yeniden deneyin");
+    }
   };
 
   return (
@@ -114,22 +220,14 @@ const CourseView: NextPage = () => {
               </Grid>
             ) : course.published ? (
               <Grid item>
-                <Button
-                  onClick={() => {
-                    console.log("yayından kaldır");
-                  }}
-                >
+                <Button onClick={(e: any) => handleUnpublish(e, course._id)}>
                   Yayından Kaldır
                 </Button>
               </Grid>
             ) : (
               <Grid item>
-                <Button
-                  onClick={() => {
-                    console.log("yayınla");
-                  }}
-                >
-                  Yayınlandı
+                <Button onClick={(e: any) => handlePublish(e, course._id)}>
+                  Yayınla
                 </Button>
               </Grid>
             )}
@@ -146,17 +244,16 @@ const CourseView: NextPage = () => {
           <Grid>
             <Modal open={visible} onClose={() => setVisible(false)}>
               <Box sx={style}>
-                <Typography
-                  id="keep-mounted-modal-title"
-                  variant="h6"
-                  component="h2"
-                >
-                  Text in a modal
-                </Typography>
-                <Typography id="keep-mounted-modal-description" sx={{ mt: 2 }}>
-                  Duis mollis, est non commodo luctus, nisi erat porttitor
-                  ligula.
-                </Typography>
+                <AddLessonForm
+                  values={values}
+                  setValues={setValues}
+                  handleAddLesson={handleAddLesson}
+                  uploading={uploading}
+                  uploadButtonText={uploadButtonText}
+                  handleQuiz={handleQuiz}
+                  progress={progress}
+                  handleQuizRemove={handleQuizRemove}
+                />
               </Box>
             </Modal>
           </Grid>
