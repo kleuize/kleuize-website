@@ -18,43 +18,13 @@ import Box from "@mui/material/Box";
 import { AddLessonForm } from "../../../../components/form/AddLessonForm";
 
 import { toast } from "react-toastify";
-
-export interface ICourseViewProps {
-  _id?: string;
-  image?: any;
-  name?: string;
-  category?: string;
-  lessons?: any;
-  published?: boolean;
-  description?: string;
-  instructor?: any;
-}
-
-const style = {
-  position: "absolute" as "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: "80%",
-  height: "80%",
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
+import { CreateQuizForm } from "../../../../components/form/CreateQuizForm";
+import { ICourseViewProps } from "../../../../types";
+import { QuizParentModal } from "../../../../components/quiz/QuizParentModal";
 
 const CourseView: NextPage = () => {
   const [course, setCourse] = useState<ICourseViewProps>({});
   const [visible, setVisible] = useState(false);
-  const [values, setValues] = useState({
-    title: "",
-    content: "",
-    quiz: {},
-  });
-
-  const [uploading, setUploading] = useState(false);
-  const [uploadButtonText, setUploadButtonText] = useState("Upload Video");
-  const [progress, setProgress] = useState(0);
   const [students, setStudents] = useState(0);
 
   const router = useRouter();
@@ -79,67 +49,6 @@ const CourseView: NextPage = () => {
     });
     console.log("STUDENT COUNT => ", data);
     setStudents(data.length);
-  };
-
-  const handleAddLesson = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      const { data } = await axios.post(
-        `/api/course/lesson/${slug}/${course.instructor._id}`,
-        values
-      );
-      setValues({ ...values, title: "", content: "", quiz: {} });
-      setProgress(0);
-      setUploadButtonText("Upload Quiz");
-      setVisible(false);
-      setCourse(data);
-      toast("Lesson added");
-    } catch (error) {
-      console.log(error);
-      toast("Lesson add failed");
-    }
-  };
-
-  const handleQuiz = async (event: React.ChangeEvent<HTMLFormElement>) => {
-    try {
-      const target = event.target;
-      const file: File = (target.files as FileList)[0];
-      setUploadButtonText(file.name);
-      const quizData = new FormData();
-      quizData.append("quiz", file);
-      const { data } = await axios.post(
-        `/api/course/quiz-uploaded/${course.instructor._id}`,
-        quizData,
-        {
-          onUploadProgress: (e) => {
-            setProgress(Math.round((100 * e.loaded) / e.total));
-          },
-        }
-      );
-      setValues({ ...values, quiz: data });
-      setUploading(false);
-    } catch (error) {
-      console.log(error);
-      setUploading(false);
-      toast("Video upload failed");
-    }
-  };
-
-  const handleQuizRemove = async () => {
-    try {
-      setUploading(true);
-      const { data } = await axios.post(
-        `/api/course/quiz-remove/${course.instructor._id}`,
-        values.quiz
-      );
-      console.log(data);
-      setValues({ ...values, quiz: {} });
-      setUploading(false);
-      setUploadButtonText("Başka soru yükle");
-    } catch (error) {
-      setUploading(false);
-      toast("Video remove failed");
-    }
   };
 
   const handleUnpublish = async (
@@ -186,7 +95,7 @@ const CourseView: NextPage = () => {
                 component="img"
                 height="300"
                 alt={`${slug}`}
-                image={course.image ? course.image.Location : "/course.png"}
+                src={course.image ? course.image.Location : "/course.jpg"}
               />
             </Card>
           </Grid>
@@ -236,14 +145,24 @@ const CourseView: NextPage = () => {
             {course.description}
           </Grid>
           <Grid item>
-            <IconButton onClick={() => setVisible(true)}>
-              <FileUploadOutlined aria-label="Ders Ekle" />
-              Ders Ekle
-            </IconButton>
+            <Button onClick={() => setVisible(true)}>Ders Ekle</Button>
+            <QuizParentModal
+              openModal={visible}
+              closeModal={() => setVisible(false)}
+            />
           </Grid>
           <Grid>
-            <Modal open={visible} onClose={() => setVisible(false)}>
+            {/* <Modal open={visible} onClose={() => setVisible(false)}>
               <Box sx={style}>
+                {/* <CreateQuizForm
+                  title={"undefined"}
+                  description={"undefined"}
+                  questionIndex={4}
+                  questions={"undefined"}
+                  selectedAnswers={"undefined"}
+                  isLoading={"undefined"}
+                  errorMessage={"undefined"}
+                /> 
                 <AddLessonForm
                   values={values}
                   setValues={setValues}
@@ -255,7 +174,7 @@ const CourseView: NextPage = () => {
                   handleQuizRemove={handleQuizRemove}
                 />
               </Box>
-            </Modal>
+            </Modal> */}
           </Grid>
         </Grid>
       </Container>

@@ -1,3 +1,10 @@
+import Divider from "@mui/material/Divider";
+import Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import LinearProgress from "@mui/material/LinearProgress";
+import LoadingButton from "@mui/lab/LoadingButton";
 interface IAddLessonFormProps {
   values: any;
   setValues: any;
@@ -20,8 +27,47 @@ export const AddLessonForm = ({
   handleQuizRemove,
 }: IAddLessonFormProps) => {
   return (
-    <div>
-      <div>Add Lesson Form</div>
-    </div>
+    <Container>
+      <Typography color="primary" variant="h4" component="div" mb={4}>
+        Ders Oluştur
+      </Typography>
+      <Grid container>
+        <Grid item xs={12} mb={3}>
+          <TextField
+            value={values.title}
+            onChange={(e) => setValues({ ...values, title: e.target.value })}
+            label="Ders Ana Başlığı"
+            variant="outlined"
+            size="medium"
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={12} mb={3}>
+          <TextField
+            value={values.content}
+            onChange={(e) => setValues({ ...values, content: e.target.value })}
+            rows={4}
+            label="Ders Açıklaması"
+            placeholder="Dersin genel fikrini ve amacını açıklayın."
+            variant="outlined"
+            size="medium"
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={12} mb={3}>
+          <Divider />
+        </Grid>
+        <Grid item xs={12} mb={3}>
+          {progress > 0 && (
+            <LinearProgress variant="determinate" value={progress} />
+          )}
+        </Grid>
+        <Grid item xs={12} mb={3}>
+          <LoadingButton onClick={handleAddLesson} loading={uploading}>
+            Save
+          </LoadingButton>
+        </Grid>
+      </Grid>
+    </Container>
   );
 };
