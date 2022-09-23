@@ -1,4 +1,5 @@
-import MenuItem from "@mui/material/MenuItem";
+import react from "react";
+import { useRouter } from "next/router";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Container from "@mui/material/Container";
@@ -32,16 +33,15 @@ export const CourseCreateForm = ({
   handleImageRemove = (f) => f,
   editPage = false,
 }: ICourseCreateFromProps) => {
-  const children = [];
-  for (let i = 9.99; i <= 100.99; i++) {
-    children.push(<MenuItem key={i.toFixed(2)}>${i.toFixed(2)}</MenuItem>);
-  }
+  const router = useRouter();
+
+
   return (
     <Container component="main" maxWidth="lg">
       {values && (
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={12}>
               <TextField
                 type="text"
                 name="name"
@@ -50,11 +50,11 @@ export const CourseCreateForm = ({
                 id="Name"
                 label="Name"
                 autoFocus
-                value={values.name}
+                value={values.title}
                 onChange={handleChange}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={12}>
               <TextField
                 required
                 multiline
@@ -68,7 +68,7 @@ export const CourseCreateForm = ({
                 onChange={handleChange}
               />
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={10} sm={10}>
               <TextField
                 fullWidth
                 disabled={values.paid}
@@ -82,78 +82,90 @@ export const CourseCreateForm = ({
                 }}
               />
             </Grid>
-            <Grid item xs={8}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={values.paid}
-                    name="paid"
-                    onChange={(e) => {
-                      setValues({
-                        ...values,
-                        paid: e.target.checked,
-                        price: 0,
-                      });
-                      console.log(values.price);
-                    }}
-                  />
-                }
-                label="Ücretsiz"
-              />
+            <Grid item xs={2} sm={2}>
+              <Grid container justifyContent="center" alignItems="center">
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={values.paid}
+                      name="paid"
+                      onChange={(e) => {
+                        setValues({
+                          ...values,
+                          paid: e.target.checked,
+                          price: 0,
+                        });
+                        console.log(values.price);
+                      }}
+                    />
+                  }
+                  label="Ücretsiz"
+                />
+              </Grid>
             </Grid>
-
             <Grid item xs={12} sm={12}>
               <TextField
                 fullWidth
-                type="text"
+                label="Kategori"
                 name="category"
-                id="category"
-                placeholder="Kategori"
                 value={values.category}
                 onChange={handleChange}
               />
             </Grid>
-
-            <Grid item>
+            <Grid item xs={12} sm={12}>
               {preview && (
                 <Badge
                   badgeContent={"X"}
                   onClick={handleImageRemove}
                   className="pointer"
                 >
-                  <Avatar sx={{ width: 200, height: 200 }} src={preview} />
+                  <Avatar sx={{ width: 100, height: 100 }} src={preview} />
                 </Badge>
               )}
               {editPage && values.image && (
                 <Avatar
-                  sx={{ width: 200, height: 200 }}
+                  sx={{ width: 100, height: 100 }}
                   src={values.image.Location}
                 />
               )}
             </Grid>
             <Grid item xs={12} sm={12}>
-              <FormControlLabel
-                control={
-                  <TextField
-                    type="file"
-                    value={values.image}
-                    name="image"
-                    onChange={handleImage}
-                    hidden
-                  />
-                }
-                label={uploadButtonText}
-              />
+              <Box sx={{ marginTop: -2, marginLeft: 1.35 }}>
+                <FormControlLabel
+                  control={
+                    <TextField
+                      type="file"
+                      value={values.image}
+                      name="image"
+                      onChange={handleImage}
+                      hidden
+                    />
+                  }
+                  label={`  ${uploadButtonText}`}
+                />
+              </Box>
             </Grid>
-            <Grid item xs={12} sm={12}>
+            <Grid item xs={8} sm={4}>
               <LoadingButton
                 size="large"
+                fullWidth
                 variant="outlined"
                 onClick={handleSubmit}
                 loading={values.loading}
                 disabled={values.loading || values.uploading}
               >
-                {values.loading ? "Saving..." : "Save & Continue"}
+                {values.loading ? "Kaydediliyor..." : "Kaydet & Devam Et"}
+              </LoadingButton>
+            </Grid>
+            <Grid item xs={8} sm={4}>
+              <LoadingButton
+                size="large"
+                fullWidth
+                variant="outlined"
+                color="error"
+                onClick={() => router.back()}
+              >
+                {values.loading ? "İptal ediliyor..." : "İptal"}
               </LoadingButton>
             </Grid>
           </Grid>

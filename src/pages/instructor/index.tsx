@@ -3,8 +3,17 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Link from "next/link";
 import InstructorRouteWrapper from "../../components/routes/InstructorRouterWrapper";
-import { Avatar, Tooltip, Typography } from "@mui/material";
+import { Avatar, Container, Tooltip } from "@mui/material";
+import Grid from "@mui/material/Grid";
 import { CheckCircleOutlined, HighlightOffOutlined } from "@mui/icons-material";
+import Box from "@mui/material/Box";
+
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 
 interface ICoursesProps {
   image: any;
@@ -27,62 +36,72 @@ const InstructorIndex: NextPage = () => {
 
   return (
     <InstructorRouteWrapper>
-      <Typography> Eğitimci Gösterge Paneli</Typography>
-      {courses &&
-        courses.map((course) => (
-          <>
-            <div className="media pt-2">
-              <Avatar
-                sx={{ width: 80, height: 80 }}
-                src={course.image ? course.image.Location : "/course.png"}
-              />
-
-              <div className="media-body pl-2">
-                <div className="row">
-                  <div className="col">
-                    <Link
-                      href={`/instructor/course/view/${course.slug}`}
-                      className="pointer"
-                    >
-                      <a className="mt-2 text-primary">
-                        <h5 className="pt-2">{course.name}</h5>
-                      </a>
+      <Container
+        component="main"
+        maxWidth="lg"
+        sx={{ display: "flex", flexDirection: "row", mt: 3 }}
+      >
+        <Grid container spacing={2}>
+          {courses &&
+            courses.map((course) => (
+              <Grid item xs={12} sm={6} md={3}>
+                <Card>
+                  <CardMedia
+                    component="img"
+                    height="200"
+                    image={course.image ? course.image.Location : "/course.png"}
+                  />
+                  <CardContent>
+                    <Link href={`/instructor/course/view/${course.slug}`}>
+                      <Typography variant="h5"> {course.name}</Typography>
                     </Link>
-                    <p style={{ marginTop: "-10px" }}>
+                    <Typography variant="body2">
                       {course.lessons.length} Lessons
-                    </p>
-
-                    {course.lessons.length < 5 ? (
-                      <p className="text-warning">
-                        At least 5 lessons are required to publish a course
-                      </p>
-                    ) : course.published ? (
-                      <p className="text-success">
-                        Your course is live in the marketplace
-                      </p>
-                    ) : (
-                      <p className="text-success">
-                        Your course is ready to be published
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="col-md-3 mt-3 text-center">
-                    {course.published ? (
-                      <Tooltip title="Published">
-                        <CheckCircleOutlined className="h5 pointer text-success" />
-                      </Tooltip>
-                    ) : (
-                      <Tooltip title="Unpublished">
-                        <HighlightOffOutlined className="h5 pointer text-warning" />
-                      </Tooltip>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </>
-        ))}
+                    </Typography>
+                    <Box>
+                      {course.lessons.length < 5 ? (
+                        <p className="text-warning">
+                          At least 5 lessons are required to publish a course
+                        </p>
+                      ) : course.published ? (
+                        <p className="text-success">
+                          Your course is live in the marketplace
+                        </p>
+                      ) : (
+                        <p className="text-success">
+                          Your course is ready to be published
+                        </p>
+                      )}
+                    </Box>
+                    <CardActions>
+                      {course.published ? (
+                        <Tooltip title="Published">
+                          <Button
+                            size="small"
+                            variant="contained"
+                            color="success"
+                          >
+                            Yayınlandı
+                          </Button>
+                        </Tooltip>
+                      ) : (
+                        <Tooltip title="Unpublished">
+                          <Button
+                            size="small"
+                            variant="contained"
+                            color="error"
+                          >
+                            Yayınlanmadı
+                          </Button>
+                        </Tooltip>
+                      )}
+                    </CardActions>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+        </Grid>
+      </Container>
     </InstructorRouteWrapper>
   );
 };

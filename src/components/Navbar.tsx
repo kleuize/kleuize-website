@@ -28,15 +28,28 @@ declare module "@mui/material/styles" {
     status: {
       active: React.CSSProperties["color"];
     };
+    button: {
+      color: React.CSSProperties["color"];
+    };
   }
   interface ThemeOptions {
     status: {
       active: React.CSSProperties["color"];
     };
+    button: {
+      color: React.CSSProperties["color"];
+    };
   }
 }
 
-const pages = ["About", "Course", "Contact"];
+const theme = createTheme({
+  status: {
+    active: "#08104d",
+  },
+  button: {
+    color: "#08104d",
+  },
+});
 
 const ResponsiveAppBar = () => {
   const [current, setCurrent] = useState<string>("");
@@ -71,12 +84,6 @@ const ResponsiveAppBar = () => {
     setAnchorElUser(null);
   };
 
-  const theme = createTheme({
-    status: {
-      active: "#08104d",
-    },
-  });
-
   return (
     <ThemeProvider theme={theme}>
       <AppBar
@@ -85,45 +92,16 @@ const ResponsiveAppBar = () => {
       >
         <Container maxWidth="xl">
           <Toolbar disableGutters>
-            <Typography
-              variant="h6"
-              noWrap
-              component="a"
-              href="/"
+            <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+            <Box
               sx={{
                 mr: "25%",
                 display: { xs: "none", md: "flex" },
-                fontFamily: "monospace",
-                fontWeight: 900,
-                letterSpacing: ".3rem",
-                color: "#08104d",
-                textDecoration: "none",
               }}
             >
-              <span className={styles.logo}>
+              <Link href={"/"}>
                 <Image src="/kleuize.svg" alt="logo" width={150} height={25} />
-              </span>
-            </Typography>
-            <Box>
-              {user && user.role && user.role.includes("Instructor") ? (
-                <MenuItem key="/instructor/course/create">
-                  <IconButton onClick={(e: any) => setCurrent(e.key)}>
-                    <AssignmentTurnedInOutlinedIcon />
-                    <Link href="/instructor/course/create">
-                      <a>Create Course</a>
-                    </Link>
-                  </IconButton>
-                </MenuItem>
-              ) : (
-                <MenuItem key="/user/become-instructor">
-                  <IconButton onClick={(e: any) => setCurrent(e.key)}>
-                    <GroupOutlinedIcon />
-                    <Link href="/user/become-instructor">
-                      Become Instructor
-                    </Link>
-                  </IconButton>
-                </MenuItem>
-              )}
+              </Link>
             </Box>
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
               <IconButton
@@ -155,68 +133,155 @@ const ResponsiveAppBar = () => {
                   color: "#08104d",
                 }}
               >
-                {pages.map((page) => (
-                  <Link
-                    href={`${page.toLowerCase()}`}
-                    style={{ textDecoration: "none" }}
-                  >
-                    <MenuItem key={page} onClick={handleCloseNavMenu}>
-                      <Typography textAlign="center">{page}</Typography>
-                    </MenuItem>
-                  </Link>
-                ))}
+                {user ? (
+                  <MenuItem>
+                    <Link href="/course">
+                      <MenuItem key="course">
+                        <Typography
+                          textAlign="center"
+                          sx={{ color: "#08104d" }}
+                        >
+                          Kurslar
+                        </Typography>
+                      </MenuItem>
+                    </Link>
+                    <Link href="/about">
+                      <MenuItem key="about">
+                        <Typography
+                          textAlign="center"
+                          sx={{ color: "#08104d" }}
+                        >
+                          Hakkımızda
+                        </Typography>
+                      </MenuItem>
+                    </Link>
+                    <Link href="/contact">
+                      <MenuItem key="contact">
+                        <Typography
+                          textAlign="center"
+                          sx={{ color: "#08104d" }}
+                        >
+                          İletişim
+                        </Typography>
+                      </MenuItem>
+                    </Link>
+                    {user && user.role && user.role.includes("Instructor") ? (
+                      <Link href="/instructor/course/create">
+                        <MenuItem key="create-course">
+                          <Typography
+                            textAlign="center"
+                            sx={{ color: "#08104d" }}
+                          >
+                            Yeni Kurs Oluştur
+                          </Typography>
+                        </MenuItem>
+                      </Link>
+                    ) : (
+                      <Link href="/user/become-instructor">
+                        <MenuItem key="become-instructor">
+                          <Typography
+                            textAlign="center"
+                            sx={{ color: "#08104d" }}
+                          >
+                            Eğitmen Ol
+                          </Typography>
+                        </MenuItem>
+                      </Link>
+                    )}
+                  </MenuItem>
+                ) : (
+                  <MenuItem>
+                    <Link href="/course">
+                      <MenuItem key="course">
+                        <Typography
+                          textAlign="center"
+                          sx={{ color: "#08104d" }}
+                        >
+                          Kurslar
+                        </Typography>
+                      </MenuItem>
+                    </Link>
+                    <Link href="/about">
+                      <MenuItem key="about">
+                        <Typography
+                          textAlign="center"
+                          sx={{ color: "#08104d" }}
+                        >
+                          Hakkımızda
+                        </Typography>
+                      </MenuItem>
+                    </Link>
+                    <Link href="/contact">
+                      <MenuItem key="contact">
+                        <Typography
+                          textAlign="center"
+                          sx={{ color: "#08104d" }}
+                        >
+                          İletişim
+                        </Typography>
+                      </MenuItem>
+                    </Link>
+                  </MenuItem>
+                )}
               </Menu>
             </Box>
             <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
-            <Typography
-              variant="h5"
-              noWrap
-              component="a"
-              href="/"
-              sx={{
-                mr: 5,
-                display: { xs: "flex", md: "none" },
-                flexGrow: 1,
-                textDecoration: "none",
-              }}
-            >
-              <span className={styles.logo}>
-                <Image src="/kleuize.svg" alt="logo" width={72} height={16} />
-              </span>
-            </Typography>
             <Box
               sx={{
-                flexGrow: 1,
-                display: { xs: "none", md: "flex", color: "#08104d" },
+                display: { xs: "flex", md: "none" },
               }}
             >
-              {pages.map((page) => (
-                <Link
-                  href={`${page.toLowerCase()}`}
-                  style={{ textDecoration: "none" }}
-                >
-                  <Button
-                    key={page}
-                    onClick={handleCloseNavMenu}
-                    sx={{ my: 2, color: "#08104d", display: "block" }}
-                  >
-                    {page}
-                  </Button>
-                </Link>
-              ))}
+              <Link href={"/"}>
+                <Image src="/kleuize.svg" alt="logo" width={150} height={25} />
+              </Link>
             </Box>
-
+            <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+              {user ? (
+                <>
+                  <Link href="/course">
+                    <Button sx={{ color: "#08104d" }}>Kurslar</Button>
+                  </Link>
+                  <Link href="/about">
+                    <Button sx={{ color: "#08104d" }}>Hakkımızda</Button>
+                  </Link>
+                  <Link href="/contact">
+                    <Button sx={{ color: "#08104d" }}>İletişim</Button>
+                  </Link>
+                  {user && user.role && user.role.includes("Instructor") ? (
+                    <Link href="/instructor/course/create">
+                      <Button sx={{ color: "#08104d" }}>Yeni Kurs</Button>
+                    </Link>
+                  ) : (
+                    <Link href="/user/become-instructor">
+                      <Button sx={{ color: "#08104d" }}>Eğitmen Ol</Button>
+                    </Link>
+                  )}
+                </>
+              ) : (
+                <>
+                  <Link href="/course">
+                    <Button sx={{ color: "#08104d" }}>Kurslar</Button>
+                  </Link>
+                  <Link href="/about">
+                    <Button sx={{ color: "#08104d" }}>Hakkımızda</Button>
+                  </Link>
+                  <Link href="/contact">
+                    <Button sx={{ color: "#08104d" }}>İletişim</Button>
+                  </Link>
+                </>
+              )}
+            </Box>
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton
                   onClick={handleOpenUserMenu}
                   sx={{ p: 0, color: "#08104d" }}
                 >
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                  <Avatar alt="avatar" src="/static/images/avatar/2.jpg" />
                 </IconButton>
               </Tooltip>
               <Menu
-                sx={{ mt: "45px", color: "#08104d" }}
+                sx={{ mt: "45px", display: "flex", flexDirection: "column" }}
                 id="menu-appbar"
                 anchorEl={anchorElUser}
                 anchorOrigin={{
@@ -232,31 +297,49 @@ const ResponsiveAppBar = () => {
                 onClose={handleCloseUserMenu}
               >
                 {user ? (
-                  <MenuItem onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">
-                      <Link href="/user" style={{ textDecoration: "none" }}>
-                        Dashboard
-                      </Link>
-                    </Typography>
-                    <Typography textAlign="center">
-                      <Button onClick={logout}>Logout</Button>
-                    </Typography>
+                  <MenuItem>
+                    {user && user.role && user.role.includes("Instructor") ? (
+                      <MenuItem>
+                        <MenuItem
+                          onClick={(e: any) => setCurrent(e.key)}
+                          color="#08104d"
+                        >
+                          <AssignmentTurnedInOutlinedIcon />
+                          <Link href="/instructor">Dashboard</Link>
+                        </MenuItem>
+                        <MenuItem onClick={logout} color="#EF5D51">
+                          Logout
+                        </MenuItem>
+                      </MenuItem>
+                    ) : (
+                      <MenuItem>
+                        <MenuItem
+                          onClick={(e: any) => setCurrent(e.key)}
+                          color="#08104d"
+                        >
+                          <GroupOutlinedIcon />
+                          <Link href="/user">Dashboard</Link>
+                        </MenuItem>
+                        <MenuItem onClick={logout} color="#EF5D51">
+                          Logout
+                        </MenuItem>
+                      </MenuItem>
+                    )}
                   </MenuItem>
                 ) : (
-                  <MenuItem onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">
-                      <Link href="/login" style={{ textDecoration: "none" }}>
-                        Login
-                      </Link>
-                    </Typography>
-                  </MenuItem>
-                )}
-                {user && user.role && user.role.includes("Instructor") && (
-                  <MenuItem key="/instructor">
-                    <IconButton onClick={(e: any) => setCurrent(e.key)}>
-                      <GroupOutlinedIcon />
-                      <Link href="/instructor">Instructor</Link>
-                    </IconButton>
+                  <MenuItem>
+                    <MenuItem
+                      onClick={(e: any) => setCurrent(e.key)}
+                      color="#08104d"
+                    >
+                      <Link href="/login">Login</Link>
+                    </MenuItem>
+                    <MenuItem
+                      onClick={(e: any) => setCurrent(e.key)}
+                      color="#08104d"
+                    >
+                      <Link href="/register">Register</Link>
+                    </MenuItem>
                   </MenuItem>
                 )}
               </Menu>

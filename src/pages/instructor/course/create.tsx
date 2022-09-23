@@ -12,7 +12,7 @@ import { CourseCreateForm } from "../../../components/form/CourseCreateForm";
 
 const CreateCourse: NextPage = () => {
   const [values, setValues] = useState<ICreateCourseProps>({
-    courseName: "",
+    name: "",
     description: "",
     price: 9.99,
     uploading: false,
@@ -31,7 +31,6 @@ const CreateCourse: NextPage = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
-
 
   const handleImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     const target = event.target;
