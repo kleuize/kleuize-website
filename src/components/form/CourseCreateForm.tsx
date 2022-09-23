@@ -35,6 +35,7 @@ export const CourseCreateForm = ({
 }: ICourseCreateFromProps) => {
   const router = useRouter();
 
+
   return (
     <Container component="main" maxWidth="lg">
       {values && (
@@ -49,7 +50,7 @@ export const CourseCreateForm = ({
                 id="Name"
                 label="Name"
                 autoFocus
-                value={values.name}
+                value={values.title}
                 onChange={handleChange}
               />
             </Grid>

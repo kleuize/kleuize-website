@@ -6,6 +6,9 @@ import Box from "@mui/material/Box";
 import { AddLessonForm } from "../form/AddLessonForm";
 import { useRouter } from "next/router";
 import { ICourseViewProps } from "../../types";
+
+import Button from "@mui/material/Button";
+import { CreateQuizForm } from "../form/CreateQuizForm";
 import { QuizChildModal } from "./QuizChildModal";
 
 interface IQuizParentModal {
@@ -131,7 +134,11 @@ export const QuizParentModal = ({
           progress={progress}
           handleQuizRemove={handleQuizRemove}
         />
+
+        <Button onClick={closeModal}>İptal Et</Button>
+        {/* <Box sx={{ mt: -12, ml: "10%" }}> */}
         <QuizChildModal />
+        {/* </Box> */}
       </Box>
     </Modal>
   );

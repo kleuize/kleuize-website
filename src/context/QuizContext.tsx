@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 const firstAnswerID = "123123";
 
 const initialState = {
-  quiz: null,
+    quiz: null,
 };
 
 export const UserContext = createContext<any | null>(null);
@@ -34,7 +34,7 @@ const createQuizReducer = (state: any, action: any) => {
       return { ...state, quiz: null };
     case "SET_LOADING":
       return { ...state, quiz: action.payload };
-      case "CREATE_QUIZ_SUCCESS":
-        return { ...state, }
+    case "CREATE_QUIZ_SUCCESS":
+      return { ...state };
   }
 };

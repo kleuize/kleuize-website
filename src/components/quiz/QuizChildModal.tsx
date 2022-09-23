@@ -2,6 +2,7 @@ import React, { Fragment, useState } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
+import { CreateQuizForm } from "../form/CreateQuizForm";
 
 const style = {
   position: "absolute" as "absolute",
@@ -18,28 +19,40 @@ const style = {
 
 export const QuizChildModal = () => {
   const [open, setOpen] = useState(false);
-  const handleOpen = () => {
-    setOpen(true);
+  const [values, setValues] = useState({
+    title: "",
+    description: "",
+    questionIndex: 0,
+    questions: [
+      {
+        content: "",
+        answers: [{ text: "" }, { text: "" }, { text: "" }, { text: "" }],
+      },
+    ],
+    selectedAnswers: [],
+    isLoading: false,
+    isValid: false,
+    quizID: "",
+    errorMessage: "",
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValues({ ...values, [e.target.name]: e.target.value });
   };
-  const handleClose = () => {
-    setOpen(false);
-  };
+
   return (
     <Fragment>
-      <Button onClick={handleOpen}>Open Child Modal</Button>
+      <Button onClick={() => setOpen(true)}>Open Child Modal</Button>
       <Modal
         hideBackdrop
         open={open}
-        onClose={handleClose}
+        onClose={() => setOpen(false)}
         aria-labelledby="child-modal-title"
         aria-describedby="child-modal-description"
       >
         <Box sx={{ ...style }}>
-          <h2 id="child-modal-title">Text in a child modal</h2>
-          <p id="child-modal-description">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-          </p>
-          <Button onClick={handleClose}>Close Child Modal</Button>
+          <CreateQuizForm values={values} setValues={setValues} />
+          <Button onClick={() => setOpen(false)}>Close Child Modal</Button>
         </Box>
       </Modal>
     </Fragment>

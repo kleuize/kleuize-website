@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import LinearProgress from "@mui/material/LinearProgress";
 import LoadingButton from "@mui/lab/LoadingButton";
+import Button from "@mui/material/Button";
 interface IAddLessonFormProps {
   values: any;
   setValues: any;
@@ -64,8 +65,11 @@ export const AddLessonForm = ({
         </Grid>
         <Grid item xs={12} mb={3}>
           <LoadingButton onClick={handleAddLesson} loading={uploading}>
-            Save
+            Kaydet
           </LoadingButton>
+        </Grid>
+        <Grid>
+            <Button>Cancel</Button>
         </Grid>
       </Grid>
     </Container>

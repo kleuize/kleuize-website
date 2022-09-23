@@ -17,34 +17,29 @@ import Tooltip from "@mui/material/Tooltip";
 import Container from "@mui/material/Container";
 
 interface ICreateQuizForm {
-  handleSelectAnswer?: any;
-  handleChangePage?: any;
-  handleChangeAnswer?: any;
-  handleChangeTitle?: any;
-  handleChangeDescription?: any;
-  handleChangeQuestion?: any;
   values?: any;
   setValues?: any;
-  preview?: any;
-  uploadButtonText?: any;
-  editPage?: boolean;
+  description?: any;
+  questionIndex?: any;
+  questions?: any;
+  selectedAnswers?: any;
+  isLoading?: any;
+  answers?: any;
 }
 
 export const CreateQuizForm = ({
-  handleSelectAnswer,
-  handleChangePage,
-  handleChangeTitle,
-  handleChangeAnswer,
-  handleChangeDescription,
-  handleChangeQuestion,
   values,
   setValues,
-  preview,
-  uploadButtonText,
-  editPage,
+  description,
+  questionIndex,
+  questions,
+  selectedAnswers,
+  isLoading,
+  answers,
 }: ICreateQuizForm) => {
   //   const dispatch = useAppDispatch();
   const router = useRouter();
+
   return (
     <Container>
       <Typography color="secondary" variant="h4" component="div" mb={4}>
@@ -55,7 +50,7 @@ export const CreateQuizForm = ({
           <Grid item xs={12} mb={3}>
             <TextField
               value={values.title}
-              onChange={handleChangeTitle}
+              onChange={(e) => setValues({ ...values, title: e.target.value })}
               label="Test Başlığı"
               variant="outlined"
               size="medium"
@@ -65,7 +60,9 @@ export const CreateQuizForm = ({
           <Grid item xs={12} mb={3}>
             <TextField
               value={values.description}
-              onChange={handleChangeDescription}
+              onChange={(e) =>
+                setValues({ ...values, description: e.target.value })
+              }
               label="Test Açıklaması"
               placeholder="Testin genel fikrini ve amacını açıklayın."
               variant="outlined"
@@ -78,13 +75,137 @@ export const CreateQuizForm = ({
           </Grid>
           <Grid item xs={12} mb={3}>
             <TextField
-              value={values.currentQuestion}
-              onChange={handleChangeQuestion}
+              value={values.question}
+              onChange={(e) =>
+                setValues({ ...values, question: e.target.value })
+              }
               label={`Test ${values.questionIndex + 1}`}
               variant="outlined"
               size="medium"
               fullWidth
             />
+          </Grid>
+          <Grid item xs={12} mb={2}>
+            <FormControl component="fieldset">
+              <FormLabel>
+                Answers
+                <Typography>Check the correct answer</Typography>
+              </FormLabel>
+              <RadioGroup
+                aria-label="gender"
+                name="controlled-radio-buttons-group"
+                value={values.selectedAnswer}
+                onChange={(e) =>
+                  setValues({ ...values, question: e.target.value })
+                }
+              >
+                <FormControlLabel
+                  value={values.answers}
+                  control={
+                    <Radio
+                      inputProps={{
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-ignore
+                        "data-testid": `answer-radio`,
+                      }}
+                    />
+                  }
+                  label={
+                    <>
+                      <TextField
+                        value={values.answers}
+                        onChange={(e) =>
+                          setValues({ ...values, question: e.target.value })
+                        }
+                        inputProps={{
+                          "data-testid": `answer-text`,
+                        }}
+                      />
+                      <TextField
+                        value={values.answers}
+                        onChange={(e) =>
+                          setValues({ ...values, question: e.target.value })
+                        }
+                        inputProps={{
+                          "data-testid": `answer-text`,
+                        }}
+                      />
+                      <TextField
+                        value={values.answers}
+                        onChange={(e) =>
+                          setValues({ ...values, question: e.target.value })
+                        }
+                        inputProps={{
+                          "data-testid": `answer-text`,
+                        }}
+                      />
+                      <TextField
+                        value={values.answers}
+                        onChange={(e) =>
+                          setValues({ ...values, question: e.target.value })
+                        }
+                        inputProps={{
+                          "data-testid": `answer-text`,
+                        }}
+                      />
+                    </>
+                  }
+                />
+              </RadioGroup>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} mb={4}>
+            <Pagination
+              count={values.questions.length}
+              page={values.questionIndex + 1}
+              color="primary"
+              onChange={() => console.log("handleChangePage")}
+              renderItem={(item) => {
+                if (item.type === "page") {
+                  return (
+                    <PaginationItem
+                      {...item}
+                      data-testid={`page-${item.page}`}
+                    />
+                  );
+                } else return <PaginationItem {...item} />;
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => console.log("remove question")}
+              disabled={values.questions.length < 2}
+            >
+              Soruyu Kaldır
+            </Button>
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Tooltip title="You can only have 10 questions max per quiz">
+              <div>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => console.log("add question")}
+                  disabled={values.questions.length >= 10}
+                >
+                  Yeni Soru Ekle
+                </Button>
+              </div>
+            </Tooltip>
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => console.log("create quiz")}
+              disabled={isLoading}
+              data-testid={`create-button-loading-${isLoading}`}
+            >
+              Quiz Oluştur
+            </Button>
           </Grid>
         </Grid>
       )}
