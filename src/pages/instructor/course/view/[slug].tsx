@@ -3,28 +3,23 @@ import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import InstructorRouteWrapper from "../../../../components/routes/InstructorRouterWrapper";
 import axios from "axios";
-
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import Modal from "@mui/material/Modal";
-
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
-import { FileUploadOutlined } from "@mui/icons-material";
-import IconButton from "@mui/material/IconButton";
-import Box from "@mui/material/Box";
-import { AddLessonForm } from "../../../../components/form/AddLessonForm";
-
 import { toast } from "react-toastify";
-import { CreateQuizForm } from "../../../../components/form/CreateQuizForm";
 import { ICourseViewProps } from "../../../../types";
-import { QuizParentModal } from "../../../../components/quiz/QuizParentModal";
+import { TestAddQuiz } from "../../../../components/quiz/AddQuiz";
+import { AddLesson } from "../../../../components/quiz/AddLesson";
+import Box from "@mui/material/Box";
 
 const CourseView: NextPage = () => {
   const [course, setCourse] = useState<ICourseViewProps>({});
+  const [lesson, setLesson] = useState();
   const [visible, setVisible] = useState(false);
+  const [visibleQuiz, setVisibleQuiz] = useState(false);
   const [students, setStudents] = useState(0);
 
   const router = useRouter();
@@ -145,36 +140,19 @@ const CourseView: NextPage = () => {
             {course.description}
           </Grid>
           <Grid item>
+            {course && course.lessons?.map((item: any) => item.lessonTitle)}
+            <Button onClick={() => setVisibleQuiz(true)}>Soru Ekle</Button>
+            <TestAddQuiz
+              openModal={visibleQuiz}
+              closeModal={() => setVisibleQuiz(false)}
+            />
+          </Grid>
+          <Grid item xs={12}>
             <Button onClick={() => setVisible(true)}>Ders Ekle</Button>
-            <QuizParentModal
+            <AddLesson
               openModal={visible}
               closeModal={() => setVisible(false)}
             />
-          </Grid>
-          <Grid>
-            {/* <Modal open={visible} onClose={() => setVisible(false)}>
-              <Box sx={style}>
-                {/* <CreateQuizForm
-                  title={"undefined"}
-                  description={"undefined"}
-                  questionIndex={4}
-                  questions={"undefined"}
-                  selectedAnswers={"undefined"}
-                  isLoading={"undefined"}
-                  errorMessage={"undefined"}
-                /> 
-                <AddLessonForm
-                  values={values}
-                  setValues={setValues}
-                  handleAddLesson={handleAddLesson}
-                  uploading={uploading}
-                  uploadButtonText={uploadButtonText}
-                  handleQuiz={handleQuiz}
-                  progress={progress}
-                  handleQuizRemove={handleQuizRemove}
-                />
-              </Box>
-            </Modal> */}
           </Grid>
         </Grid>
       </Container>
