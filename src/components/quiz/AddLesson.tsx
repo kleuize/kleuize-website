@@ -40,6 +40,7 @@ const style = {
 
 interface ICreateLessonProps {
   lessonTitle: string;
+  lessonIndex: number;
 }
 
 interface IAddLessonModal {
@@ -49,6 +50,7 @@ interface IAddLessonModal {
 export const AddLesson = ({ openModal, closeModal }: IAddLessonModal) => {
   const [values, setValues] = useState<ICreateLessonProps>({
     lessonTitle: "",
+    lessonIndex: 0,
   });
 
   const handleChangeLessonTitle = (

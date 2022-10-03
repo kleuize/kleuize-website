@@ -22,7 +22,6 @@ export interface Question {
 }
 export interface CreateQuizState {
   title: string;
-  description: string;
   questionIndex: number;
   questions: Array<Question>;
   selectedAnswers: Array<string>;
@@ -34,10 +33,7 @@ export interface CreateQuizState {
 
 // Quiz
 export interface Quiz {
-  id: string;
   title: string;
-  description?: string;
-  code: string;
   questions: Array<Question>;
 }
 
@@ -53,6 +49,10 @@ export interface QuizState {
   errorMessage: string;
 }
 
+export interface ILessonWiewProps {
+  lessonTitle: string,
+  quiz: Quiz
+}
 export interface ICourseViewProps {
   _id?: string;
   image?: any;

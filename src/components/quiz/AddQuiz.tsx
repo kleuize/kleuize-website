@@ -105,30 +105,9 @@ export const TestAddQuiz = ({ openModal, closeModal }: IQuizParentModal) => {
     errorMessage,
   } = useAppSelector((state) => state.createQuiz);
 
-  //   const [values, setValues] = useState<CreateLessonState>({
-  //     quizTitle: "",
-  //     firstAnswerID: uuidv4(),
-  //     questionIndex: 0,
-  //     questions: [
-  //       {
-  //         id: uuidv4(),
-  //         content: "",
-  //         answers: [
-  //           { id: firstAnswerID, text: "" },
-  //           { id: uuidv4(), text: "" },
-  //           { id: uuidv4(), text: "" },
-  //           { id: uuidv4(), text: "" },
-  //         ],
-  //       },
-  //     ],
-  //     selectedAnswers: [firstAnswerID],
-  //     isLoading: false,
-  //     isValid: false,
-  //     quizID: "",
-  //     errorMessage: "",
-  //   });
-
   const [course, setCourse] = useState({});
+  const [currentLessonId, setCurrentLessonId] = useState("");
+
   const router = useRouter();
   const { slug } = router.query;
 
@@ -166,6 +145,11 @@ export const TestAddQuiz = ({ openModal, closeModal }: IQuizParentModal) => {
     dispatch(changeAnswer({ name, value }));
   };
 
+  const loadCourse = async () => {
+    const { data } = await axios.get(`/api/course/${slug}`);
+    setCourse(data);
+  };
+
   useEffect(() => {
     loadCourse();
   }, [slug]);
@@ -174,42 +158,60 @@ export const TestAddQuiz = ({ openModal, closeModal }: IQuizParentModal) => {
     course;
   }, [course]);
 
-  const loadCourse = async () => {
-    const { data } = await axios.get(`/api/course/${slug}`);
-    setCourse(data);
-  };
-
   const currentQuestion = questions && questions[questionIndex];
   // We use this for selected answer's radio button
   // console.log("questions", questions)
   // console.log("currentQuestion", currentQuestion)
 
-
   const selectedAnswer = selectedAnswers && selectedAnswers[questionIndex];
   // console.log("selectedAnswer", selectedAnswer)
   // console.log("selectedAnswers", selectedAnswers)
+  //@ts-ignore
+
+  //@ts-ignore
+  // for (let i = 0; i < allLessons?.length; i++) {
+  //   const lessons = allLessons[i];
+  //   console.log(lessons);
+  //   const lesson = lessons.splice(i, 1);
+  //   const lessonId = lesson.map((id: any) => id._id);
+  //   console.log(lessonId);
+  // }
+  const index = 0;
+
+
+  const getCurrentLessonId = (index: number) => {
+    //@ts-ignore
+    const allLessons = course?.lessons;
+    const lesson = allLessons.splice(index, 1);
+    const lessonId = lesson.map((id: any) => id._id);
+    console.log(lessonId);
+    setCurrentLessonId(lessonId);
+  };
+
+  useEffect(() => {
+    getCurrentLessonId(index)
+  }, [currentLessonId])
+
   const handleSubmit = async (e: any) => {
     dispatch(validateForm());
-  // If the form is valid, we send a request to the api
-  if (isValid) {
-    dispatch(setLoading());
+    // If the form is valid, we send a request to the api
+    if (isValid) {
+      dispatch(setLoading());
       try {
         // console.log(values);
         const { data } = await axios.post(
           //@ts-ignore
-          `/api/course/lesson/${slug}/${course.instructor._id}/create-quiz`,
+          `/api/course/lesson/${slug}/${course.instructor._id}/${lessonId}/add-quiz`,
           { quizTitle, questions, selectedAnswers, isValid }
         );
         console.log(data);
         toast("Great! Now you can start adding lessons");
-        router.push("/instructor");
+        router.push(`/instructor/course/view/${slug}`);
       } catch (err: any) {
         toast(err.response.data);
       }
     }
   };
-
- 
 
   return (
     <Modal open={openModal} onClose={closeModal}>
@@ -388,7 +390,9 @@ export const TestAddQuiz = ({ openModal, closeModal }: IQuizParentModal) => {
                       sx={{ width: "100%" }}
                       variant="outlined"
                       color="error"
-                      onClick={() => router.back()}
+                      onClick={() =>
+                        router.push(`/instructor/course/view/${slug}`)
+                      }
                     >
                       İptal Et
                     </Button>
