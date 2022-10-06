@@ -3,28 +3,24 @@ import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import InstructorRouteWrapper from "../../../../components/routes/InstructorRouterWrapper";
 import axios from "axios";
-
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import Modal from "@mui/material/Modal";
-
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
-import { FileUploadOutlined } from "@mui/icons-material";
-import IconButton from "@mui/material/IconButton";
-import Box from "@mui/material/Box";
-import { AddLessonForm } from "../../../../components/form/AddLessonForm";
-
 import { toast } from "react-toastify";
-import { CreateQuizForm } from "../../../../components/form/CreateQuizForm";
 import { ICourseViewProps } from "../../../../types";
-import { QuizParentModal } from "../../../../components/quiz/QuizParentModal";
+import { TestAddQuiz } from "../../../../components/quiz/AddQuiz";
+import { AddLesson } from "../../../../components/quiz/AddLesson";
+import Box from "@mui/material/Box";
+import CardContent from "@mui/material/CardContent";
+import List from "@mui/material/List";
 
 const CourseView: NextPage = () => {
   const [course, setCourse] = useState<ICourseViewProps>({});
   const [visible, setVisible] = useState(false);
+  const [visibleQuiz, setVisibleQuiz] = useState(false);
   const [students, setStudents] = useState(0);
 
   const router = useRouter();
@@ -47,7 +43,6 @@ const CourseView: NextPage = () => {
     const { data } = await axios.post(`/api/instructor/student-count`, {
       courseId: course._id,
     });
-    console.log("STUDENT COUNT => ", data);
     setStudents(data.length);
   };
 
@@ -87,6 +82,49 @@ const CourseView: NextPage = () => {
 
   return (
     <InstructorRouteWrapper>
+      <Container sx={{ mt: 5 }}>
+        <Grid container>
+          <Card sx={{ display: "flex" }}>
+            <Grid item xs={12}>
+              <CardMedia
+                component="img"
+                height="300"
+                width="400"
+                alt={`${slug}`}
+                src={course.image ? course.image.Location : "/course.jpg"}
+              />
+            </Grid>
+          </Card>
+          <Box sx={{ display: "flex", flexDirection: "row" }}>
+            <CardContent sx={{ flex: "1 0 auto" }}>
+              <Grid item xs={12} sm={12}>
+                <Typography component="div" variant="h5">
+                  {course.name}
+                </Typography>
+              </Grid>
+              <Grid item xs={6} sm={6}>
+                <Typography
+                  variant="subtitle1"
+                  color="text.secondary"
+                  component="div"
+                >
+                  {course.lessons && course.lessons.length} Ders
+                </Typography>
+              </Grid>
+              <Grid item xs={12} sm={12}>
+                <Typography
+                  variant="subtitle1"
+                  color="text.secondary"
+                  component="div"
+                >
+                  {`Kategori: ${course.category}`}
+                </Typography>
+              </Grid>
+            </CardContent>
+          </Box>
+        </Grid>
+      </Container>
+
       <Container sx={{ mt: 5 }}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={12}>
@@ -145,36 +183,34 @@ const CourseView: NextPage = () => {
             {course.description}
           </Grid>
           <Grid item>
+            {course.lessons && course.lessons.length < 1 ? (
+              <Grid item xs={12} sm={12}>
+                <Typography>Test Mevcut Değil</Typography>
+              </Grid>
+            ) : (
+              <Grid item>
+                {course &&
+                  course.lessons?.map((lesson: any, key: any) => (
+                    <List key={lesson._id}>
+                      <Typography>{lesson.lessonTitle}</Typography>
+                      <Button onClick={() => setVisibleQuiz(true)}>
+                        Soru Ekle
+                      </Button>
+                      <TestAddQuiz
+                        openModal={visibleQuiz}
+                        closeModal={() => setVisibleQuiz(false)}
+                      />
+                    </List>
+                  ))}
+              </Grid>
+            )}
+          </Grid>
+          <Grid item xs={12}>
             <Button onClick={() => setVisible(true)}>Ders Ekle</Button>
-            <QuizParentModal
+            <AddLesson
               openModal={visible}
               closeModal={() => setVisible(false)}
             />
-          </Grid>
-          <Grid>
-            {/* <Modal open={visible} onClose={() => setVisible(false)}>
-              <Box sx={style}>
-                {/* <CreateQuizForm
-                  title={"undefined"}
-                  description={"undefined"}
-                  questionIndex={4}
-                  questions={"undefined"}
-                  selectedAnswers={"undefined"}
-                  isLoading={"undefined"}
-                  errorMessage={"undefined"}
-                /> 
-                <AddLessonForm
-                  values={values}
-                  setValues={setValues}
-                  handleAddLesson={handleAddLesson}
-                  uploading={uploading}
-                  uploadButtonText={uploadButtonText}
-                  handleQuiz={handleQuiz}
-                  progress={progress}
-                  handleQuizRemove={handleQuizRemove}
-                />
-              </Box>
-            </Modal> */}
           </Grid>
         </Grid>
       </Container>
