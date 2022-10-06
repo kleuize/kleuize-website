@@ -49,9 +49,9 @@ export interface QuizState {
   errorMessage: string;
 }
 
-export interface ILessonWiewProps {
-  lessonTitle: string,
-  quiz: Quiz
+export interface ILessonWiewProps {
+  lessonTitle: string;
+  quiz: Quiz;
 }
 export interface ICourseViewProps {
   _id?: string;
@@ -60,6 +60,9 @@ export interface ICourseViewProps {
   category?: string;
   lessons?: any;
   published?: boolean;
+  slug?: string;
   description?: string;
   instructor?: any;
+  isLoading?: boolean;
+  errorMessage?: string;
 }

@@ -3,24 +3,15 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import { v4 as uuidv4 } from "uuid";
 import { useRouter } from "next/router";
-import Button from "@mui/material/Button";
-import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import LoadingButton from "@mui/lab/LoadingButton";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
-import Pagination from "@mui/material/Pagination";
-import PaginationItem from "@mui/material/PaginationItem";
-import Tooltip from "@mui/material/Tooltip";
-import Alert from "@mui/material/Alert";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { changeLessonTitle } from "../../store/create-lesson/create-lesson-slice";
+import Button from "@mui/material/Button";
 
 const style = {
   position: "absolute" as "absolute",
@@ -28,14 +19,13 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: "80%",
-  height: "80%",
+  height: "50%",
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
   justifyContent: "center",
   alignItems: "center",
   p: 4,
-  overflow: "scroll",
 };
 
 interface ICreateLessonProps {
@@ -48,15 +38,16 @@ interface IAddLessonModal {
   closeModal: any;
 }
 export const AddLesson = ({ openModal, closeModal }: IAddLessonModal) => {
-  const [values, setValues] = useState<ICreateLessonProps>({
-    lessonTitle: "",
-    lessonIndex: 0,
-  });
+  const dispatch = useAppDispatch();
+
+  const { lessonTitle } = useAppSelector((state) => state.createLesson);
 
   const handleChangeLessonTitle = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setValues({ ...values, lessonTitle: event.target.value });
+    const value = event.target.value;
+
+    dispatch(changeLessonTitle(value));
   };
 
   const [course, setCourse] = useState({});
@@ -83,10 +74,10 @@ export const AddLesson = ({ openModal, closeModal }: IAddLessonModal) => {
       const { data } = await axios.post(
         //@ts-ignore
         `/api/course/lesson/${slug}/${course.instructor._id}`,
-        { ...values }
+        { lessonTitle }
       );
-      toast("Great! Now you can start adding lessons");
-      router.push("/instructor");
+      toast("Ders Eklendi! Şimdi test eklemeye başlayabilirsiniz.");
+      router.push(`/instructor/course/view/${slug}`);
     } catch (err: any) {
       toast(err.response.data);
     }
@@ -96,35 +87,44 @@ export const AddLesson = ({ openModal, closeModal }: IAddLessonModal) => {
     <Modal open={openModal} onClose={closeModal}>
       <Box sx={style}>
         <Container>
-          {values && (
-            <Box component="form" noValidate onSubmit={handleSubmit}>
-              <Typography color="primary" variant="h4" component="div" mb={4}>
-                Ders Oluştur
-              </Typography>
-              <Grid container>
-                <Grid item xs={12} mb={3}>
-                  <TextField
-                    value={values.lessonTitle}
-                    onChange={handleChangeLessonTitle}
-                    label="Ders Ana Başlığı"
-                    variant="outlined"
-                    size="medium"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={12} md={4}>
-                  <LoadingButton
-                    size="large"
-                    fullWidth
-                    variant="outlined"
-                    onClick={handleSubmit}
-                  >
-                    Kaydet
-                  </LoadingButton>
-                </Grid>
+          <Box component="form" noValidate onSubmit={handleSubmit}>
+            <Typography color="primary" variant="h4" component="div" mb={4}>
+              Ders Oluştur
+            </Typography>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  value={lessonTitle}
+                  onChange={handleChangeLessonTitle}
+                  label="Ders Ana Başlığı"
+                  variant="outlined"
+                  size="medium"
+                  fullWidth
+                />
               </Grid>
-            </Box>
-          )}
+              <Grid item xs={12} md={6}>
+                <LoadingButton
+                  size="large"
+                  fullWidth
+                  variant="outlined"
+                  onClick={handleSubmit}
+                  // onClick={() => dispatch(createLesson())}
+                >
+                  Kaydet
+                </LoadingButton>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Button
+                  fullWidth
+                  variant="outlined"
+                  size="large"
+                  onClick={closeModal}
+                >
+                  Kapat
+                </Button>
+              </Grid>
+            </Grid>
+          </Box>
         </Container>
       </Box>
     </Modal>

@@ -190,7 +190,7 @@ const CourseView: NextPage = () => {
             ) : (
               <Grid item>
                 {course &&
-                  course.lessons?.map((lesson: any) => (
+                  course.lessons?.map((lesson: any, key: any) => (
                     <List key={lesson._id}>
                       <Typography>{lesson.lessonTitle}</Typography>
                       <Button onClick={() => setVisibleQuiz(true)}>

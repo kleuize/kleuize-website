@@ -34,6 +34,7 @@ import {
   createQuiz,
   validateForm,
 } from "../../store/create-quiz/create-quiz-slice";
+import Link from "next/link";
 
 interface IQuizParentModal {
   openModal: any;
@@ -105,6 +106,8 @@ export const TestAddQuiz = ({ openModal, closeModal }: IQuizParentModal) => {
     errorMessage,
   } = useAppSelector((state) => state.createQuiz);
 
+  const { lessonIndex } = useAppSelector((state) => state.createLesson);
+
   const [course, setCourse] = useState({});
   const [currentLessonId, setCurrentLessonId] = useState("");
 
@@ -159,38 +162,26 @@ export const TestAddQuiz = ({ openModal, closeModal }: IQuizParentModal) => {
   }, [course]);
 
   const currentQuestion = questions && questions[questionIndex];
-  // We use this for selected answer's radio button
-  // console.log("questions", questions)
-  // console.log("currentQuestion", currentQuestion)
-
+  //@ts-ignore
   const selectedAnswer = selectedAnswers && selectedAnswers[questionIndex];
-  // console.log("selectedAnswer", selectedAnswer)
-  // console.log("selectedAnswers", selectedAnswers)
-  //@ts-ignore
+ 
 
-  //@ts-ignore
-  // for (let i = 0; i < allLessons?.length; i++) {
-  //   const lessons = allLessons[i];
-  //   console.log(lessons);
-  //   const lesson = lessons.splice(i, 1);
-  //   const lessonId = lesson.map((id: any) => id._id);
-  //   console.log(lessonId);
-  // }
-  const index = 0;
-
-
-  const getCurrentLessonId = (index: number) => {
+  const getCurrentLessonId1 = (index: number) => {
     //@ts-ignore
     const allLessons = course?.lessons;
     const lesson = allLessons.splice(index, 1);
     const lessonId = lesson.map((id: any) => id._id);
-    console.log(lessonId);
     setCurrentLessonId(lessonId);
   };
 
-  useEffect(() => {
-    getCurrentLessonId(index)
-  }, [currentLessonId])
+  const getHandleEvent = (event: any, key: any) => {
+    console.log(event.target)
+    console.log(key)
+  };
+
+  // useEffect(() => {
+  //   getCurrentLessonId(index)
+  // }, [currentLessonId])
 
   const handleSubmit = async (e: any) => {
     dispatch(validateForm());
@@ -198,10 +189,9 @@ export const TestAddQuiz = ({ openModal, closeModal }: IQuizParentModal) => {
     if (isValid) {
       dispatch(setLoading());
       try {
-        // console.log(values);
         const { data } = await axios.post(
           //@ts-ignore
-          `/api/course/lesson/${slug}/${course.instructor._id}/${lessonId}/add-quiz`,
+          `/api/course/lesson/${slug}/${course.instructor._id}/${currentLessonId}/add-quiz`,
           { quizTitle, questions, selectedAnswers, isValid }
         );
         console.log(data);
@@ -390,9 +380,7 @@ export const TestAddQuiz = ({ openModal, closeModal }: IQuizParentModal) => {
                       sx={{ width: "100%" }}
                       variant="outlined"
                       color="error"
-                      onClick={() =>
-                        router.push(`/instructor/course/view/${slug}`)
-                      }
+                      onClick={closeModal}
                     >
                       İptal Et
                     </Button>
