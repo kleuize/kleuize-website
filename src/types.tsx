@@ -6,6 +6,7 @@ export interface ICreateCourseProps {
   paid?: boolean;
   category?: string;
   loading?: boolean;
+  lessons?: any[];
 }
 
 // CreateQuiz
