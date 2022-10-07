@@ -12,10 +12,11 @@ import Button from "@mui/material/Button";
 import { toast } from "react-toastify";
 import { ICourseViewProps } from "../../../../types";
 import { TestAddQuiz } from "../../../../components/quiz/AddQuiz";
-import { AddLesson } from "../../../../components/quiz/AddLesson";
+import { AddLesson } from "../../../../components/lesson/AddLesson";
 import Box from "@mui/material/Box";
 import CardContent from "@mui/material/CardContent";
 import List from "@mui/material/List";
+import { LessonAccordion } from "../../../../components/accordion/LessonAccordion";
 
 const CourseView: NextPage = () => {
   const [course, setCourse] = useState<ICourseViewProps>({});
@@ -50,6 +51,7 @@ const CourseView: NextPage = () => {
     e: React.FormEvent<HTMLFormElement>,
     courseId: any
   ) => {
+    console.log(course._id);
     try {
       let answer = window.confirm(
         "Kursunuzu yayından kaldırdıktan sonra, kullanıcıların kaydolması mümkün olmayacaktır."
@@ -80,6 +82,14 @@ const CourseView: NextPage = () => {
     }
   };
 
+  const handleData = (e: any, index: number) => {
+    const movingItemIndex = e.dataTransfer.getData("itemIndex");
+    const targetItemIndex = index;
+    console.log(targetItemIndex);
+    let allLessons = course.lessons;
+    let movingItem = allLessons[movingItemIndex];
+    console.log(movingItem);
+  };
   return (
     <InstructorRouteWrapper>
       <Container sx={{ mt: 5 }}>
@@ -182,28 +192,8 @@ const CourseView: NextPage = () => {
           <Grid item xs={12} sm={12}>
             {course.description}
           </Grid>
-          <Grid item>
-            {course.lessons && course.lessons.length < 1 ? (
-              <Grid item xs={12} sm={12}>
-                <Typography>Test Mevcut Değil</Typography>
-              </Grid>
-            ) : (
-              <Grid item>
-                {course &&
-                  course.lessons?.map((lesson: any, key: any) => (
-                    <List key={lesson._id}>
-                      <Typography>{lesson.lessonTitle}</Typography>
-                      <Button onClick={() => setVisibleQuiz(true)}>
-                        Soru Ekle
-                      </Button>
-                      <TestAddQuiz
-                        openModal={visibleQuiz}
-                        closeModal={() => setVisibleQuiz(false)}
-                      />
-                    </List>
-                  ))}
-              </Grid>
-            )}
+          <Grid item xs={12}>
+            <LessonAccordion />
           </Grid>
           <Grid item xs={12}>
             <Button onClick={() => setVisible(true)}>Ders Ekle</Button>

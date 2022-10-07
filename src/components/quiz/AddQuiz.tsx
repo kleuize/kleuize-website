@@ -39,6 +39,7 @@ import Link from "next/link";
 interface IQuizParentModal {
   openModal: any;
   closeModal: any;
+  lessonId: any;
 }
 
 const style = {
@@ -59,7 +60,7 @@ const style = {
 
 export interface ChangeAnswer {
   name: string;
-  value: string;
+  value: any;
 }
 export interface QuestionAnswer {
   id: string;
@@ -92,7 +93,7 @@ export interface CreateLessonState {
   quizID: string;
   errorMessage: any;
 }
-export const TestAddQuiz = ({ openModal, closeModal }: IQuizParentModal) => {
+export const TestAddQuiz = ({ openModal, closeModal, lessonId }: IQuizParentModal) => {
   const firstAnswerID = uuidv4();
   const dispatch = useAppDispatch();
 
@@ -106,10 +107,9 @@ export const TestAddQuiz = ({ openModal, closeModal }: IQuizParentModal) => {
     errorMessage,
   } = useAppSelector((state) => state.createQuiz);
 
-  const { lessonIndex } = useAppSelector((state) => state.createLesson);
 
   const [course, setCourse] = useState({});
-  const [currentLessonId, setCurrentLessonId] = useState("");
+
 
   const router = useRouter();
   const { slug } = router.query;
@@ -166,18 +166,6 @@ export const TestAddQuiz = ({ openModal, closeModal }: IQuizParentModal) => {
   const selectedAnswer = selectedAnswers && selectedAnswers[questionIndex];
  
 
-  const getCurrentLessonId1 = (index: number) => {
-    //@ts-ignore
-    const allLessons = course?.lessons;
-    const lesson = allLessons.splice(index, 1);
-    const lessonId = lesson.map((id: any) => id._id);
-    setCurrentLessonId(lessonId);
-  };
-
-  const getHandleEvent = (event: any, key: any) => {
-    console.log(event.target)
-    console.log(key)
-  };
 
   // useEffect(() => {
   //   getCurrentLessonId(index)
@@ -191,10 +179,11 @@ export const TestAddQuiz = ({ openModal, closeModal }: IQuizParentModal) => {
       try {
         const { data } = await axios.post(
           //@ts-ignore
-          `/api/course/lesson/${slug}/${course.instructor._id}/${currentLessonId}/add-quiz`,
+          `/api/course/lesson/${slug}/${course.instructor._id}/${lessonId}/add-quiz`,
           { quizTitle, questions, selectedAnswers, isValid }
         );
         console.log(data);
+        console.log(lessonId)
         toast("Great! Now you can start adding lessons");
         router.push(`/instructor/course/view/${slug}`);
       } catch (err: any) {

@@ -129,7 +129,7 @@ export const CourseCreateForm = ({
               )}
             </Grid>
             <Grid item xs={12} sm={12}>
-              <Box sx={{ marginTop: -2, marginLeft: 1.35 }}>
+              <Box sx={{  marginLeft: 1.35 }}>
                 <FormControlLabel
                   control={
                     <TextField

@@ -9,6 +9,9 @@ import { toast } from "react-toastify";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import { CourseCreateForm } from "../../../../components/form/CourseCreateForm";
+import Grid from "@mui/material/Grid";
+import List from "@mui/material/List";
+import { LessonAccordion } from "../../../../components/accordion/LessonAccordion";
 
 const CourseUpdate: NextPage = () => {
   const [values, setValues] = useState<ICreateCourseProps>({
@@ -89,12 +92,12 @@ const CourseUpdate: NextPage = () => {
     e.preventDefault();
     try {
       // console.log(values);
-      const { data } = await axios.post("/api/course", {
+      const { data } = await axios.put(`/api/course/${slug}`, {
         ...values,
         image,
       });
-      toast("Great! Now you can start adding lessons");
-      router.push("/instructor");
+      toast("Kurs Güncellendi!");
+      router.push(`/instructor/course/view/${slug}`);
     } catch (err: any) {
       toast(err.response.data);
     }
