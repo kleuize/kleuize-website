@@ -1,18 +1,26 @@
 import { useState, useEffect } from "react";
+//libraries
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useRouter } from "next/router";
+//Redux
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { changeLessonTitle } from "../../store/create-lesson/create-lesson-slice";
+//UI
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import { useRouter } from "next/router";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { changeLessonTitle } from "../../store/create-lesson/create-lesson-slice";
 import Button from "@mui/material/Button";
 
+interface IAddLessonModal {
+  openEditLessonModal: any;
+  closeEditLessonModal: any;
+  lessonId: any;
+}
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
@@ -28,31 +36,25 @@ const style = {
   p: 4,
 };
 
-interface ICreateLessonProps {
-  lessonTitle: string;
-  lessonIndex: number;
-}
+export const EditLesson = ({
+  openEditLessonModal,
+  closeEditLessonModal,
+  lessonId,
+}: IAddLessonModal) => {
 
-interface IAddLessonModal {
-  openModal: any;
-  closeModal: any;
-}
-export const AddLesson = ({ openModal, closeModal }: IAddLessonModal) => {
-  const dispatch = useAppDispatch();
-
+  const [course, setCourse] = useState({});
   const { lessonTitle } = useAppSelector((state) => state.createLesson);
+
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const { slug } = router.query;
 
   const handleChangeLessonTitle = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const value = event.target.value;
-
     dispatch(changeLessonTitle(value));
   };
-
-  const [course, setCourse] = useState({});
-  const router = useRouter();
-  const { slug } = router.query;
 
   useEffect(() => {
     loadCourse();
@@ -64,31 +66,30 @@ export const AddLesson = ({ openModal, closeModal }: IAddLessonModal) => {
 
   const loadCourse = async () => {
     const { data } = await axios.get(`/api/course/${slug}`);
-    setCourse(data);
+    if (data) setCourse(data);
   };
 
   const handleSubmit = async (e: any) => {
     try {
-      // console.log(values);
-      const { data } = await axios.post(
-        //@ts-ignore
-        `/api/course/lesson/${slug}/${course.instructor._id}`,
-        { lessonTitle }
+      const { data } = await axios.put(
+        `/api/course/lesson/${slug}/${lessonId}`,
+        { lessonTitle, lessonId }
       );
-      toast("Ders Eklendi! Şimdi test eklemeye başlayabilirsiniz.");
-      // router.push(`/instructor/course/view/${slug}`);
+      toast("Ders Güncellendi!");
+      closeEditLessonModal(false);
+      setCourse({...course})
     } catch (err: any) {
       toast(err.response.data);
     }
   };
 
   return (
-    <Modal open={openModal} onClose={closeModal}>
+    <Modal open={openEditLessonModal} onClose={closeEditLessonModal}>
       <Box sx={style}>
         <Container>
           <Box component="form" noValidate onSubmit={handleSubmit}>
             <Typography color="primary" variant="h4" component="div" mb={4}>
-              Ders Oluştur
+              Dersi Güncelle
             </Typography>
             <Grid container spacing={2}>
               <Grid item xs={12}>
@@ -107,9 +108,8 @@ export const AddLesson = ({ openModal, closeModal }: IAddLessonModal) => {
                   fullWidth
                   variant="outlined"
                   onClick={handleSubmit}
-                  // onClick={() => dispatch(createLesson())}
                 >
-                  Kaydet
+                  Güncelle
                 </LoadingButton>
               </Grid>
               <Grid item xs={12} md={6}>
@@ -117,7 +117,7 @@ export const AddLesson = ({ openModal, closeModal }: IAddLessonModal) => {
                   fullWidth
                   variant="outlined"
                   size="large"
-                  onClick={closeModal}
+                  onClick={closeEditLessonModal}
                 >
                   Kapat
                 </Button>

@@ -11,17 +11,14 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import { toast } from "react-toastify";
 import { ICourseViewProps } from "../../../../types";
-import { TestAddQuiz } from "../../../../components/quiz/AddQuiz";
 import { AddLesson } from "../../../../components/lesson/AddLesson";
 import Box from "@mui/material/Box";
 import CardContent from "@mui/material/CardContent";
-import List from "@mui/material/List";
 import { LessonAccordion } from "../../../../components/accordion/LessonAccordion";
 
 const CourseView: NextPage = () => {
   const [course, setCourse] = useState<ICourseViewProps>({});
   const [visible, setVisible] = useState(false);
-  const [visibleQuiz, setVisibleQuiz] = useState(false);
   const [students, setStudents] = useState(0);
 
   const router = useRouter();
@@ -32,7 +29,8 @@ const CourseView: NextPage = () => {
   }, [slug]);
 
   useEffect(() => {
-    course && studentCount();
+    // course && studentCount();
+    course;
   }, [course]);
 
   const loadCourse = async () => {
@@ -82,14 +80,6 @@ const CourseView: NextPage = () => {
     }
   };
 
-  const handleData = (e: any, index: number) => {
-    const movingItemIndex = e.dataTransfer.getData("itemIndex");
-    const targetItemIndex = index;
-    console.log(targetItemIndex);
-    let allLessons = course.lessons;
-    let movingItem = allLessons[movingItemIndex];
-    console.log(movingItem);
-  };
   return (
     <InstructorRouteWrapper>
       <Container sx={{ mt: 5 }}>
@@ -101,7 +91,9 @@ const CourseView: NextPage = () => {
                 height="300"
                 width="400"
                 alt={`${slug}`}
-                src={course.image ? course.image.Location : "/course.jpg"}
+                src={
+                  course && course.image ? course.image.Location : "/course.jpg"
+                }
               />
             </Grid>
           </Card>
@@ -109,7 +101,7 @@ const CourseView: NextPage = () => {
             <CardContent sx={{ flex: "1 0 auto" }}>
               <Grid item xs={12} sm={12}>
                 <Typography component="div" variant="h5">
-                  {course.name}
+                  {course && course.name}
                 </Typography>
               </Grid>
               <Grid item xs={6} sm={6}>
@@ -118,7 +110,7 @@ const CourseView: NextPage = () => {
                   color="text.secondary"
                   component="div"
                 >
-                  {course.lessons && course.lessons.length} Ders
+                  {course && course.lessons && course.lessons.length} Ders
                 </Typography>
               </Grid>
               <Grid item xs={12} sm={12}>
@@ -127,14 +119,13 @@ const CourseView: NextPage = () => {
                   color="text.secondary"
                   component="div"
                 >
-                  {`Kategori: ${course.category}`}
+                  {`Kategori: ${course && course.category}`}
                 </Typography>
               </Grid>
             </CardContent>
           </Box>
         </Grid>
       </Container>
-
       <Container sx={{ mt: 5 }}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={12}>
@@ -143,20 +134,22 @@ const CourseView: NextPage = () => {
                 component="img"
                 height="300"
                 alt={`${slug}`}
-                src={course.image ? course.image.Location : "/course.jpg"}
+                src={
+                  course && course.image ? course.image.Location : "/course.jpg"
+                }
               />
             </Card>
           </Grid>
           <Grid item xs={6} sm={4}>
-            <Typography>{course.name}</Typography>
+            <Typography>{course && course.name}</Typography>
           </Grid>
           <Grid item xs={6} sm={4}>
             <Typography>
-              {course.lessons && course.lessons.length} Ders
+              {course && course.lessons && course.lessons.length} Ders
             </Typography>
           </Grid>
           <Grid item xs={12} sm={4}>
-            <Typography> {`Kategori: ${course.category}`}</Typography>
+            <Typography> {`Kategori: ${ course && course.category}`}</Typography>
           </Grid>
           <Grid item xs={12} sm={12}>
             <Button
@@ -169,13 +162,13 @@ const CourseView: NextPage = () => {
             </Button>
           </Grid>
           <Grid item>
-            {course.lessons && course.lessons.length < 5 ? (
+            {course && course.lessons && course.lessons.length < 5 ? (
               <Grid item xs={12} sm={12}>
                 <Typography>
                   {`Yayınlamak için minumum 5 ders gerekli. Mevcut ders sayısı ${course.lessons.length}`}
                 </Typography>
               </Grid>
-            ) : course.published ? (
+            ) : course && course.published ? (
               <Grid item>
                 <Button onClick={(e: any) => handleUnpublish(e, course._id)}>
                   Yayından Kaldır
@@ -190,7 +183,7 @@ const CourseView: NextPage = () => {
             )}
           </Grid>
           <Grid item xs={12} sm={12}>
-            {course.description}
+            {course && course.description}
           </Grid>
           <Grid item xs={12}>
             <LessonAccordion />
