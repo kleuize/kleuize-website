@@ -99,6 +99,18 @@ export const {
 
 export const selectQuiz = (state: RootState) => state.quiz;
 
+export const getCourses = async (dispatch: any) => {
+  try {
+    const res: AxiosResponse = await axios.get("/api/instructor-courses");
+    dispatch(setQuiz(res.data));
+  } catch (error) {
+    const { response } = error as AxiosError;
+
+    const errorMessage = response?.data || "Something unexpected happend!";
+    //@ts-ignore
+    dispatch(getQuizFail(errorMessage));
+  }
+};
 export const getQuizByCode =
   (quizCode: string): AppThunk =>
   async (dispatch) => {
