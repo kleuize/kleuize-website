@@ -16,9 +16,10 @@ import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import { ICourseViewProps } from "../../types";
 import { TestAddQuiz } from "../quiz/AddQuiz";
 import Divider from "@mui/material/Divider";
-import { List, ListItemIcon, Tooltip } from "@mui/material";
+import { ListItem, ListItemIcon, Stack, Tooltip } from "@mui/material";
 import { EditLesson } from "../lesson/EditLesson";
-import { EditQuiz } from "../quiz/EditQuiz";
+import Link from "next/link";
+// import { EditQuiz } from "../quiz/EditQuiz";
 
 export const LessonAccordion = () => {
   const [course, setCourse] = useState<ICourseViewProps>({});
@@ -28,7 +29,7 @@ export const LessonAccordion = () => {
   const { slug } = router.query;
   const [visibleQuiz, setVisibleQuiz] = useState(false);
   const [visibleEditLesson, setVisibleEditLesson] = useState(false);
-  const [visibleEditQuiz, setVisibleEditQuiz] = useState(false);
+  const [visibleShowQuiz, setVisibleShowQuiz] = useState(false);
   const [quizId, setQuizId] = useState();
 
   const [lessonId, setLessonId] = useState();
@@ -44,16 +45,10 @@ export const LessonAccordion = () => {
     }
   };
 
-  const handleEditQuizModal = (e: any) => {
+  const handleQuizId = (e: any) => {
     let currentQuizId = e.currentTarget.id;
     setQuizId(currentQuizId);
-    if (openedItemId === currentQuizId) {
-      //@ts-ignore
-      setOpenedEditQuizItemId("");
-    } else {
-      setOpenedEditQuizItemId(currentQuizId);
-    }
-    setVisibleEditQuiz(true);
+    console.log(currentQuizId);
   };
 
   useEffect(() => {
@@ -97,7 +92,9 @@ export const LessonAccordion = () => {
   return (
     <Box
       sx={{
-        bgcolor: openedItemId ? "rgba(71, 98, 120, 0.1)" : null,
+        bgcolor: openedItemId
+          ? "rgba(71, 98, 120, 0.2)"
+          : "rgba(41, 98, 120, 0.2)",
       }}
     >
       {course &&
@@ -105,20 +102,29 @@ export const LessonAccordion = () => {
           <div>
             {quiz != null ? (
               <>
-                <ListItemButton id={_id} key={_id} onClick={handleClick}>
+                <ListItem
+                  id={_id}
+                  onClick={handleClick}
+                  secondaryAction={
+                    <>
+                      <Tooltip title="Düzenle">
+                        <ListItemIcon
+                          onClick={() => setVisibleEditLesson(true)}
+                        >
+                          <EditOutlinedIcon />
+                        </ListItemIcon>
+                      </Tooltip>
+                      <Tooltip title="Sil">
+                        <ListItemIcon onClick={() => handleDelete(index)}>
+                          <ClearOutlinedIcon />
+                        </ListItemIcon>
+                      </Tooltip>
+                    </>
+                  }
+                >
                   {openedItemId === _id ? <ExpandLess /> : <ExpandMore />}
                   <ListItemText primary={lessonTitle} />
-                  <Tooltip title="Düzenle">
-                    <ListItemIcon onClick={() => setVisibleEditLesson(true)}>
-                      <EditOutlinedIcon />
-                    </ListItemIcon>
-                  </Tooltip>
-                  <Tooltip title="Sil">
-                    <ListItemIcon onClick={() => handleDelete(index)}>
-                      <ClearOutlinedIcon />
-                    </ListItemIcon>
-                  </Tooltip>
-                </ListItemButton>
+                </ListItem>
                 <Divider />
                 <Collapse
                   in={openedItemId === _id}
@@ -127,18 +133,23 @@ export const LessonAccordion = () => {
                 >
                   {openedItemId &&
                     quiz.map(({ _id, quizTitle }: any) => (
-                      <ListItemButton sx={{ martinLeft: 2 }} id={_id} key={_id}>
-                        <ListItemText primary={quizTitle} />
-                      </ListItemButton>
+                      <Link href={`/instructor/course/quiz/${_id}`}>
+                        <ListItemButton
+                          sx={{ martinLeft: 2 }}
+                          id={_id}
+                          onClick={handleQuizId}
+                        >
+                          <ListItemText primary={quizTitle} />
+                        </ListItemButton>
+                      </Link>
                     ))}
-                  <Tooltip title="Yeni Test Ekle">
-                    <ListItemButton
-                      sx={{ width: 50, marginLeft: "50%" }}
-                      onClick={() => setVisibleQuiz(true)}
-                    >
-                      <AddIcon />
-                    </ListItemButton>
-                  </Tooltip>
+                  <Stack alignItems="center">
+                    <Tooltip title="Yeni Test Ekle">
+                      <ListItemButton onClick={() => setVisibleQuiz(true)}>
+                        <AddIcon />
+                      </ListItemButton>
+                    </Tooltip>
+                  </Stack>
                   <Divider />
                 </Collapse>
               </>

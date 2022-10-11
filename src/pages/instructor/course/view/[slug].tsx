@@ -15,6 +15,15 @@ import { AddLesson } from "../../../../components/lesson/AddLesson";
 import Box from "@mui/material/Box";
 import CardContent from "@mui/material/CardContent";
 import { LessonAccordion } from "../../../../components/accordion/LessonAccordion";
+import Stack from "@mui/material/Stack";
+import {
+  createTheme,
+  responsiveFontSizes,
+  ThemeProvider,
+} from "@mui/material/styles";
+
+let theme = createTheme();
+theme = responsiveFontSizes(theme);
 
 const CourseView: NextPage = () => {
   const [course, setCourse] = useState<ICourseViewProps>({});
@@ -22,6 +31,7 @@ const CourseView: NextPage = () => {
   const [students, setStudents] = useState(0);
 
   const router = useRouter();
+  console.log(router)
   const { slug } = router.query;
 
   useEffect(() => {
@@ -29,8 +39,7 @@ const CourseView: NextPage = () => {
   }, [slug]);
 
   useEffect(() => {
-    // course && studentCount();
-    course;
+    course && studentCount();
   }, [course]);
 
   const loadCourse = async () => {
@@ -81,29 +90,31 @@ const CourseView: NextPage = () => {
   };
 
   return (
-    <InstructorRouteWrapper>
-      <Container sx={{ mt: 5 }}>
-        <Grid container>
-          <Card sx={{ display: "flex" }}>
-            <Grid item xs={12}>
-              <CardMedia
-                component="img"
-                height="300"
-                width="400"
-                alt={`${slug}`}
-                src={
-                  course && course.image ? course.image.Location : "/course.jpg"
-                }
-              />
+    <ThemeProvider theme={theme}>
+      <InstructorRouteWrapper>
+        <Container sx={{ mt: 5 }}>
+          <Grid container>
+            <Grid item xs={12} sm={12} mt={1} mb={4}>
+              <Typography component="div" variant="h5">
+                {`Kurs Adı: ${course && course.name}`}
+              </Typography>
             </Grid>
-          </Card>
-          <Box sx={{ display: "flex", flexDirection: "row" }}>
-            <CardContent sx={{ flex: "1 0 auto" }}>
-              <Grid item xs={12} sm={12}>
-                <Typography component="div" variant="h5">
-                  {course && course.name}
-                </Typography>
+            <Card sx={{ display: "flex" }}>
+              <Grid item xs={12} mt={2}>
+                <CardMedia
+                  component="img"
+                  height="300"
+                  width="400"
+                  alt={`${slug}`}
+                  src={
+                    course && course.image
+                      ? course.image.Location
+                      : "/course.jpg"
+                  }
+                />
               </Grid>
+            </Card>
+            <CardContent sx={{ flex: "1 0 auto" }}>
               <Grid item xs={6} sm={6}>
                 <Typography
                   variant="subtitle1"
@@ -113,7 +124,7 @@ const CourseView: NextPage = () => {
                   {course && course.lessons && course.lessons.length} Ders
                 </Typography>
               </Grid>
-              <Grid item xs={12} sm={12}>
+              <Grid item xs={6} sm={6}>
                 <Typography
                   variant="subtitle1"
                   color="text.secondary"
@@ -122,82 +133,78 @@ const CourseView: NextPage = () => {
                   {`Kategori: ${course && course.category}`}
                 </Typography>
               </Grid>
-            </CardContent>
-          </Box>
-        </Grid>
-      </Container>
-      <Container sx={{ mt: 5 }}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={12}>
-            <Card>
-              <CardMedia
-                component="img"
-                height="300"
-                alt={`${slug}`}
-                src={
-                  course && course.image ? course.image.Location : "/course.jpg"
-                }
-              />
-            </Card>
-          </Grid>
-          <Grid item xs={6} sm={4}>
-            <Typography>{course && course.name}</Typography>
-          </Grid>
-          <Grid item xs={6} sm={4}>
-            <Typography>
-              {course && course.lessons && course.lessons.length} Ders
-            </Typography>
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <Typography> {`Kategori: ${ course && course.category}`}</Typography>
-          </Grid>
-          <Grid item xs={12} sm={12}>
-            <Button
-              onClick={() => router.push(`/instructor/course/edit/${slug}`)}
-              size="medium"
-              variant="contained"
-              color="primary"
-            >
-              Düzenle
-            </Button>
-          </Grid>
-          <Grid item>
-            {course && course.lessons && course.lessons.length < 5 ? (
               <Grid item xs={12} sm={12}>
-                <Typography>
-                  {`Yayınlamak için minumum 5 ders gerekli. Mevcut ders sayısı ${course.lessons.length}`}
+                <Typography
+                  variant="subtitle1"
+                  color="text.secondary"
+                  component="div"
+                  fontSize={100}
+                >
+                  {`₺${course && course.price}`}
                 </Typography>
               </Grid>
-            ) : course && course.published ? (
               <Grid item>
-                <Button onClick={(e: any) => handleUnpublish(e, course._id)}>
-                  Yayından Kaldır
+                {course && course.lessons && course.lessons.length < 5 ? (
+                  <Grid item xs={12} sm={12} maxWidth={300}>
+                    <Typography >
+                      {`Kursu yayınlamak için 5 ders gerekli. Mevcut ders sayısı ${course.lessons.length}`}
+                    </Typography>
+                  </Grid>
+                ) : course && course.published ? (
+                  <Grid item>
+                    <Button
+                      onClick={(e: any) => handleUnpublish(e, course._id)}
+                    >
+                      Yayından Kaldır
+                    </Button>
+                  </Grid>
+                ) : (
+                  <Grid item>
+                    <Button onClick={(e: any) => handlePublish(e, course._id)}>
+                      Yayınla
+                    </Button>
+                  </Grid>
+                )}
+              </Grid>
+              <Grid item xs={4} sm={4} mt={2}>
+                <Button
+                  onClick={() => router.push(`/instructor/course/edit/${slug}`)}
+                  size="medium"
+                  variant="contained"
+                  color="primary"
+                >
+                  Düzenle
                 </Button>
               </Grid>
-            ) : (
-              <Grid item>
-                <Button onClick={(e: any) => handlePublish(e, course._id)}>
-                  Yayınla
-                </Button>
-              </Grid>
-            )}
+            </CardContent>
           </Grid>
-          <Grid item xs={12} sm={12}>
-            {course && course.description}
+        </Container>
+        <Container sx={{ mt: 5 }}>
+          <Grid container spacing={2}>
+            <Grid item>
+              <Typography component="div" variant="h6" color="#08104d">
+                Kurs Açıklaması
+              </Typography>
+            </Grid>
+            <Grid item xs={12} sm={12} mt={2}>
+              <Typography paragraph> {course && course.description}</Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <LessonAccordion />
+            </Grid>
+            <Grid item xs={12}>
+              <Stack alignItems="center">
+                <Button onClick={() => setVisible(true)}>Ders Ekle</Button>
+              </Stack>
+              <AddLesson
+                openModal={visible}
+                closeModal={() => setVisible(false)}
+              />
+            </Grid>
           </Grid>
-          <Grid item xs={12}>
-            <LessonAccordion />
-          </Grid>
-          <Grid item xs={12}>
-            <Button onClick={() => setVisible(true)}>Ders Ekle</Button>
-            <AddLesson
-              openModal={visible}
-              closeModal={() => setVisible(false)}
-            />
-          </Grid>
-        </Grid>
-      </Container>
-    </InstructorRouteWrapper>
+        </Container>
+      </InstructorRouteWrapper>
+    </ThemeProvider>
   );
 };
 

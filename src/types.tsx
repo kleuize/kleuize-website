@@ -61,6 +61,7 @@ export interface ICourseViewProps {
   category?: string;
   lessons?: any;
   published?: boolean;
+  price?: any;
   slug?: string;
   description?: string;
   instructor?: any;
