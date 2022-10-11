@@ -37,12 +37,12 @@ import {
   createQuiz,
   validateForm,
 } from "../../store/create-quiz/create-quiz-slice";
-import Stack from "@mui/material/Stack";
+import { setQuiz } from "../../store/quiz/quiz-slice";
 
 interface IQuizParentModal {
-  openModal: any;
-  closeModal: any;
-  lessonId: any;
+  openEditQuizModal: any;
+  closeEditQuizModal: any;
+  quizId: any;
 }
 
 const style = {
@@ -50,8 +50,8 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "90%",
-  height: "90%",
+  width: "80%",
+  height: "80%",
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
@@ -96,10 +96,10 @@ export interface CreateLessonState {
   quizID: string;
   errorMessage: any;
 }
-export const TestAddQuiz = ({
-  openModal,
-  closeModal,
-  lessonId,
+export const EditQuiz = ({
+  openEditQuizModal,
+  closeEditQuizModal,
+  quizId,
 }: IQuizParentModal) => {
   const firstAnswerID = uuidv4();
   const dispatch = useAppDispatch();
@@ -113,11 +113,6 @@ export const TestAddQuiz = ({
     isValid,
     errorMessage,
   } = useAppSelector((state) => state.createQuiz);
-
-  const [course, setCourse] = useState({});
-
-  const router = useRouter();
-  const { slug } = router.query;
 
   const handleSelectAnswer = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedAnswer = (event.target as HTMLInputElement).value;
@@ -153,9 +148,16 @@ export const TestAddQuiz = ({
     dispatch(changeAnswer({ name, value }));
   };
 
+  const [course, setCourse] = useState({});
+  const [quiz, setQuiz] = useState({});
+  const router = useRouter();
+  const { slug } = router.query;
+  console.log(slug)
+
   const loadCourse = async () => {
     const { data } = await axios.get(`/api/course/${slug}`);
     setCourse(data);
+    console.log(data);
   };
 
   useEffect(() => {
@@ -165,6 +167,12 @@ export const TestAddQuiz = ({
   useEffect(() => {
     course;
   }, [course]);
+
+  const loadQuiz = async () => {
+    const { data } = await axios.get(`/api/course/lesson/quiz/${quizId}`);
+    setQuiz(data);
+    console.log(data);
+  };
 
   const currentQuestion = questions && questions[questionIndex];
   //@ts-ignore
@@ -176,13 +184,13 @@ export const TestAddQuiz = ({
     if (isValid) {
       dispatch(setLoading());
       try {
-        const { data } = await axios.post(
+        const { data } = await axios.put(
           //@ts-ignore
-          `/api/course/lesson/${slug}/${course.instructor._id}/${lessonId}/add-quiz`,
+          `/api/course/lesson/${slug}/${course.instructor._id}/${lessonId}/update-quiz`,
           { quizTitle, questions, selectedAnswers, isValid }
         );
-        toast("Yeni Test Başarıyla Eklendi");
-        closeModal(false);
+        toast("Test Güncellendi");
+        router.push(`/instructor/course/view/${slug}`);
       } catch (err: any) {
         toast(err.response.data);
       }
@@ -190,7 +198,7 @@ export const TestAddQuiz = ({
   };
 
   return (
-    <Modal open={openModal} onClose={closeModal}>
+    <Modal open={openEditQuizModal} onClose={closeEditQuizModal}>
       <Box sx={style}>
         <Container>
           <Box component="form" noValidate onSubmit={handleSubmit}>
@@ -203,10 +211,11 @@ export const TestAddQuiz = ({
                     component="div"
                     mb={1}
                   >
-                    Test Oluştur
+                    Testi Güncelle
                   </Typography>
                 </Grid>
                 {/* Quiz Title */}
+
                 <Grid item xs={12} mb={1}>
                   <TextField
                     name="quizTitle"
@@ -235,7 +244,7 @@ export const TestAddQuiz = ({
                     variant="outlined"
                     size="medium"
                     fullWidth
-                    // inputProps={{ "data-testid": "question-content" }}
+                    inputProps={{ "data-testid": "question-content" }}
                   />
                 </Grid>
 
@@ -245,11 +254,10 @@ export const TestAddQuiz = ({
                     <Grid item mb={2}>
                       <FormLabel>
                         <Typography>
-                          Answers (Check the correct answer)
+                          Cevapları Güncelle (Doğru cevabı seç.)
                         </Typography>
                       </FormLabel>
                     </Grid>
-
                     <RadioGroup
                       aria-label="gender"
                       name="radio-buttons-group"
@@ -258,7 +266,7 @@ export const TestAddQuiz = ({
                     >
                       {currentQuestion.answers.map(
                         (answer: any, index: any) => (
-                          <Grid item xs={12} md={12} mb={1}>
+                          <Grid container item xs={12} md={12} mb={1}>
                             <FormControlLabel
                               key={answer.id}
                               value={answer.id}
@@ -289,25 +297,23 @@ export const TestAddQuiz = ({
                     </RadioGroup>
                   </FormControl>
                   {/* Pagination */}
-                  <Grid item xs={12} mb={1} mt={1}>
-                    <Stack alignItems="center">
-                      <Pagination
-                        count={questions.length}
-                        page={questionIndex + 1}
-                        color="primary"
-                        onChange={handleChangePage}
-                        renderItem={(item) => {
-                          if (item.type === "page") {
-                            return (
-                              <PaginationItem
-                                {...item}
-                                data-testid={`page-${item.page}`}
-                              />
-                            );
-                          } else return <PaginationItem {...item} />;
-                        }}
-                      />
-                    </Stack>
+                  <Grid item xs={12} mb={1}>
+                    <Pagination
+                      count={questions.length}
+                      page={questionIndex + 1}
+                      color="primary"
+                      onChange={handleChangePage}
+                      renderItem={(item) => {
+                        if (item.type === "page") {
+                          return (
+                            <PaginationItem
+                              {...item}
+                              data-testid={`page-${item.page}`}
+                            />
+                          );
+                        } else return <PaginationItem {...item} />;
+                      }}
+                    />
                   </Grid>
                   {/* Error Message */}
                   {errorMessage && (
@@ -361,7 +367,7 @@ export const TestAddQuiz = ({
                       color="secondary"
                       onClick={handleSubmit}
                     >
-                      Kaydet
+                      Güncelle
                     </Button>
                   </Grid>
                   <Grid item xs={12} md={3}>
@@ -369,7 +375,7 @@ export const TestAddQuiz = ({
                       sx={{ width: "100%" }}
                       variant="outlined"
                       color="error"
-                      onClick={closeModal}
+                      onClick={closeEditQuizModal}
                     >
                       İptal Et
                     </Button>

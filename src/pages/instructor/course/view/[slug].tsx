@@ -11,19 +11,27 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import { toast } from "react-toastify";
 import { ICourseViewProps } from "../../../../types";
-import { TestAddQuiz } from "../../../../components/quiz/AddQuiz";
-import { AddLesson } from "../../../../components/quiz/AddLesson";
+import { AddLesson } from "../../../../components/lesson/AddLesson";
 import Box from "@mui/material/Box";
 import CardContent from "@mui/material/CardContent";
-import List from "@mui/material/List";
+import { LessonAccordion } from "../../../../components/accordion/LessonAccordion";
+import Stack from "@mui/material/Stack";
+import {
+  createTheme,
+  responsiveFontSizes,
+  ThemeProvider,
+} from "@mui/material/styles";
+
+let theme = createTheme();
+theme = responsiveFontSizes(theme);
 
 const CourseView: NextPage = () => {
   const [course, setCourse] = useState<ICourseViewProps>({});
   const [visible, setVisible] = useState(false);
-  const [visibleQuiz, setVisibleQuiz] = useState(false);
   const [students, setStudents] = useState(0);
 
   const router = useRouter();
+  console.log(router)
   const { slug } = router.query;
 
   useEffect(() => {
@@ -50,6 +58,7 @@ const CourseView: NextPage = () => {
     e: React.FormEvent<HTMLFormElement>,
     courseId: any
   ) => {
+    console.log(course._id);
     try {
       let answer = window.confirm(
         "Kursunuzu yayından kaldırdıktan sonra, kullanıcıların kaydolması mümkün olmayacaktır."
@@ -81,25 +90,38 @@ const CourseView: NextPage = () => {
   };
 
   return (
-    <InstructorRouteWrapper>
-      <Container sx={{ mt: 5 }}>
-        <Grid container>
-          <Card sx={{ display: "flex" }}>
-            <Grid item xs={12}>
-              <CardMedia
-                component="img"
-                height="300"
-                width="400"
-                alt={`${slug}`}
-                src={course.image ? course.image.Location : "/course.jpg"}
-              />
+    <ThemeProvider theme={theme}>
+      <InstructorRouteWrapper>
+        <Container sx={{ mt: 5 }}>
+          <Grid container>
+            <Grid item xs={12} sm={12} mt={1} mb={4}>
+              <Typography component="div" variant="h5">
+                {`Kurs Adı: ${course && course.name}`}
+              </Typography>
             </Grid>
-          </Card>
-          <Box sx={{ display: "flex", flexDirection: "row" }}>
+            <Card sx={{ display: "flex" }}>
+              <Grid item xs={12} mt={2}>
+                <CardMedia
+                  component="img"
+                  height="300"
+                  width="400"
+                  alt={`${slug}`}
+                  src={
+                    course && course.image
+                      ? course.image.Location
+                      : "/course.jpg"
+                  }
+                />
+              </Grid>
+            </Card>
             <CardContent sx={{ flex: "1 0 auto" }}>
-              <Grid item xs={12} sm={12}>
-                <Typography component="div" variant="h5">
-                  {course.name}
+              <Grid item xs={6} sm={6}>
+                <Typography
+                  variant="subtitle1"
+                  color="text.secondary"
+                  component="div"
+                >
+                  {course && course.lessons && course.lessons.length} Ders
                 </Typography>
               </Grid>
               <Grid item xs={6} sm={6}>
@@ -108,7 +130,7 @@ const CourseView: NextPage = () => {
                   color="text.secondary"
                   component="div"
                 >
-                  {course.lessons && course.lessons.length} Ders
+                  {`Kategori: ${course && course.category}`}
                 </Typography>
               </Grid>
               <Grid item xs={12} sm={12}>
@@ -116,105 +138,73 @@ const CourseView: NextPage = () => {
                   variant="subtitle1"
                   color="text.secondary"
                   component="div"
+                  fontSize={100}
                 >
-                  {`Kategori: ${course.category}`}
+                  {`₺${course && course.price}`}
                 </Typography>
+              </Grid>
+              <Grid item>
+                {course && course.lessons && course.lessons.length < 5 ? (
+                  <Grid item xs={12} sm={12} maxWidth={300}>
+                    <Typography >
+                      {`Kursu yayınlamak için 5 ders gerekli. Mevcut ders sayısı ${course.lessons.length}`}
+                    </Typography>
+                  </Grid>
+                ) : course && course.published ? (
+                  <Grid item>
+                    <Button
+                      onClick={(e: any) => handleUnpublish(e, course._id)}
+                    >
+                      Yayından Kaldır
+                    </Button>
+                  </Grid>
+                ) : (
+                  <Grid item>
+                    <Button onClick={(e: any) => handlePublish(e, course._id)}>
+                      Yayınla
+                    </Button>
+                  </Grid>
+                )}
+              </Grid>
+              <Grid item xs={4} sm={4} mt={2}>
+                <Button
+                  onClick={() => router.push(`/instructor/course/edit/${slug}`)}
+                  size="medium"
+                  variant="contained"
+                  color="primary"
+                >
+                  Düzenle
+                </Button>
               </Grid>
             </CardContent>
-          </Box>
-        </Grid>
-      </Container>
-
-      <Container sx={{ mt: 5 }}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={12}>
-            <Card>
-              <CardMedia
-                component="img"
-                height="300"
-                alt={`${slug}`}
-                src={course.image ? course.image.Location : "/course.jpg"}
+          </Grid>
+        </Container>
+        <Container sx={{ mt: 5 }}>
+          <Grid container spacing={2}>
+            <Grid item>
+              <Typography component="div" variant="h6" color="#08104d">
+                Kurs Açıklaması
+              </Typography>
+            </Grid>
+            <Grid item xs={12} sm={12} mt={2}>
+              <Typography paragraph> {course && course.description}</Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <LessonAccordion />
+            </Grid>
+            <Grid item xs={12}>
+              <Stack alignItems="center">
+                <Button onClick={() => setVisible(true)}>Ders Ekle</Button>
+              </Stack>
+              <AddLesson
+                openModal={visible}
+                closeModal={() => setVisible(false)}
               />
-            </Card>
+            </Grid>
           </Grid>
-          <Grid item xs={6} sm={4}>
-            <Typography>{course.name}</Typography>
-          </Grid>
-          <Grid item xs={6} sm={4}>
-            <Typography>
-              {course.lessons && course.lessons.length} Ders
-            </Typography>
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <Typography> {`Kategori: ${course.category}`}</Typography>
-          </Grid>
-          <Grid item xs={12} sm={12}>
-            <Button
-              onClick={() => router.push(`/instructor/course/edit/${slug}`)}
-              size="medium"
-              variant="contained"
-              color="primary"
-            >
-              Düzenle
-            </Button>
-          </Grid>
-          <Grid item>
-            {course.lessons && course.lessons.length < 5 ? (
-              <Grid item xs={12} sm={12}>
-                <Typography>
-                  {`Yayınlamak için minumum 5 ders gerekli. Mevcut ders sayısı ${course.lessons.length}`}
-                </Typography>
-              </Grid>
-            ) : course.published ? (
-              <Grid item>
-                <Button onClick={(e: any) => handleUnpublish(e, course._id)}>
-                  Yayından Kaldır
-                </Button>
-              </Grid>
-            ) : (
-              <Grid item>
-                <Button onClick={(e: any) => handlePublish(e, course._id)}>
-                  Yayınla
-                </Button>
-              </Grid>
-            )}
-          </Grid>
-          <Grid item xs={12} sm={12}>
-            {course.description}
-          </Grid>
-          <Grid item>
-            {course.lessons && course.lessons.length < 1 ? (
-              <Grid item xs={12} sm={12}>
-                <Typography>Test Mevcut Değil</Typography>
-              </Grid>
-            ) : (
-              <Grid item>
-                {course &&
-                  course.lessons?.map((lesson: any, key: any) => (
-                    <List key={lesson._id}>
-                      <Typography>{lesson.lessonTitle}</Typography>
-                      <Button onClick={() => setVisibleQuiz(true)}>
-                        Soru Ekle
-                      </Button>
-                      <TestAddQuiz
-                        openModal={visibleQuiz}
-                        closeModal={() => setVisibleQuiz(false)}
-                      />
-                    </List>
-                  ))}
-              </Grid>
-            )}
-          </Grid>
-          <Grid item xs={12}>
-            <Button onClick={() => setVisible(true)}>Ders Ekle</Button>
-            <AddLesson
-              openModal={visible}
-              closeModal={() => setVisible(false)}
-            />
-          </Grid>
-        </Grid>
-      </Container>
-    </InstructorRouteWrapper>
+        </Container>
+      </InstructorRouteWrapper>
+    </ThemeProvider>
   );
 };
 

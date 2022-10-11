@@ -35,7 +35,6 @@ export const CourseCreateForm = ({
 }: ICourseCreateFromProps) => {
   const router = useRouter();
 
-
   return (
     <Container component="main" maxWidth="lg">
       {values && (
@@ -130,18 +129,18 @@ export const CourseCreateForm = ({
               )}
             </Grid>
             <Grid item xs={12} sm={12}>
-              <Box sx={{ marginTop: -2, marginLeft: 1.35 }}>
+              <Box sx={{  marginLeft: 1.35 }}>
                 <FormControlLabel
                   control={
                     <TextField
                       type="file"
-                      value={values.image}
+                      defaultValue={values.image}
                       name="image"
                       onChange={handleImage}
                       hidden
                     />
                   }
-                  label={`  ${uploadButtonText}`}
+                  label={`${uploadButtonText}`}
                 />
               </Box>
             </Grid>

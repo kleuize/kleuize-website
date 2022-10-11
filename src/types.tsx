@@ -6,6 +6,7 @@ export interface ICreateCourseProps {
   paid?: boolean;
   category?: string;
   loading?: boolean;
+  lessons?: any[];
 }
 
 // CreateQuiz
@@ -60,6 +61,7 @@ export interface ICourseViewProps {
   category?: string;
   lessons?: any;
   published?: boolean;
+  price?: any;
   slug?: string;
   description?: string;
   instructor?: any;

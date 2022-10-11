@@ -1,0 +1,131 @@
+import { useState, useEffect } from "react";
+//libraries
+import axios from "axios";
+import { toast } from "react-toastify";
+import { useRouter } from "next/router";
+//Redux
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { changeLessonTitle } from "../../store/create-lesson/create-lesson-slice";
+//UI
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import LoadingButton from "@mui/lab/LoadingButton";
+import Button from "@mui/material/Button";
+
+interface IAddLessonModal {
+  openEditLessonModal: any;
+  closeEditLessonModal: any;
+  lessonId: any;
+}
+const style = {
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "80%",
+  height: "50%",
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  justifyContent: "center",
+  alignItems: "center",
+  p: 4,
+};
+
+export const EditLesson = ({
+  openEditLessonModal,
+  closeEditLessonModal,
+  lessonId,
+}: IAddLessonModal) => {
+
+  const [course, setCourse] = useState({});
+  const { lessonTitle } = useAppSelector((state) => state.createLesson);
+
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const { slug } = router.query;
+
+  const handleChangeLessonTitle = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const value = event.target.value;
+    dispatch(changeLessonTitle(value));
+  };
+
+  useEffect(() => {
+    loadCourse();
+  }, [slug]);
+
+  useEffect(() => {
+    course;
+  }, [course]);
+
+  const loadCourse = async () => {
+    const { data } = await axios.get(`/api/course/${slug}`);
+    if (data) setCourse(data);
+  };
+
+  const handleSubmit = async (e: any) => {
+    try {
+      const { data } = await axios.put(
+        `/api/course/lesson/${slug}/${lessonId}`,
+        { lessonTitle, lessonId }
+      );
+      toast("Ders Güncellendi!");
+      closeEditLessonModal(false);
+      setCourse({...course})
+    } catch (err: any) {
+      toast(err.response.data);
+    }
+  };
+
+  return (
+    <Modal open={openEditLessonModal} onClose={closeEditLessonModal}>
+      <Box sx={style}>
+        <Container>
+          <Box component="form" noValidate onSubmit={handleSubmit}>
+            <Typography color="primary" variant="h4" component="div" mb={4}>
+              Dersi Güncelle
+            </Typography>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  value={lessonTitle}
+                  onChange={handleChangeLessonTitle}
+                  label="Ders Ana Başlığı"
+                  variant="outlined"
+                  size="medium"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <LoadingButton
+                  size="large"
+                  fullWidth
+                  variant="outlined"
+                  onClick={handleSubmit}
+                >
+                  Güncelle
+                </LoadingButton>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Button
+                  fullWidth
+                  variant="outlined"
+                  size="large"
+                  onClick={closeEditLessonModal}
+                >
+                  Kapat
+                </Button>
+              </Grid>
+            </Grid>
+          </Box>
+        </Container>
+      </Box>
+    </Modal>
+  );
+};

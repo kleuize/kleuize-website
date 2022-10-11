@@ -68,7 +68,6 @@ export const AddLesson = ({ openModal, closeModal }: IAddLessonModal) => {
   };
 
   const handleSubmit = async (e: any) => {
-    e.preventDefault();
     try {
       // console.log(values);
       const { data } = await axios.post(
@@ -77,7 +76,7 @@ export const AddLesson = ({ openModal, closeModal }: IAddLessonModal) => {
         { lessonTitle }
       );
       toast("Ders Eklendi! Şimdi test eklemeye başlayabilirsiniz.");
-      router.push(`/instructor/course/view/${slug}`);
+      // router.push(`/instructor/course/view/${slug}`);
     } catch (err: any) {
       toast(err.response.data);
     }
