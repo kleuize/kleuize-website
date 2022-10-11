@@ -31,7 +31,6 @@ const CourseView: NextPage = () => {
   const [students, setStudents] = useState(0);
 
   const router = useRouter();
-  console.log(router)
   const { slug } = router.query;
 
   useEffect(() => {

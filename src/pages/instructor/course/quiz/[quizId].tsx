@@ -1,37 +1,40 @@
 import { useEffect, useState } from "react";
 
-import Modal from "@mui/material/Modal";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
 import axios from "axios";
 import { useRouter } from "next/router";
+//UI
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import Stack from "@mui/material/Stack";
+import Paper from "@mui/material/Paper";
+import { styled } from "@mui/material/styles";
+import Divider from "@mui/material/Divider";
+import Button from "@mui/material/Button";
+
+import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
+import { Tooltip } from "@material-ui/core";
+
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: "center",
+  color: theme.palette.text.secondary,
+  marginTop: 5,
+}));
 
 const style = {
-  position: "absolute" as "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: "80%",
-  height: "80%",
-  bgcolor: "background.paper",
-  border: "2px solid #000",
+  width: "50%",
+  height: "100%",
   boxShadow: 24,
   justifyContent: "center",
   alignItems: "center",
   p: 4,
-  overflow: "scroll",
 };
 
 const quiz = () => {
-  //   const [quizValues, setQuizValues] = useState({
-  //     quizTitle: "",
-  //     questions: [{ content: "", answers: [{ id: 0, text: "" }] }],
-  //   });
-
   const router = useRouter();
-  console.log(router);
   const { quizId } = router.query;
 
   const [courses, setCourses] = useState<any[]>();
@@ -44,19 +47,6 @@ const quiz = () => {
     const { data } = await axios.get("/api/instructor-courses");
     setCourses(data);
   };
-
-  console.log(courses);
-
-  //@ts-ignore
-  const currentQuiz = courses?.map(({ lessons }: any) => {
-    lessons.map(({ quiz }: any) =>
-      quiz
-        .filter((id: any) => id._id === quizId)
-        .map(({ quizTitle, questions }: any) =>
-          console.log(quizTitle, questions)
-        )
-    );
-  });
 
   return (
     <Container component="main" maxWidth="lg">
@@ -73,32 +63,62 @@ const quiz = () => {
             lessons.map(({ quiz }: any) =>
               quiz
                 .filter((id: any) => id._id === quizId)
-                .map(({ _id, quizTitle, questions }: any) => (
-                  <Box>
-                    <Typography>{` Soru ${
-                      quizTitle.indexOf() + 2
-                    }`}</Typography>
-                    <Typography>{quizTitle}</Typography>
-                    {questions.map(({ answers, content }: any) => (
-                      <Box>
-                        <Typography>{content}</Typography>
-                        {answers.map(({ text, isCorrect }: any) => (
-                          <Box>
-                            <Typography
+                .map(({ quizTitle, questions }: any) => (
+                  <Box sx={{ width: "80%" }}>
+                    <Stack>
+                      <Item
+                        sx={{ marginBottom: 3 }}
+                      >{` Test Başlığı: ${quizTitle}`}</Item>
+                    </Stack>
+                    <Divider />
+                    {questions.map(
+                      ({ answers, content }: any, index: number) => (
+                        <Box>
+                          <Stack>
+                            <Item
                               sx={{
-                                backgroundColor: isCorrect ? "green" : "red",
+                                marginTop: 2,
+                                marginBottom: 2,
+                                backgroundColor: "whiteSmoke",
+                                fontWeight: "bold",
                               }}
-                            >
-                              {text}
-                            </Typography>
+                            >{` Soru ${index + 1}: ${content}`}</Item>
+                          </Stack>
+                          <Divider />
+                          <Box
+                            sx={{
+                              backgroundColor: "#ECF2FD",
+                              p: 1,
+                              borderRadius: 5,
+                              mt: 2,
+                            }}
+                          >
+                            {answers.map(({ text, isCorrect }: any) => (
+                              <Stack spacing={2}>
+                                <Item
+                                  sx={{
+                                    backgroundColor: isCorrect ? "green" : null,
+                                  }}
+                                >
+                                  {text}
+                                </Item>
+                              </Stack>
+                            ))}
                           </Box>
-                        ))}
-                      </Box>
-                    ))}
+                        </Box>
+                      )
+                    )}
                   </Box>
                 ))
             )
           )}
+        <Stack sx={{ mt: 2 }}>
+          <Button variant="contained" onClick={() => router.back()}>
+            <Tooltip title="Bir Önceki Sayfa">
+              <ArrowBackOutlinedIcon />
+            </Tooltip>
+          </Button>
+        </Stack>
       </Box>
     </Container>
   );
