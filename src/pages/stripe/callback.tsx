@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import { UserContext } from "../../context/UserContext";
 import axios from "axios";
-import { useRotateIconStyles } from "../../styles/RotetesIcon";
+import { useRotateIconStyles } from "../../utils/RotetesIcon";
 import { SyncOutlined } from "@mui/icons-material";
 
 const StripeCallback = () => {

@@ -18,7 +18,7 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { EnhancedEncryptionRounded, SendToMobile, SyncOutlined } from "@mui/icons-material";
 import { UserContext } from "../context/UserContext";
-import { useRotateIconStyles } from "../styles/RotetesIcon";
+import { useRotateIconStyles } from "../utils/RotetesIcon";
 
 const Copyright = (props: any) => {
   return (

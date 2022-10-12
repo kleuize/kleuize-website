@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useRotateIconStyles } from "../../styles/RotetesIcon";
+import { useRotateIconStyles } from "../../utils/RotetesIcon";
 import { SyncOutlined } from "@mui/icons-material";
 import Box from "@mui/material/Box";
 import InstructorNav from "../nav/InstructorNav";

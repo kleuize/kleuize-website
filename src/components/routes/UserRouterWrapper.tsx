@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { SyncOutlined } from "@mui/icons-material";
-import { useRotateIconStyles } from "../../styles/RotetesIcon";
+import { useRotateIconStyles } from "../../utils/RotetesIcon";
 import UserNav from "../nav/UserNav";
 import Box from "@mui/material/Box";
 
