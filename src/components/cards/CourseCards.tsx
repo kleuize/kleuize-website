@@ -8,11 +8,12 @@ import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
+import Box from "@mui/material/Box";
 
 const cardStyle = {
   card: {
     backgroundColor: "transparent",
-    width: 300,
+    width: 200,
     height: 370,
     margin: 1,
     transition: "0.3s",
@@ -22,7 +23,7 @@ const cardStyle = {
     },
   },
   media: {
-    width: 300,
+    width: 200,
     height: 175,
   },
   content: {
@@ -34,12 +35,12 @@ const cardStyle = {
     margin: 1,
     // margin: `${muiBaseTheme.spacing.unit * 3}px 0`,
   },
-//   font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-//   Bitstream Vera Sans Mono, Courier New, monospace;
+  //   font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
+  //   Bitstream Vera Sans Mono, Courier New, monospace;
   heading: {
-    fontFamily: "Bitstream Vera Sans Mono",
+    fontFamily: "Helvetica Neue",
     fontWeight: 600,
-    fontSize: 15,
+    fontSize: 18,
     overflow: "hidden",
     textOverflow: "ellipsis",
     display: "-webkit-box",
@@ -48,7 +49,8 @@ const cardStyle = {
   },
 
   subheading: {
-    lineHeight: 1.8,
+    fontFamily: "Helvetica Neue",
+    fontWeight: 600,
   },
 };
 
@@ -69,9 +71,10 @@ export const CourseCards = ({ course }: any) => {
           <Typography sx={cardStyle.heading}>{name}</Typography>
           <Typography variant={"caption"}>{instructor.name}</Typography>
           <Divider sx={cardStyle.divider} light />
-
-          <Badge badgeContent={category} sx={{ backgroundColor: "#03a9f4" }} />
-          <Typography>
+          <Box>
+            <Typography>{category}</Typography>
+          </Box>
+          <Typography sx={cardStyle.subheading}>
             {paid
               ? currencyFormatter({
                   amount: price,

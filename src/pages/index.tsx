@@ -1,5 +1,5 @@
+import React from "react";
 import axios from "axios";
-import React, { useState, useEffect } from "react";
 import type { NextPage } from "next";
 //UI
 import Head from "next/head";
@@ -9,17 +9,16 @@ import Container from "@mui/material/Container";
 //Component
 import { CourseCards } from "../components/cards/CourseCards";
 
-export const Home: NextPage = () => {
-  const [courses, setCourses] = useState<any[]>([]);
+export async function getServerSideProps() {
+  const { data } = await axios.get(`${process.env.API}/courses`);
+  return {
+    props: {
+      courses: data,
+    },
+  };
+}
 
-  useEffect(() => {
-    const fetchCourses = async () => {
-      const { data } = await axios.get("/api/courses");
-      setCourses(data);
-    };
-    fetchCourses();
-  }, []);
-
+export const Home: NextPage = ({ courses }: any) => {
   return (
     <Container sx={{ mt: 5 }}>
       <Head>
@@ -28,11 +27,13 @@ export const Home: NextPage = () => {
       </Head>
       <main>
         <h1 className={styles.title}>
-          Welcome to <a href="/">Kleuize</a>
+          Welcome to{" "}
+          <a className={styles.firstTitle} href="/">
+            Kleuize
+          </a>
         </h1>
         <p className={styles.description}>
-          Get started by editing{" "}
-          <code className={styles.code}>pages/index.tsx</code>
+          Öğrenmeye Başlayın <code className={styles.code}>Tüm Eğitimler</code>
         </p>
         <div className={styles.main}>
           <div className={styles.grid}>
@@ -48,11 +49,12 @@ export const Home: NextPage = () => {
           </div>
         </div>
         <div className={styles.course}>
-          {courses.map((course) => (
-            <div key={course._id} className={styles.grid}>
-              <CourseCards course={course} />
-            </div>
-          ))}
+          {courses &&
+            courses.map((course: any) => (
+              <div key={course._id} className={styles.grid}>
+                <CourseCards course={course} />
+              </div>
+            ))}
         </div>
       </main>
 
@@ -71,5 +73,7 @@ export const Home: NextPage = () => {
     </Container>
   );
 };
+
+
 
 export default Home;
