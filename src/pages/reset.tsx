@@ -16,7 +16,7 @@ import { useRouter } from "next/router";
 import { UserContext } from "../context/UserContext";
 import { toast } from "react-toastify";
 import { SyncOutlined } from "@mui/icons-material";
-import { useRotateIconStyles } from "../styles/RotetesIcon";
+import { useRotateIconStyles } from "../utils/RotetesIcon";
 
 const Copyright = (props: any) => {
   return (
