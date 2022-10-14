@@ -64,17 +64,6 @@ export const LessonAccordion = () => {
     setCourse(data);
   };
 
-  //   const currentCourse =
-  //     course &&
-  //     course.lessons &&
-  //     course.lessons.map(({ quiz }: any) =>
-  //       quiz
-  //         .filter((id: any) => id._id === quizId)
-  //         .map((quiz: any) => quiz.quizTitle, quiz._id)
-  //     );
-
-  //   console.log(currentCourse);
-
   const handleDelete = async (index: any) => {
     const answer = window.confirm(
       "Eğer dersi silerseniz içindeki tüm testlerde silinecektir. Onaylıyor musunuz?"
