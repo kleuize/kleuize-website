@@ -1,21 +1,23 @@
 import Link from "next/link";
 //Utils
 import { currencyFormatter } from "../../utils/helpers";
-//UI
+//MUI
 import Card from "@mui/material/Card";
-import Badge from "@mui/material/Badge";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import Box from "@mui/material/Box";
+//JoyUI
+import Chip from "@mui/joy/Chip";
 
 const cardStyle = {
   card: {
     backgroundColor: "transparent",
-    width: 200,
+    width: 300,
     height: 370,
     margin: 1,
+    borderRadius: 2,
     transition: "0.3s",
     boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)",
     "&:hover": {
@@ -23,12 +25,12 @@ const cardStyle = {
     },
   },
   media: {
-    width: 200,
+    width: 300,
     height: 175,
   },
   content: {
     textAlign: "left",
-    padding: 3,
+
     // padding: muiBaseTheme.spacing.unit * 3,
   },
   divider: {
@@ -71,9 +73,14 @@ export const CourseCards = ({ course }: any) => {
           <Typography sx={cardStyle.heading}>{name}</Typography>
           <Typography variant={"caption"}>{instructor.name}</Typography>
           <Divider sx={cardStyle.divider} light />
-          <Box>
-            <Typography>{category}</Typography>
-          </Box>
+          <Chip
+            variant="outlined"
+            color="primary"
+            size="sm"
+            sx={{ pointerEvents: "none" }}
+          >
+            {category}
+          </Chip>
           <Typography sx={cardStyle.subheading}>
             {paid
               ? currencyFormatter({

@@ -3,11 +3,15 @@ import axios from "axios";
 import type { NextPage } from "next";
 //UI
 import Head from "next/head";
-import Image from "next/image";
+import Link from "next/link";
 import styles from "../styles/Home.module.css";
 import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 //Component
 import { CourseCards } from "../components/cards/CourseCards";
+import GlobalStyles from "@mui/material/GlobalStyles";
+import CssBaseline from "@mui/material/CssBaseline";
 
 export async function getServerSideProps() {
   const { data } = await axios.get(`${process.env.API}/courses`);
@@ -35,19 +39,6 @@ export const Home: NextPage = ({ courses }: any) => {
         <p className={styles.description}>
           Öğrenmeye Başlayın <code className={styles.code}>Tüm Eğitimler</code>
         </p>
-        <div className={styles.main}>
-          <div className={styles.grid}>
-            <a href="/login" className={styles.card}>
-              <h2>Documentation &rarr;</h2>
-              <p>Find in-depth information about Next.js features and API.</p>
-            </a>
-
-            <a href="https://nextjs.org/learn" className={styles.card}>
-              <h2>Learn &rarr;</h2>
-              <p>Learn about Next.js in an interactive course with quizzes!</p>
-            </a>
-          </div>
-        </div>
         <div className={styles.course}>
           {courses &&
             courses.map((course: any) => (
@@ -57,23 +48,9 @@ export const Home: NextPage = ({ courses }: any) => {
             ))}
         </div>
       </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{" "}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
+      <footer></footer>
     </Container>
   );
 };
-
-
 
 export default Home;
