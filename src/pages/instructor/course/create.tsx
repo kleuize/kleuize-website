@@ -16,7 +16,7 @@ const CreateCourse: NextPage = () => {
     description: "",
     price: 9.99,
     uploading: false,
-    paid: true,
+    paid: false,
     category: "",
     loading: false,
   });
