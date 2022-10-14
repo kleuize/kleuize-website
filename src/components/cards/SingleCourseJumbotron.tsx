@@ -97,7 +97,11 @@ export const SingleCourseJumbotron = ({
                   variant="contained"
                   onClick={paid ? handlePaidEnrollment : handleFreeEnrollment}
                 >
-                  {user ? "Kayıtlı" : "Kayıt Ol"}
+                  {user
+                    ? enrolled.status
+                      ? "Kursa Git"
+                      : "Kayıt Ol"
+                    : "Kayıtlı"}
                 </Button>
               </div>
             )}

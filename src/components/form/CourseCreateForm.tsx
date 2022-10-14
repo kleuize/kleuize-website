@@ -70,14 +70,13 @@ export const CourseCreateForm = ({
             <Grid item xs={10} sm={10}>
               <TextField
                 fullWidth
-                disabled={values.paid}
+                disabled={!values.paid}
                 type="number"
                 name="price"
                 id="price"
                 label="Fiyat (₺)"
                 onChange={(e) => {
-                  setValues({ ...values, price: e.target.value }),
-                    console.log(values.price);
+                  setValues({ ...values, price: e.target.value });
                 }}
               />
             </Grid>
@@ -96,9 +95,10 @@ export const CourseCreateForm = ({
                         });
                         console.log(values.price);
                       }}
+                      inputProps={{ 'aria-label': 'controlled' }}
                     />
                   }
-                  label="Ücretsiz"
+                  label="Ücretli"
                 />
               </Grid>
             </Grid>
@@ -129,7 +129,7 @@ export const CourseCreateForm = ({
               )}
             </Grid>
             <Grid item xs={12} sm={12}>
-              <Box sx={{  marginLeft: 1.35 }}>
+              <Box sx={{ marginLeft: 1.35 }}>
                 <FormControlLabel
                   control={
                     <TextField

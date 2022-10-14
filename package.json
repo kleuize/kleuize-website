@@ -18,6 +18,7 @@
     "@mui/material": "^5.10.4",
     "@mui/styles": "^5.10.6",
     "@reduxjs/toolkit": "^1.8.5",
+    "@stripe/stripe-js": "^1.41.0",
     "@types/express": "^4.17.13",
     "@types/http-proxy-middleware": "^1.0.0",
     "@types/react-redux": "^7.1.24",

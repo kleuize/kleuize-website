@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
-// import { loadStripe } from "@stripe/stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 //Context
 import { UserContext } from "../../../src/context/UserContext";
 //Component
@@ -11,7 +11,6 @@ import { CoursePreviewModal } from "../../components/modals/CoursePreviewModal";
 import { SingleCourseLessons } from "../../components/cards/SingleCourseLessons";
 //UI
 import Container from "@mui/material/Container";
-
 
 export async function getServerSideProps({ query }: any) {
   console.log(query);
@@ -60,6 +59,7 @@ const SingleCourse = ({ course }: any) => {
       const { data } = await axios.post(`/api/paid-enrollment/${course._id}`);
       //@ts-ignore
       const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY);
+      //@ts-ignore
       stripe.redirectToCheckout({ sessionId: data });
     } catch (err) {
       toast("Enrollment failed, try again.");
@@ -92,7 +92,7 @@ const SingleCourse = ({ course }: any) => {
   };
 
   return (
-    <Container sx={{mt: 5}}>
+    <Container sx={{ mt: 5 }}>
       <SingleCourseJumbotron
         course={course}
         showModal={showModal}
