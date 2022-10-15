@@ -103,12 +103,6 @@ const UserNav: NextPage = () => {
             <MenuItem>
               <ListItemText>Dashboard</ListItemText>
             </MenuItem>
-            <MenuItem>
-              <ListItemText>Kurslarım</ListItemText>
-            </MenuItem>
-            <MenuItem>
-              <ListItemText>Ayarlar</ListItemText>
-            </MenuItem>
           </MenuList>
         </MenuStyle>
       </Box>
