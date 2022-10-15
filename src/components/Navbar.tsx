@@ -88,7 +88,7 @@ const ResponsiveAppBar = () => {
     <ThemeProvider theme={theme}>
       <AppBar
         position="static"
-        sx={{ backgroundColor: "white", borderRadius: 5 }}
+        sx={{ backgroundColor: "white", borderRadius: 5,  }}
       >
         <Container maxWidth="xl">
           <Toolbar disableGutters>

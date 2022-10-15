@@ -5,6 +5,7 @@ import { SyncOutlined } from "@mui/icons-material";
 import { useRotateIconStyles } from "../../utils/RotetesIcon";
 import UserNav from "../nav/UserNav";
 import Box from "@mui/material/Box";
+import { Stack } from "@mui/material";
 
 export const UserRouterWrapper = ({ children }: any) => {
   const classes = useRotateIconStyles();
@@ -32,9 +33,19 @@ export const UserRouterWrapper = ({ children }: any) => {
   return (
     <>
       {!ok ? (
-        <SyncOutlined className={classes.rotateIcon} />
+        <Stack
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: "100%",
+            height: "100%"
+          }}
+        >
+          <SyncOutlined className={classes.rotateIcon} />
+        </Stack>
       ) : (
-        <Box>
+        <Box sx={{ display: "flex", flexDirection: "row" }}>
           <Box>
             <UserNav />
           </Box>
