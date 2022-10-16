@@ -1,74 +1,93 @@
 import { useState, useEffect } from "react";
-import Link, { LinkProps } from "next/link";
+import Link from "next/link";
 import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-  href: string;
-}
+import { Drawer, Toolbar, Button } from "@mui/material";
+import { useRouter } from "next/router";
 
-function TabPanel(props: TabPanelProps) {
-  const { href, children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
-
-function a11yProps(index: number) {
-  return {
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
-  };
-}
+const drawerWidth = 240;
 
 const InstructorNav = () => {
   const [current, setCurrent] = useState<string>("");
   const [value, setValue] = useState<number>(0);
 
+  const router = useRouter();
+
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+
+  useEffect(() => {
+    //@ts-ignore
+    typeof window === "undefined" && setCurrent(window.location.pathname);
+    //@ts-ignore
+  }, [typeof window === "undefined" && window.location.pathname]);
   //   useEffect(() => {
   //     typeof navigator !== "undefined" && setValue(window.location.pathname);
   //   }, [typeof navigator !== "undefined" && window.location.pathname]);
 
+  const active = window.location.pathname === "/instructor" ? "blue" : "red";
+
+  const [isExpanded, setIsExpanded] = useState(false);
+
   return (
-    <Box sx={{ width: "100%", mt: 2 }}>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          aria-label="instructor-panel"
-          centered
+    <nav>
+      <Box sx={{ width: "100%", mt: 2 }}>
+        <Drawer
+          variant="permanent"
+          sx={{
+            width: drawerWidth,
+            mt: 10,
+            borderRadius: 5,
+
+            [`& .MuiDrawer-paper`]: {
+              width: drawerWidth,
+            },
+          }}
         >
-          <Tab label="Dashboard" {...a11yProps(0)} href="/instructor" />
-          <Tab
-            label="Yeni Kurs"
-            {...a11yProps(1)}
-            href="/instructor/course/create"
-          />
-          <Tab label="Ödemeler" {...a11yProps(2)} href="/instructor/revenue" />
-        </Tabs>
+          <Toolbar />
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            {/* <Link href="/instructor">
+            <a className={`nav-link ${current === "/instructor" && "active"}`}>
+              Dashboard
+            </a> */}
+            <Button
+              onClick={(e) => {
+                e.stopPropagation();
+                router.push("/instructor");
+              }}
+            >
+              Dashboard
+            </Button>
+            {/* </Link> */}
+            <Link href="/instructor/course/create">
+              <a
+                className={`nav-link ${
+                  current === "/instructor/course/create" && "active"
+                }`}
+              >
+                Course Create
+              </a>
+            </Link>
+            <Link href="/instructor/revenue">
+              <a
+                className={`nav-link ${
+                  current === "/instructor/revenue" && "active"
+                }`}
+              >
+                Revenue
+              </a>
+            </Link>
+          </Box>
+        </Drawer>
       </Box>
-    </Box>
+    </nav>
   );
 };
 
