@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import { CourseCreateForm } from "../../../components/form/CourseCreateForm";
-import InstructorRouteWrapper from "../../../components/routes/InstructorRouterWrapper";
+import InstructorRouteWrapper from "../../../components/layout/InstructorLayout";
 
 const CreateCourse: NextPage = () => {
   const [values, setValues] = useState<ICreateCourseProps>({

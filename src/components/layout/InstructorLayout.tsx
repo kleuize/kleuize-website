@@ -44,10 +44,9 @@ const InstructorRouteWrapper = ({ children }: any) => {
                 sx={{
                   borderRadius: "unset",
                   boxShadow: "none",
-                  backgroundColor: "#fafafa",
+                  // backgroundColor: "#fafafa",
                   minHeight: "calc(100vh - 4rem)",
-                  width: "calc(100vh-4rem)",
-                  marginLeft: 30,
+                  marginLeft: 35,
                 }}
               >
                 {children}

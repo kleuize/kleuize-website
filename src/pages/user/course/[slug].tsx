@@ -1,5 +1,5 @@
 import { Container, Box, Button, Stack, Drawer, Toolbar } from "@mui/material";
-import { StudentRouterWrapper } from "../../../components/routes/StudentRouterWrapper";
+import { StudentRouterWrapper } from "../../../components/layout/StudentLayout";
 import { useRouter } from "next/router";
 import { styled } from "@mui/material/styles";
 import { useEffect, useState } from "react";

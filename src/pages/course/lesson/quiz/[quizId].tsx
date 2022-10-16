@@ -14,7 +14,7 @@ import Button from "@mui/material/Button";
 
 import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 import { Tooltip } from "@material-ui/core";
-import { StudentRouterWrapper } from "../../../../components/routes/StudentRouterWrapper";
+import { StudentRouterWrapper } from "../../../../components/layout/StudentLayout";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",

@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Link from "next/link";
-import InstructorRouteWrapper from "../../components/routes/InstructorRouterWrapper";
+import InstructorRouteWrapper from "../../components/layout/InstructorLayout";
 import { Avatar, Container, Tooltip } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { CheckCircleOutlined, HighlightOffOutlined } from "@mui/icons-material";

@@ -3,7 +3,7 @@ import { UserContext } from "../../context/UserContext";
 import axios from "axios";
 import Container from "@mui/material/Container";
 import { Avatar, Box, Stack } from "@mui/material";
-import { UserRouterWrapper } from "../../components/routes/UserRouterWrapper";
+import { UserRouterWrapper } from "../../components/layout/UserLayout";
 import { PlayCircleOutlined, SyncOutlined } from "@mui/icons-material";
 import { useRotateIconStyles } from "../../utils/RotetesIcon";
 import { styled } from "@mui/material/styles";
