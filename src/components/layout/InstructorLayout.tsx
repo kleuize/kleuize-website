@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useRotateIconStyles } from "../../utils/RotetesIcon";
@@ -6,7 +6,6 @@ import { SyncOutlined } from "@mui/icons-material";
 import Box from "@mui/material/Box";
 import InstructorNav from "../nav/InstructorNav";
 import { Paper } from "@mui/material";
-import { Suspense } from "react";
 
 const InstructorRouteWrapper = ({ children }: any) => {
   const classes = useRotateIconStyles();

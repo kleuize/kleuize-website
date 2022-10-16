@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { LessonAccordion } from "../../../components/accordion/LessonAccordion";
 import { SingleCourseLessons } from "../../../components/cards/SingleCourseLessons";
-import { LessonNav } from "../../../components/accordion/lessonNav";
 
 const drawerWidth = 280;
 
@@ -25,6 +24,7 @@ const LessonLayout = styled("div")(({ theme }) => ({
   width: "75%",
   height: 500,
   marginTop: 5,
+  marginLeft: 30
 }));
 
 const SingleCourse = () => {
@@ -51,25 +51,7 @@ const SingleCourse = () => {
 
   return (
     <StudentRouterWrapper>
-      <Stack sx={{ display: "flex", flexDirection: "row", mt: 10 }}>
-        <Drawer
-          variant="permanent"
-          sx={{
-            width: drawerWidth,
-            mt: 10,
-            borderRadius: 5,
-            
-            [`& .MuiDrawer-paper`]: {
-              width: drawerWidth,
-            
-            },
-          }}
-        >
-          <Toolbar />
-          <LessonNav lessons={course.lessons} />
-        </Drawer>
-        <LessonLayout>Test</LessonLayout>
-      </Stack>
+      <LessonLayout>Test</LessonLayout>
     </StudentRouterWrapper>
   );
 };

@@ -20,14 +20,7 @@ import { styled } from "@mui/material/styles";
 import { useResponsive } from "../../hooks/useResponsive";
 import { useState } from "react";
 
-const DRAWER_WIDTH = 280;
-
-const RootStyle = styled("div")(({ theme }) => ({
-  [theme.breakpoints.up("lg")]: {
-    flexShrink: 0,
-    width: DRAWER_WIDTH,
-  },
-}));
+const drawerWidth = 280;
 
 const AccountStyle = styled("div")(({ theme }) => ({
   display: "flex",
@@ -35,26 +28,6 @@ const AccountStyle = styled("div")(({ theme }) => ({
   padding: theme.spacing(2, 2.5),
   borderRadius: Number(theme.shape.borderRadius) * 1.5,
   backgroundColor: "white",
-}));
-
-const DrawerLayout = styled("div")(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  padding: theme.spacing(2, 0),
-  backgroundColor: theme.palette.grey[500],
-  width: DRAWER_WIDTH,
-  height: 500,
-  marginTop: 20,
-  borderRadius: 5,
-}));
-
-const MenuStyle = styled("div")(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  padding: theme.spacing(2, 2.5),
-  borderRadius: Number(theme.shape.borderRadius) * 1.5,
-  backgroundColor: "white",
-  marginTop: 20,
 }));
 
 const UserNav: NextPage = () => {
@@ -65,71 +38,89 @@ const UserNav: NextPage = () => {
     picture: "",
   });
   const [openSideBar, setOpenSideBar] = useState(true);
+  const [selectedIndex, setSelectedIndex] = useState(1);
+
+  const handleListItemClick = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    index: number
+  ) => {
+    setSelectedIndex(index);
+  };
 
   const handleDrawerToggle = () => {
     setOpenSideBar(!openSideBar);
   };
 
-  const isDesktop = useResponsive("up");
-
-  const renderContent = (
-    <Box
+  return (
+    <Drawer
+      variant="permanent"
       sx={{
-        height: 1,
-        "& .simplebar-content": {
-          height: 1,
-          display: "flex",
-          flexDirection: "column",
+        width: drawerWidth,
+        [`& .MuiDrawer-paper`]: {
+          width: drawerWidth,
+          marginTop: 10,
+          maxHeight: 550,
+          backgroundColor: "antiquewhite",
+          marginLeft: 2,
+          borderRadius: 5,
+          padding: 2,
         },
       }}
     >
-      <Box sx={{ mb: 5, mx: 2.5 }}>
-        <AccountStyle>
-          <Avatar src={values.picture} alt="photoURL" />
-          <Box sx={{ ml: 2 }}>
-            <Typography variant="subtitle2" sx={{ color: "text.primary" }}>
-              {values.name}
-            </Typography>
-            <Typography variant="body2" sx={{ color: "text.secondary" }}>
-              {values.email}
-            </Typography>
-            <Typography variant="body2" sx={{ color: "text.secondary" }}>
-              {values.role}
-            </Typography>
-          </Box>
-        </AccountStyle>
-        <MenuStyle>
-          <MenuList>
-            <MenuItem>
-              <ListItemText>Dashboard</ListItemText>
-            </MenuItem>
-          </MenuList>
-        </MenuStyle>
-      </Box>
-    </Box>
-  );
-  return (
-    <RootStyle>
-      {/* {!isDesktop && (
-        <Drawer
-          open={openSideBar}
-          onClose={handleDrawerToggle}
-          variant="permanent"
+      <Toolbar />
+      <AccountStyle>
+        <Avatar src={values.picture} alt="photoURL" />
+        <Box sx={{ ml: 2 }}>
+          <Typography variant="subtitle2" sx={{ color: "text.primary" }}>
+            {values.name}
+          </Typography>
+          <Typography variant="body2" sx={{ color: "text.secondary" }}>
+            {values.email}
+          </Typography>
+          <Typography variant="body2" sx={{ color: "text.primary", mt: 0.1 }}>
+            {values.role}
+          </Typography>
+        </Box>
+      </AccountStyle>
+      <Box
+        sx={{
+          mt: 3,
+        }}
+      >
+        <List
           sx={{
-            width: DRAWER_WIDTH,
-            flexShrink: 0,
-            [`& .MuiDrawer-paper`]: {
-              width: DRAWER_WIDTH,
-              boxSizing: "border-box",
-            },
+            width: "100%",
+            display: "flex",
+            flexDirection: "column",
           }}
         >
-          {renderContent}
-        </Drawer>
-      )} */}
-
-      <DrawerLayout>{renderContent}</DrawerLayout>
-    </RootStyle>
+          <Link href="/instructor">
+            <ListItemButton
+              selected={selectedIndex === 0}
+              onClick={(event) => handleListItemClick(event, 0)}
+            >
+              <ListItemText primary="Dashboard" />
+            </ListItemButton>
+          </Link>
+          <Link href="/instructor/course/create">
+            <ListItemButton
+              selected={selectedIndex === 1}
+              onClick={(event) => handleListItemClick(event, 1)}
+            >
+              <ListItemText>Yeni Kurs</ListItemText>
+            </ListItemButton>
+          </Link>
+          <Link href="/instructor/revenue">
+            <ListItemButton
+              selected={selectedIndex === 2}
+              onClick={(event) => handleListItemClick(event, 2)}
+            >
+              <ListItemText>Ödemeler</ListItemText>
+            </ListItemButton>
+          </Link>
+        </List>
+      </Box>
+    </Drawer>
   );
 };
 

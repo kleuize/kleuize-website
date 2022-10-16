@@ -5,49 +5,11 @@ import "react-toastify/dist/ReactToastify.css";
 import ResponsiveAppBar from "../components/Navbar";
 import { UserProvider } from "./../context/UserContext";
 import { Provider } from "react-redux";
-
 import { store } from "../store/store";
-
-import Head from "next/head";
 import Link from "next/link";
-import styles from "../styles/Home.module.css";
-import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
+import { Typography, Stack } from "@mui/material";
 //Component
-import { CourseCards } from "../components/cards/CourseCards";
 import GlobalStyles from "@mui/material/GlobalStyles";
-import CssBaseline from "@mui/material/CssBaseline";
-
-const footers = [
-  {
-    title: "Company",
-    description: ["Team", "History", "Contact us", "Locations"],
-  },
-  {
-    title: "Features",
-    description: [
-      "Cool stuff",
-      "Random feature",
-      "Team feature",
-      "Developer stuff",
-      "Another one",
-    ],
-  },
-  {
-    title: "Resources",
-    description: [
-      "Resource",
-      "Resource name",
-      "Another resource",
-      "Final resource",
-    ],
-  },
-  {
-    title: "Legal",
-    description: ["Privacy policy", "Terms of use"],
-  },
-];
 
 function Copyright(props: any) {
   return (
@@ -77,35 +39,15 @@ function MyApp({ Component, pageProps }: AppProps) {
         <ToastContainer position="top-center" />
         <ResponsiveAppBar />
         <Component {...pageProps} />
-        <Container
-          maxWidth="md"
-          component="footer"
+        <Stack
           sx={{
-            borderTop: (theme) => `1px solid ${theme.palette.divider}`,
-            mt: 8,
-            py: [3, 6],
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
-          <footer>
-            <Grid container spacing={4} justifyContent="space-evenly">
-              {footers.map((footer) => (
-                <Grid item xs={6} sm={3} key={footer.title}>
-                  <Typography variant="h6" color="text.primary" gutterBottom>
-                    {footer.title}
-                  </Typography>
-                  <ul>
-                    {footer.description.map((item) => (
-                      <li key={item}>
-                        <Link href="#">{item}</Link>
-                      </li>
-                    ))}
-                  </ul>
-                </Grid>
-              ))}
-            </Grid>
-            <Copyright sx={{ mt: 5 }} />
-          </footer>
-        </Container>
+          <Copyright sx={{ mt: 5 }} />
+        </Stack>
       </UserProvider>
     </Provider>
   );

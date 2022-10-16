@@ -34,6 +34,16 @@ const style = {
   p: 4,
 };
 
+export async function getServerSideProps() {
+  const { data } = await axios.get(`${process.env.API}/courses`);
+  return {
+    props: {
+      courses: data,
+    },
+  };
+}
+
+
 const quiz = () => {
   const router = useRouter();
   const { quizId } = router.query;
@@ -48,6 +58,7 @@ const quiz = () => {
     const { data } = await axios.get("/api/instructor-courses");
     setCourses(data);
   };
+
 
   return (
     <StudentRouterWrapper>

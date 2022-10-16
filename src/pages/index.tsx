@@ -25,7 +25,7 @@ export async function getServerSideProps() {
 
 export const Home: NextPage = ({ courses }: any) => {
   return (
-    <Container sx={{ mt: 5 }}>
+    <Container sx={{ mt: 10 }}>
       <Head>
         <title>Kleuize</title>
         <meta name="description" content="Learned English by Kleuize" />
@@ -33,7 +33,7 @@ export const Home: NextPage = ({ courses }: any) => {
       <Container component="main">
         <h1 className={styles.title}>
           Welcome to{" "}
-          <a className={styles.firstTitle} href="/">
+          <a className={styles.title} href="/">
             Kleuize
           </a>
         </h1>

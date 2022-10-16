@@ -35,32 +35,26 @@ const UserIndex = () => {
     }
   };
 
-  const JumbotronStyle = styled("div")(({ theme }) => ({
-    display: "flex",
-    flexGrow: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "grey",
-    borderRadius: 5,
-    width: "100%",
-    height: 60,
-    marginTop: 20,
-    marginLeft: 20,
-  }));
-
   return (
-    <Container>
-      <UserRouterWrapper>
+    <UserRouterWrapper>
+      <Container
+        component="main"
+        maxWidth="lg"
+        sx={{ display: "flex", flexDirection: "row", mt: 3 }}
+      >
         {loading && <SyncOutlined className={classes.rotateIcon} />}
-        <JumbotronStyle>
-          <Typography> Öğrenci Paneli</Typography>
-        </JumbotronStyle>
         <Box component="main" sx={{ flexGrow: 1, p: 3, flexDirection: "row" }}>
           {courses &&
             courses.map((course) => (
               <Stack
                 key={course._id}
-                sx={{ bgColor: "grey", border: 0.5, mt: 0.5, p: 1.2, borderRadius: 5 }}
+                sx={{
+                  bgColor: "grey",
+                  border: 0.5,
+                  mt: 0.5,
+                  p: 1.2,
+                  borderRadius: 5,
+                }}
               >
                 <Avatar
                   sx={{ width: 56, height: 56 }}
@@ -100,8 +94,8 @@ const UserIndex = () => {
               </Stack>
             ))}
         </Box>
-      </UserRouterWrapper>
-    </Container>
+      </Container>
+    </UserRouterWrapper>
   );
 };
 

@@ -13,7 +13,6 @@ import { SingleCourseLessons } from "../../components/cards/SingleCourseLessons"
 import Container from "@mui/material/Container";
 
 export async function getServerSideProps({ query }: any) {
-  console.log(query);
   const { data } = await axios.get(`${process.env.API}/course/${query.slug}`);
   return {
     props: {
