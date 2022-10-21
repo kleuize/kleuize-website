@@ -1,11 +1,12 @@
-import { Container, Box, Button, Stack, Drawer, Toolbar } from "@mui/material";
-import { StudentRouterWrapper } from "../../../components/layout/StudentLayout";
+export {};import { Container, Box, Button, Stack, Drawer, Toolbar } from "@mui/material";
+import { StudentRouterWrapper } from "../../../../components/layout/StudentLayout";
 import { useRouter } from "next/router";
 import { styled } from "@mui/material/styles";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { LessonAccordion } from "../../../components/accordion/LessonAccordion";
-import { SingleCourseLessons } from "../../../components/cards/SingleCourseLessons";
+import { LessonAccordion } from "../../../../components/accordion/LessonAccordion";
+import { SingleCourseLessons } from "../../../../components/cards/SingleCourseLessons";
+import Quiz from "../../../../components/quizzes";
 
 const drawerWidth = 280;
 
@@ -49,10 +50,9 @@ const SingleCourse = () => {
     setCourse(data);
   };
 
+  
   return (
-    <StudentRouterWrapper>
-      <LessonLayout>Test</LessonLayout>
-    </StudentRouterWrapper>
+    <StudentRouterWrapper />
   );
 };
 

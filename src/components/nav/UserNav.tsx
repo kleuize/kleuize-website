@@ -21,6 +21,7 @@ import { useResponsive } from "../../hooks/useResponsive";
 import { useState } from "react";
 
 const drawerWidth = 280;
+const drawerHeight = "calc(100% - 96px)";
 
 const AccountStyle = styled("div")(({ theme }) => ({
   display: "flex",
@@ -59,7 +60,7 @@ const UserNav: NextPage = () => {
         [`& .MuiDrawer-paper`]: {
           width: drawerWidth,
           marginTop: 10,
-          maxHeight: 550,
+          height: drawerHeight,
           backgroundColor: "antiquewhite",
           marginLeft: 2,
           borderRadius: 5,
@@ -94,28 +95,12 @@ const UserNav: NextPage = () => {
             flexDirection: "column",
           }}
         >
-          <Link href="/instructor">
+          <Link href="/user">
             <ListItemButton
               selected={selectedIndex === 0}
               onClick={(event) => handleListItemClick(event, 0)}
             >
               <ListItemText primary="Dashboard" />
-            </ListItemButton>
-          </Link>
-          <Link href="/instructor/course/create">
-            <ListItemButton
-              selected={selectedIndex === 1}
-              onClick={(event) => handleListItemClick(event, 1)}
-            >
-              <ListItemText>Yeni Kurs</ListItemText>
-            </ListItemButton>
-          </Link>
-          <Link href="/instructor/revenue">
-            <ListItemButton
-              selected={selectedIndex === 2}
-              onClick={(event) => handleListItemClick(event, 2)}
-            >
-              <ListItemText>Ödemeler</ListItemText>
             </ListItemButton>
           </Link>
         </List>

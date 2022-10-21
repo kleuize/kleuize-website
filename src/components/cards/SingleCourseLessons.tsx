@@ -23,6 +23,7 @@ export const SingleCourseLessons = ({
 
   const handleClick = (e: any) => {
     let clickedItemId = e.currentTarget.id;
+    console.log(clickedItemId)
     if (openedItemId === clickedItemId) {
       //@ts-ignore
       setOpenedItemId("");

@@ -16,9 +16,11 @@ export interface ChangeAnswer {
   value: string;
 }
 export interface QuestionAnswer {
+  _id?: string;
   text: string;
 }
 export interface Question {
+  _id?: string;
   content: string;
   answers: [QuestionAnswer, QuestionAnswer, QuestionAnswer, QuestionAnswer];
 }

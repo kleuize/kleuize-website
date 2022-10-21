@@ -15,7 +15,8 @@ import {
   ListItemText,
 } from "@mui/material";
 
-const drawerWidth = 260;
+const drawerWidth = 280;
+const drawerHeight = "calc(100% - 96px)";
 
 const AccountStyle = styled("div")(({ theme }) => ({
   display: "flex",
@@ -59,7 +60,7 @@ const InstructorNav = () => {
           [`& .MuiDrawer-paper`]: {
             width: drawerWidth,
             marginTop: 10,
-            maxHeight: 550,
+            height: drawerHeight,
             backgroundColor: "antiquewhite",
             marginLeft: 2,
             borderRadius: 5,
@@ -114,8 +115,9 @@ const InstructorNav = () => {
               <ListItemButton
                 selected={selectedIndex === 2}
                 onClick={(event) => handleListItemClick(event, 2)}
+                disabled
               >
-                <ListItemText>Ödemeler</ListItemText>
+                <ListItemText>Ödemeler(Yakında)</ListItemText>
               </ListItemButton>
             </Link>
           </List>

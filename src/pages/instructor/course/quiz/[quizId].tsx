@@ -14,7 +14,7 @@ import Button from "@mui/material/Button";
 
 import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 import { Tooltip } from "@material-ui/core";
-import { StudentRouterWrapper } from "../../../../components/layout/StudentLayout";
+import InstructorRouteWrapper from "../../../../components/layout/InstructorLayout";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -61,7 +61,7 @@ const quiz = () => {
 
 
   return (
-    <StudentRouterWrapper>
+    <InstructorRouteWrapper>
       <Container component="main" maxWidth="lg">
         <Box
           sx={{
@@ -136,7 +136,7 @@ const quiz = () => {
           </Stack>
         </Box>
       </Container>
-    </StudentRouterWrapper>
+    </InstructorRouteWrapper>
   );
 };
 

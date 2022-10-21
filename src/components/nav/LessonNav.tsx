@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { forwardRef, useState } from "react";
 //UI
 import ListItemText from "@material-ui/core/ListItemText";
 import Collapse from "@material-ui/core/Collapse";
@@ -19,14 +19,17 @@ import {
   Checkbox,
 } from "@mui/material";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const drawerWidth = 330;
 
-export const LessonNav = ({ lessons }: any) => {
+export const LessonNav = ({ lessons, slug }: any) => {
   const [openedItemId, setOpenedItemId] = useState(true);
   const [quizId, setQuizId] = useState();
 
   const [checked, setChecked] = React.useState(true);
+
+  const router = useRouter();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChecked(event.target.checked);
@@ -45,7 +48,18 @@ export const LessonNav = ({ lessons }: any) => {
   const handleQuizId = (e: any) => {
     let currentQuizId = e.currentTarget.id;
     setQuizId(currentQuizId);
-    console.log(currentQuizId);
+    // router.push(`/user/course/${slug}/${quizId}`)
+    // router.push(
+    //   {
+    //     pathname: "/user/course/[slug]/quiz/[quizId]",
+    //     query: {
+    //       quizId,
+    //       param,
+    //     },
+    //   },
+    //   `/user/course/${slug}/${quizId}?param=${param}`,
+    //   {shallow: true}
+    // );
   };
 
   return (
@@ -97,11 +111,11 @@ export const LessonNav = ({ lessons }: any) => {
                     {openedItemId &&
                       quiz.map(({ _id, quizTitle }: any) => (
                         <Stack sx={{ display: "flex", flexDirection: "row" }}>
-                          <Link href={`/course/lesson/quiz/${_id}`}>
-                            <ListItemButton id={_id} onClick={handleQuizId}>
+                          <ListItemButton id={_id} onClick={handleQuizId}>
+                            <Link href={`/user/course/${slug}/${quizId}`}>
                               <ListItemText primary={quizTitle} />
-                            </ListItemButton>
-                          </Link>
+                            </Link>
+                          </ListItemButton>
                           <Checkbox
                             inputProps={{ "aria-label": "controlled" }}
                           />

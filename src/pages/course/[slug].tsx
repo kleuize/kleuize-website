@@ -91,7 +91,7 @@ const SingleCourse = ({ course }: any) => {
   };
 
   return (
-    <Container sx={{ mt: 5 }}>
+    <Container sx={{ mt: 10 }}>
       <SingleCourseJumbotron
         course={course}
         showModal={showModal}
