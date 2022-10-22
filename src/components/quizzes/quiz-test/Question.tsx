@@ -28,8 +28,8 @@ export const Question = ({ content }: QuestionProps) => {
   const classes = useStyles();
 
   return (
-    <Card sx={{ minWidth: 275 }} className={classes.root}>
-      <CardContent className={classes.cardContent}>
+    <Card sx={{ minWidth: 275, mb: 2 }} >
+      <CardContent >
         <Typography variant="body1">{content}</Typography>
       </CardContent>
     </Card>

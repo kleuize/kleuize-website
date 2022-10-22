@@ -5,15 +5,14 @@ import Button from "@mui/material/Button";
 import { Theme } from "@mui/material";
 import { store } from "../../store/store";
 import { startQuiz } from "../../store/quiz/quiz-slice";
-import ligthBulbImage from "src/assets/images/quiz-light-bulb.png";
+import Image from "next/image";
+import ligthBulbImage from "../../../public/quiz-light-bulb.png";
 
 const useStyles = makeStyles((theme: Theme) => ({
   ligthBulbImage: {
     width: "75px",
-  
   },
   ligthBulbBackground: {
-   
     display: "inline-flex",
     padding: "18px",
     borderRadius: "100px",
@@ -36,12 +35,15 @@ export const QuizIntro: React.FC<QuizIntroProps> = ({ description }) => {
   return (
     <>
       <div className={imageLoading ? "" : classes.ligthBulbBackground}>
-        <img
-          src="{ligthBulbImage}"
-          alt="light-bulb-image"
-          className={classes.ligthBulbImage}
+        <Image
           onLoad={() => setImageLoading(false)}
           data-testid="light-bulb-image"
+          src={ligthBulbImage}
+          alt="light-bulb-image"
+          sizes="100vw"
+          style={{
+            objectFit: "cover",
+          }}
         />
       </div>
 

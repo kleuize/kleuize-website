@@ -49,13 +49,14 @@ const Quiz = ({slug, quizId}: any) => {
     );
   }
 
-  if (quizResult >= 0) {
-    return (
-      <CardBox>
-        <QuizResult score={quizResult} />
-      </CardBox>
-    );
-  }
+  // if (quizResult >= 0) {
+  //   return (
+  //     <CardBox>
+  //       Next
+  //       {/* <QuizResult score={10} /> */}
+  //     </CardBox>
+  //   );
+  // }
 
   console.log(quizDetails.quizTitle)
   return (
@@ -63,7 +64,7 @@ const Quiz = ({slug, quizId}: any) => {
       <Typography color="secondary" variant="h4" component="div" mb={1}>
         {quizDetails.quizTitle}
       </Typography>
-      <Box mt={3}>
+      <Box mb={3}>
         {!quizStarted && (
           <Fade
             in={!quizStarted}
@@ -72,7 +73,7 @@ const Quiz = ({slug, quizId}: any) => {
             unmountOnExit
           >
             <div>
-              <QuizIntro description="{quizDetails.description}" />
+              <QuizIntro description={quizDetails.quizTitle} />
             </div>
           </Fade>
         )}

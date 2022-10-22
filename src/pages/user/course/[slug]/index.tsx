@@ -52,7 +52,9 @@ const SingleCourse = () => {
 
   
   return (
-    <StudentRouterWrapper />
+    <StudentRouterWrapper>
+        Başlamak için seçim yapın
+    </StudentRouterWrapper>
   );
 };
 

@@ -25,7 +25,7 @@ export const CardBox: React.FC<CardBoxProps> = ({ children }) => {
   const classes = useStyles();
 
   return (
-    <Card sx={{ minWidth: 275 }} className={classes.root}>
+    <Card sx={{ minWidth: 275}} className={classes.root}>
       <CardContent className={classes.cardContent}>{children}</CardContent>
     </Card>
   );

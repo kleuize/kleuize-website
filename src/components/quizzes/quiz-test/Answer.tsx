@@ -10,34 +10,38 @@ import CardContent from "@mui/material/CardContent";
 import { QuestionAnswer } from "../../../types";
 import { selectAnswer } from "../../../store/quiz/quiz-slice";
 
-const useStyles = makeStyles((theme: Theme) => ({
+import { red, teal, indigo } from "@mui/material/colors";
+
+const dw = 300;
+
+const answerStyle = {
   root: {
-   
     width: "100%",
+    color: red[50],
     borderRadius: "12px",
+    marginBottom: 2,
   },
   buttonBase: {
-    
+    marginBottom: 2,
   },
   ripple: {
     color: "#fff",
   },
   card: {
-    
+    border: `1px solid ${red[200]}`,
     "&:hover": {
       cursor: "pointer",
-    
+      background: teal[500],
+      color: red[400],
+      border: `1px solid ${teal[900]}`,
     },
   },
   selected: {
-  
+    background: indigo[300],
+    color: indigo[700],
+    border: `1px solid ${indigo[900]}`,
   },
-  cardContent: {
-    "&:last-child": {
-      
-    },
-  },
-}));
+};
 
 interface AnswersProps {
   answers: Array<QuestionAnswer>;
@@ -45,7 +49,6 @@ interface AnswersProps {
 }
 
 export const Answers = ({ answers, selectedAnswer }: AnswersProps) => {
-  const classes = useStyles();
   const dispatch = useAppDispatch();
 
   return (
@@ -54,21 +57,18 @@ export const Answers = ({ answers, selectedAnswer }: AnswersProps) => {
         <ButtonBase
           key={answer._id}
           style={{ width: "100%" }}
-          className={clsx(classes.root, classes.buttonBase)}
-          TouchRippleProps={{ classes: { root: classes.ripple } }}
+          sx={answerStyle.root}
+          //   TouchRippleProps={{ classes: {answerStyle.ripple } }}
         >
           <Card
+            style={{ width: "100%" }}
             key={answer._id}
-            className={clsx(
-              classes.root,
-              classes.card,
-              selectedAnswer === answer._id ? classes.selected : ""
-            )}
+            sx={selectedAnswer === answer._id ? answerStyle.selected : null}
             //@ts-ignore
             onClick={() => dispatch(selectAnswer(answer._id))}
             data-testid={`answer-${index + 1}`}
           >
-            <CardContent className={classes.cardContent}>
+            <CardContent sx={answerStyle.card}>
               <Typography variant="body1">{answer.text}</Typography>
             </CardContent>
           </Card>

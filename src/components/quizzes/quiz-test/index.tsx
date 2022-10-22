@@ -36,7 +36,7 @@ export const QuizTest = () => {
 
       <Progress
         currentQuestion={questionIndex + 1}
-        totalQuestions={10}
+        totalQuestions={questions.length}
       />
 
       <Box mb={3}>
