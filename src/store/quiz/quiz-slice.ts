@@ -2,7 +2,6 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppThunk, RootState } from "../store";
 
-
 export interface QuestionAnswer {
   id: string;
   text: string;
@@ -15,7 +14,7 @@ export interface Question {
 }
 // Quiz
 export interface QuizDetail {
-  id: string;
+  _id: string;
   quizTitle: string;
   questions: Array<Question>;
 }
@@ -107,16 +106,12 @@ export const getQuizByCode =
       const res: AxiosResponse = await axios.get(`/api/user/lessons/${slug}/`);
       const course = res.data;
       const Alllesson = course.lessons;
-    
-      const singleQuiz = Alllesson.forEach((element: any) =>
+      console.log(Alllesson);
+      Alllesson.forEach((element: any) =>
         element.quiz
           .filter((id: any) => id._id === quizId)
-          .map((item: any) => 
-          dispatch(setQuiz(item)))
+          .map((singleQuiz: QuizDetail) => dispatch(setQuiz(singleQuiz)))
       );
-
-      
-
     } catch (error) {
       const { response } = error as AxiosError;
 
@@ -126,28 +121,31 @@ export const getQuizByCode =
     }
   };
 
-export const getQuizResult = (): AppThunk => async (dispatch, getState) => {
-  dispatch(setSubmitting());
+export const getQuizResult =
+  (): AppThunk =>
+  async (dispatch, getState) => {
+    dispatch(setSubmitting());
 
-  //@ts-ignore
-  const { quizDetails, selectedAnswers } = selectQuiz(getState());
-
-  try {
-    const res: AxiosResponse = await axios.post(
-      `quizzes/result/${quizDetails}`,
-      {
-        selectedAnswers,
-      }
-    );
-
-    dispatch(submitSuccess(res.data));
-  } catch (error) {
-    const { response } = error as AxiosError;
-
-    const errorMessage = response?.data || "Something unexpected happend!";
     //@ts-ignore
-    dispatch(submitFail(errorMessage));
-  }
-};
+    const { quizDetails, selectedAnswers } = selectQuiz(getState());
+
+    const quizId = quizDetails._id;
+
+    try {
+      const res: AxiosResponse = await axios.post(
+        `${quizId}`,
+        {
+          selectedAnswers,
+        }
+      );
+      dispatch(submitSuccess(res.data));
+    } catch (error) {
+      const { response } = error as AxiosError;
+
+      const errorMessage = response?.data || "Something unexpected happend!";
+      //@ts-ignore
+      dispatch(submitFail(errorMessage));
+    }
+  };
 
 export default quizSlice.reducer;

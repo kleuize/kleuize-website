@@ -20,15 +20,13 @@ const useStyles = makeStyles(() => ({
 }));
 
 export const QuizTest = () => {
-  const router = useRouter();
-  const classes = useStyles();
+
   const { quizDetails, questionIndex, selectedAnswers } = useAppSelector(
     (state) => state.quiz
   );
   const dispatch = useAppDispatch();
 
   const { questions } = quizDetails;
-
 
   return (
     <>
@@ -67,7 +65,6 @@ export const QuizTest = () => {
         <Button
           variant="contained"
           color="primary"
-          className={classes.button}
           onClick={() => dispatch(getQuizResult())}
           disabled={!selectedAnswers[questionIndex]}
         >
@@ -77,7 +74,6 @@ export const QuizTest = () => {
         <Button
           variant="contained"
           color="primary"
-          className={classes.button}
           onClick={() => dispatch(nextQuestion())}
           disabled={!selectedAnswers[questionIndex]}
         >

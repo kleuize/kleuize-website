@@ -20,6 +20,9 @@ import {
 } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { resetState } from "../../store/create-quiz/create-quiz-slice";
+import { getQuizByCode } from "../../store/quiz/quiz-slice";
 
 const drawerWidth = 330;
 
@@ -45,21 +48,30 @@ export const LessonNav = ({ lessons, slug }: any) => {
     }
   };
 
+  // const MyButton = forwardRef(({ onClick, href }, ref) => {
+  //   return (
+  //     <a href={href} onClick={onClick} ref={ref}>
+  //       Click Me
+  //     </a>
+  //   )
+  // })
+
+  const { quizStarted } = useAppSelector((state) => state.quiz);
+  const dispatch = useAppDispatch();
+
   const handleQuizId = (e: any) => {
     let currentQuizId = e.currentTarget.id;
     setQuizId(currentQuizId);
     // router.push(`/user/course/${slug}/${quizId}`)
-    // router.push(
-    //   {
-    //     pathname: "/user/course/[slug]/quiz/[quizId]",
-    //     query: {
-    //       quizId,
-    //       param,
-    //     },
-    //   },
-    //   `/user/course/${slug}/${quizId}?param=${param}`,
-    //   {shallow: true}
-    // );
+    router.push(
+      {
+        pathname: "/user/course/[slug]/[quizId]",
+      },
+      `/user/course/${slug}/${quizId}`,
+      { shallow: true }
+    );
+    dispatch(getQuizByCode(slug, quizId));
+    dispatch(resetState()); 
   };
 
   return (
@@ -112,10 +124,13 @@ export const LessonNav = ({ lessons, slug }: any) => {
                       quiz.map(({ _id, quizTitle }: any) => (
                         <Stack sx={{ display: "flex", flexDirection: "row" }}>
                           <ListItemButton id={_id} onClick={handleQuizId}>
-                            <Link href={`/user/course/${slug}/${quizId}`}>
-                              <ListItemText primary={quizTitle} />
-                            </Link>
+                            {/* <Link href={`/user/course/${slug}/${quizId}`} replace> */}
+                            <ListItemText primary={quizTitle} />
+                            {/* </Link> */}
                           </ListItemButton>
+                          {/* <Link  href={`/user/course/${slug}/${quizId}`} passHref>
+                            <MyButton onClick={handleQuizId}/>
+                          </Link> */}
                           <Checkbox
                             inputProps={{ "aria-label": "controlled" }}
                           />

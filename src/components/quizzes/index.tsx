@@ -49,16 +49,15 @@ const Quiz = ({slug, quizId}: any) => {
     );
   }
 
-  // if (quizResult >= 0) {
-  //   return (
-  //     <CardBox>
-  //       Next
-  //       {/* <QuizResult score={10} /> */}
-  //     </CardBox>
-  //   );
-  // }
+  if (quizResult >= 0) {
+    return (
+      <CardBox>
+        Test 
+        <QuizResult score={quizResult} />
+      </CardBox>
+    );
+  }
 
-  console.log(quizDetails.quizTitle)
   return (
     <CardBox>
       <Typography color="secondary" variant="h4" component="div" mb={1}>
