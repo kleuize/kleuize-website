@@ -8,6 +8,7 @@ import styles from "../styles/Home.module.css";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+import Stack from "@mui/material/Stack";
 //Component
 import { CourseCards } from "../components/cards/CourseCards";
 import GlobalStyles from "@mui/material/GlobalStyles";
@@ -24,30 +25,39 @@ export async function getServerSideProps() {
 
 export const Home: NextPage = ({ courses }: any) => {
   return (
-    <Container sx={{ mt: 5 }}>
+    <Container sx={{ mt: 10 }}>
       <Head>
         <title>Kleuize</title>
         <meta name="description" content="Learned English by Kleuize" />
       </Head>
-      <main>
+      <Container component="main">
         <h1 className={styles.title}>
           Welcome to{" "}
-          <a className={styles.firstTitle} href="/">
+          <a className={styles.title} href="/">
             Kleuize
           </a>
         </h1>
         <p className={styles.description}>
           Öğrenmeye Başlayın <code className={styles.code}>Tüm Eğitimler</code>
         </p>
-        <div className={styles.course}>
-          {courses &&
-            courses.map((course: any) => (
-              <div key={course._id} className={styles.grid}>
-                <CourseCards course={course} />
-              </div>
-            ))}
-        </div>
-      </main>
+        <Container>
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+            mb={5}
+          >
+            <Grid container spacing={3}>
+              {courses &&
+                courses.map((course: any) => (
+                  <div key={course._id} className={styles.grid}>
+                    <CourseCards course={course} />
+                  </div>
+                ))}
+            </Grid>
+          </Stack>
+        </Container>
+      </Container>
       <footer></footer>
     </Container>
   );

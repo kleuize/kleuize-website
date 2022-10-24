@@ -14,6 +14,7 @@ import Button from "@mui/material/Button";
 
 import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 import { Tooltip } from "@material-ui/core";
+import InstructorRouteWrapper from "../../../../components/layout/InstructorLayout";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -33,6 +34,16 @@ const style = {
   p: 4,
 };
 
+export async function getServerSideProps() {
+  const { data } = await axios.get(`${process.env.API}/courses`);
+  return {
+    props: {
+      courses: data,
+    },
+  };
+}
+
+
 const quiz = () => {
   const router = useRouter();
   const { quizId } = router.query;
@@ -48,79 +59,84 @@ const quiz = () => {
     setCourses(data);
   };
 
+
   return (
-    <Container component="main" maxWidth="lg">
-      <Box
-        sx={{
-          marginTop: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        {courses &&
-          courses?.map(({ lessons }: any) =>
-            lessons.map(({ quiz }: any) =>
-              quiz
-                .filter((id: any) => id._id === quizId)
-                .map(({ quizTitle, questions }: any) => (
-                  <Box sx={{ width: "80%" }}>
-                    <Stack>
-                      <Item
-                        sx={{ marginBottom: 3 }}
-                      >{` Test Başlığı: ${quizTitle}`}</Item>
-                    </Stack>
-                    <Divider />
-                    {questions.map(
-                      ({ answers, content }: any, index: number) => (
-                        <Box>
-                          <Stack>
-                            <Item
+    <InstructorRouteWrapper>
+      <Container component="main" maxWidth="lg">
+        <Box
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          {courses &&
+            courses?.map(({ lessons }: any) =>
+              lessons.map(({ quiz }: any) =>
+                quiz
+                  .filter((id: any) => id._id === quizId)
+                  .map(({ quizTitle, questions }: any) => (
+                    <Box sx={{ width: "80%" }}>
+                      <Stack>
+                        <Item
+                          sx={{ marginBottom: 3 }}
+                        >{` Test Başlığı: ${quizTitle}`}</Item>
+                      </Stack>
+                      <Divider />
+                      {questions.map(
+                        ({ answers, content }: any, index: number) => (
+                          <Box>
+                            <Stack>
+                              <Item
+                                sx={{
+                                  marginTop: 2,
+                                  marginBottom: 2,
+                                  backgroundColor: "whiteSmoke",
+                                  fontWeight: "bold",
+                                }}
+                              >{` Soru ${index + 1}: ${content}`}</Item>
+                            </Stack>
+                            <Divider />
+                            <Box
                               sx={{
-                                marginTop: 2,
-                                marginBottom: 2,
-                                backgroundColor: "whiteSmoke",
-                                fontWeight: "bold",
+                                backgroundColor: "#ECF2FD",
+                                p: 1,
+                                borderRadius: 5,
+                                mt: 2,
                               }}
-                            >{` Soru ${index + 1}: ${content}`}</Item>
-                          </Stack>
-                          <Divider />
-                          <Box
-                            sx={{
-                              backgroundColor: "#ECF2FD",
-                              p: 1,
-                              borderRadius: 5,
-                              mt: 2,
-                            }}
-                          >
-                            {answers.map(({ text, isCorrect }: any) => (
-                              <Stack spacing={2}>
-                                <Item
-                                  sx={{
-                                    backgroundColor: isCorrect ? "green" : null,
-                                  }}
-                                >
-                                  {text}
-                                </Item>
-                              </Stack>
-                            ))}
+                            >
+                              {answers.map(({ text, isCorrect }: any) => (
+                                <Stack spacing={2}>
+                                  <Item
+                                    sx={{
+                                      backgroundColor: isCorrect
+                                        ? "green"
+                                        : null,
+                                    }}
+                                  >
+                                    {text}
+                                  </Item>
+                                </Stack>
+                              ))}
+                            </Box>
                           </Box>
-                        </Box>
-                      )
-                    )}
-                  </Box>
-                ))
-            )
-          )}
-        <Stack sx={{ mt: 2 }}>
-          <Button variant="contained" onClick={() => router.back()}>
-            <Tooltip title="Bir Önceki Sayfa">
-              <ArrowBackOutlinedIcon />
-            </Tooltip>
-          </Button>
-        </Stack>
-      </Box>
-    </Container>
+                        )
+                      )}
+                    </Box>
+                  ))
+              )
+            )}
+          <Stack sx={{ mt: 2 }}>
+            <Button variant="contained" onClick={() => router.back()}>
+              <Tooltip title="Bir Önceki Sayfa">
+                <ArrowBackOutlinedIcon />
+              </Tooltip>
+            </Button>
+          </Stack>
+        </Box>
+      </Container>
+    </InstructorRouteWrapper>
   );
 };
 

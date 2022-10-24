@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useRotateIconStyles } from "../../utils/RotetesIcon";
 import { SyncOutlined } from "@mui/icons-material";
 import Box from "@mui/material/Box";
 import InstructorNav from "../nav/InstructorNav";
+import { Paper } from "@mui/material";
 
 const InstructorRouteWrapper = ({ children }: any) => {
   const classes = useRotateIconStyles();
@@ -32,12 +33,24 @@ const InstructorRouteWrapper = ({ children }: any) => {
       {!ok ? (
         <SyncOutlined className={classes.rotateIcon} />
       ) : (
-        <Box>
+        <Box sx={{ mt: 10 }}>
           <Box>
             <Box>
               <InstructorNav />
             </Box>
-            <Box>{children}</Box>
+            <Suspense>
+              <Paper
+                sx={{
+                  borderRadius: "unset",
+                  boxShadow: "none",
+                  // backgroundColor: "#fafafa",
+                  minHeight: "calc(100vh - 4rem)",
+                  marginLeft: 35,
+                }}
+              >
+                {children}
+              </Paper>
+            </Suspense>
           </Box>
         </Box>
       )}

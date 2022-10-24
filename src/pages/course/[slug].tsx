@@ -13,7 +13,6 @@ import { SingleCourseLessons } from "../../components/cards/SingleCourseLessons"
 import Container from "@mui/material/Container";
 
 export async function getServerSideProps({ query }: any) {
-  console.log(query);
   const { data } = await axios.get(`${process.env.API}/course/${query.slug}`);
   return {
     props: {
@@ -92,7 +91,7 @@ const SingleCourse = ({ course }: any) => {
   };
 
   return (
-    <Container sx={{ mt: 5 }}>
+    <Container sx={{ mt: 10 }}>
       <SingleCourseJumbotron
         course={course}
         showModal={showModal}

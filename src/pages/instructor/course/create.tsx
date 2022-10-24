@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import { CourseCreateForm } from "../../../components/form/CourseCreateForm";
+import InstructorRouteWrapper from "../../../components/layout/InstructorLayout";
 
 const CreateCourse: NextPage = () => {
   const [values, setValues] = useState<ICreateCourseProps>({
@@ -88,30 +89,32 @@ const CreateCourse: NextPage = () => {
   };
 
   return (
-    <Container component="main" maxWidth="lg">
-      <Box
-        sx={{
-          marginTop: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <Typography variant="h4" color={"blue"}>
-          Yeni Kurs Oluştur
-        </Typography>
-        <CourseCreateForm
-          handleSubmit={handleSubmit}
-          handleImage={handleImage}
-          handleChange={handleChange}
-          values={values}
-          setValues={setValues}
-          preview={preview}
-          uploadButtonText={uploadButtonText}
-          handleImageRemove={handleImageRemove}
-        />
-      </Box>
-    </Container>
+    <InstructorRouteWrapper>
+      <Container>
+        <Box
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Typography variant="h4" color={"blue"}>
+            Yeni Kurs Oluştur
+          </Typography>
+          <CourseCreateForm
+            handleSubmit={handleSubmit}
+            handleImage={handleImage}
+            handleChange={handleChange}
+            values={values}
+            setValues={setValues}
+            preview={preview}
+            uploadButtonText={uploadButtonText}
+            handleImageRemove={handleImageRemove}
+          />
+        </Box>
+      </Container>
+    </InstructorRouteWrapper>
   );
 };
 

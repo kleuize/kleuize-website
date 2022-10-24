@@ -87,8 +87,11 @@ const ResponsiveAppBar = () => {
   return (
     <ThemeProvider theme={theme}>
       <AppBar
-        position="static"
-        sx={{ backgroundColor: "white", borderRadius: 5 }}
+        position="fixed"
+        sx={{
+          backgroundColor: "white",
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+        }}
       >
         <Container maxWidth="xl">
           <Toolbar disableGutters>

@@ -25,12 +25,13 @@ export const LessonAccordion = () => {
   const [course, setCourse] = useState<ICourseViewProps>({});
   const [openedItemId, setOpenedItemId] = useState(true);
   const [openedEditQuizItemId, setOpenedEditQuizItemId] = useState(true);
-  const router = useRouter();
-  const { slug } = router.query;
   const [visibleQuiz, setVisibleQuiz] = useState(false);
   const [visibleEditLesson, setVisibleEditLesson] = useState(false);
   const [visibleShowQuiz, setVisibleShowQuiz] = useState(false);
   const [quizId, setQuizId] = useState();
+  
+  const router = useRouter();
+  const { slug } = router.query;
 
   const [lessonId, setLessonId] = useState();
 
@@ -48,7 +49,6 @@ export const LessonAccordion = () => {
   const handleQuizId = (e: any) => {
     let currentQuizId = e.currentTarget.id;
     setQuizId(currentQuizId);
-    console.log(currentQuizId);
   };
 
   useEffect(() => {

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import InstructorRouteWrapper from "../../../../components/routes/InstructorRouterWrapper";
+import InstructorRouteWrapper from "../../../../components/layout/InstructorLayout";
 import axios from "axios";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
