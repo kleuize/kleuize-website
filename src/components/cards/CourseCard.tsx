@@ -2,6 +2,7 @@
 import { alpha, styled } from "@mui/material/styles";
 import {
   Box,
+  Button,
   Link,
   Card,
   Grid,
@@ -10,6 +11,9 @@ import {
   CardContent,
 } from "@mui/material";
 import SvgColor from "./SvgColor";
+import { fDate } from "../../utils/formatTime";
+import { Capitalize } from "../../utils/Capitalize";
+import { currencyFormatter } from "../../utils/helpers";
 
 // utils
 // ----------------------------------------------------------------------
@@ -58,7 +62,8 @@ const StyledCover = styled("img")({
 // ----------------------------------------------------------------------
 
 export const CourseCard = ({ course, index }: any) => {
-  const { name, instructor, price, image, slug, paid, category } = course;
+  const { name, instructor, price, image, slug, paid, category, updatedAt } =
+    course;
   // const latestPostLarge = index === 0;
   // const latestPost = index === 1 || index === 2;
   const latestPostLarge = index === -1;
@@ -142,9 +147,17 @@ export const CourseCard = ({ course, index }: any) => {
             variant="caption"
             sx={{ color: "text.disabled", display: "block" }}
           >
-            {instructor.name}
+            {`${Capitalize(instructor.name)}`}
           </Typography>
-
+          <Typography
+            gutterBottom
+            variant="caption"
+            sx={{ color: "text.disabled", display: "block" }}
+          >
+            {/* 
+            // @ts-ignore */}
+            {` Son güncelleme: ${fDate(updatedAt)}`}
+          </Typography>
           <StyledTitle
             color="inherit"
             href={`/course/${slug}`}
@@ -157,10 +170,17 @@ export const CourseCard = ({ course, index }: any) => {
               }),
             }}
           >
-            {name}
+            {Capitalize(name)}
           </StyledTitle>
-
           <StyledInfo>
+            <Typography color="inherit" variant="subtitle1">
+              {paid
+                ? currencyFormatter({
+                    amount: price,
+                    currency: "trl",
+                  })
+                : "Free"}
+            </Typography>
             {/* {POST_INFO.map((info: any, index: number) => (
               <Box
                 key={index}

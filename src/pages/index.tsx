@@ -80,7 +80,6 @@ export const Home: NextPage = ({ courses }: any) => {
         </Grid>
       </Grid>
       <Divider />
-      {/* <Grid container> */}
       <Grid item xs={12}>
         <Typography
           variant="h3"
@@ -98,9 +97,23 @@ export const Home: NextPage = ({ courses }: any) => {
             <CourseCard key={course._id} course={course} index={index} />
           ))}
       </Grid>
-
-      {/* </Grid> */}
-      {/* </Grid> */}
+      <Grid item xs={12}>
+        <Typography
+          variant="h3"
+          fontSize={20}
+          fontWeight="600"
+          marginY={5}
+          color="#6C708E"
+        >
+          Tüm Kurslar
+        </Typography>
+      </Grid>
+      <Grid container spacing={3}>
+        {courses &&
+          courses.map((course: any, index: number) => (
+            <CourseCard key={course._id} course={course} index={index} />
+          ))}
+      </Grid>
     </Container>
   );
 };
