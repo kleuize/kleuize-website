@@ -15,7 +15,6 @@ import AdbIcon from "@mui/icons-material/Adb";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Link from "next/link";
 import Image from "next/image";
-import styles from "../styles/Home.module.css";
 import { UserContext } from "../context/UserContext";
 import axios from "axios";
 import { toast } from "react-toastify";
