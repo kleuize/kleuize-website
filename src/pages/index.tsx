@@ -2,6 +2,8 @@ import React from "react";
 import type { NextPage } from "next";
 //3rd party
 import axios from "axios";
+//CSS
+import "../styles/Home.module.css";
 //UI
 import Head from "next/head";
 import Image from "next/image";
@@ -18,7 +20,7 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 //Component
-import { CourseCards } from "../components/cards/CourseCards";
+import { CourseCard } from "../components/cards/CourseCard";
 
 export async function getServerSideProps() {
   const { data } = await axios.get(`${process.env.API}/courses`);
@@ -80,7 +82,7 @@ export const Home: NextPage = ({ courses }: any) => {
         </Grid>
       </Grid>
       <Divider />
-      <Grid container>
+      <Grid container flexDirection="row">
         <Grid item xs={12}>
           <Typography
             variant="h2"
@@ -92,23 +94,19 @@ export const Home: NextPage = ({ courses }: any) => {
             Haftanın öne çıkanları
           </Typography>
         </Grid>
-        <Grid
-          item
-          sx={{
-            display: "flex",
-            flexWrap: "nowrap",
-            overflowX: "scroll",
-          }}
-        >
+        <Grid item xs={6} md={6} lg={4}>
           {courses &&
-            courses.map((course: any) => (
+            courses.map((course: any, index: number) => (
               <div key={course._id}>
-                <CourseCards course={course} />
+                <CourseCard course={course} index={index} />
+                <CourseCard course={course} index={index + 3} />
+                <CourseCard course={course} index={index + 6} />
               </div>
             ))}
+            
         </Grid>
         <Grid item xs={12}>
-          <Typography
+          {/* <Typography
             variant="h2"
             fontSize={20}
             fontWeight="600"
@@ -119,11 +117,7 @@ export const Home: NextPage = ({ courses }: any) => {
           </Typography>
           <Grid
             item
-            sx={{
-              display: "flex",
-              flexWrap: "nowrap",
-              overflowX: "scroll",
-            }}
+         
           >
             {courses &&
               courses.map((course: any) => (
@@ -131,7 +125,7 @@ export const Home: NextPage = ({ courses }: any) => {
                   <CourseCards course={course} />
                 </div>
               ))}
-          </Grid>
+          </Grid> */}
         </Grid>
       </Grid>
     </Container>

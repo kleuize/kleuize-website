@@ -2,68 +2,105 @@ import Link from "next/link";
 //Utils
 import { currencyFormatter } from "../../utils/helpers";
 //MUI
-import Card from "@mui/material/Card";
-import CardMedia from "@mui/material/CardMedia";
+import Image from "next/image";
+import { Grid } from "@mui/material";
 import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
+// import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
-import Box from "@mui/material/Box";
+import { styled } from "@mui/material/styles";
 //JoyUI
 import Chip from "@mui/joy/Chip";
+import Box from "@mui/joy/Box";
+import Button from "@mui/joy/Button";
+import Card from "@mui/joy/Card";
+import IconButton from "@mui/joy/IconButton";
+import Typography from "@mui/joy/Typography";
+import BookmarkAdd from "@mui/icons-material/BookmarkAddOutlined";
+import AspectRatio from "@mui/joy/AspectRatio";
 
-const cardStyle = {
-  card: {
-    backgroundColor: "transparent",
-    width: 300,
-    height: 370,
-    margin: 1,
-    borderRadius: 2,
-    transition: "0.3s",
-    boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)",
-    "&:hover": {
-      boxShadow: "0 16px 70px -12.125px rgba(0,0,0,0.4)",
-    },
+const CustomCard = styled("div")(({ theme }) => ({
+  backgroundColor: "whiteSmoke",
+  width: "32rem",
+  height: "20.5rem",
+  margin: 3,
+  padding: 20,
+  borderRadius: 2,
+  transition: "0.3s",
+  [theme.breakpoints.down("md")]: {
+    width: "27.5rem",
+    height: "40rem",
   },
-  media: {
-    width: 300,
-    height: 175,
-  },
-  content: {
-    textAlign: "left",
+}));
 
-    // padding: muiBaseTheme.spacing.unit * 3,
-  },
-  divider: {
-    margin: 1,
-    // margin: `${muiBaseTheme.spacing.unit * 3}px 0`,
-  },
-  //   font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-  //   Bitstream Vera Sans Mono, Courier New, monospace;
-  heading: {
-    fontFamily: "Helvetica Neue",
-    fontWeight: 600,
-    fontSize: 18,
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    display: "-webkit-box",
-    WebkitLineClamp: "2",
-    WebkitBoxOrient: "vertical",
-  },
+const ImageContainer = styled("div")(({ theme }) => ({
+  backgroundColor: "red",
+  width: "12rem",
+  height: "16.5rem",
+  borderRadius: 2,
+}));
 
-  subheading: {
-    fontFamily: "Helvetica Neue",
-    fontWeight: 600,
-  },
+const Capitalize = (text: string) => {
+  return (
+    // str.charAt(0).toUpperCase() + str.slice(1, str.length)
+    text.replace(
+      /(^\w|\s\w)(\S*)/g,
+      (_, m1, m2) => m1.toUpperCase() + m2.toLowerCase()
+    )
+  );
 };
 
 export const CourseCards = ({ course }: any) => {
   const { name, instructor, price, image, slug, paid, category } = course;
 
-  console.log(instructor);
   return (
     <Link href={`/course/${slug}`}>
-      <Card sx={cardStyle.card}>
-        <CardMedia
+      <CustomCard>
+        <Typography level="h2" fontSize="md" sx={{ mb: 0.5 }}>
+          {Capitalize(name)}
+        </Typography>
+        <Typography level="body2">{Capitalize(instructor.name)}</Typography>
+        <IconButton
+          aria-label="bookmark Bahamas Islands"
+          variant="plain"
+          color="neutral"
+          size="sm"
+          sx={{ position: "absolute", top: "0.5rem", right: "0.5rem" }}
+        >
+          <BookmarkAdd />
+        </IconButton>
+        <ImageContainer>
+          {/* <img
+            src={image.Location}
+            // srcSet="https://images.unsplash.com/photo-1527549993586-dff825b37782?auto=format&fit=crop&w=286&dpr=2 2x"
+            loading="lazy"
+            alt=""
+          /> */}
+        </ImageContainer>
+        <Box sx={{ display: "flex" }}>
+          <div>
+            <Typography level="body3">Total price:</Typography>
+            <Typography fontSize="lg" fontWeight="lg">
+              {paid
+                ? currencyFormatter({
+                    amount: price,
+                    currency: "usd",
+                  })
+                : "Free"}
+            </Typography>
+          </div>
+          <Button
+            variant="solid"
+            size="sm"
+            color="primary"
+            aria-label="Explore Bahamas Islands"
+            sx={{ ml: "auto", fontWeight: 600 }}
+          >
+            Explore
+          </Button>
+        </Box>
+        {/* <Card sx={cardStyle.card}> */}
+
+        {/* <CardMedia
           component="img"
           image={image.Location}
           alt={name}
@@ -89,8 +126,8 @@ export const CourseCards = ({ course }: any) => {
                 })
               : "Free"}
           </Typography>
-        </CardContent>
-      </Card>
+        </CardContent> */}
+      </CustomCard>
     </Link>
   );
 };
