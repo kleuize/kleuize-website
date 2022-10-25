@@ -1,8 +1,9 @@
+import React from "react";
+//Component
+import SvgColor from "./SvgColor";
 // @mui
 import { alpha, styled } from "@mui/material/styles";
 import {
-  Box,
-  Button,
   Link,
   Card,
   Grid,
@@ -10,13 +11,13 @@ import {
   Typography,
   CardContent,
 } from "@mui/material";
-import SvgColor from "./SvgColor";
+// utils
 import { fDate } from "../../utils/formatTime";
 import { Capitalize } from "../../utils/Capitalize";
 import { currencyFormatter } from "../../utils/helpers";
 
-// utils
-// ----------------------------------------------------------------------
+
+// -----------------------------Styled------------------------------------ //
 
 const StyledCardMedia = styled("div")({
   position: "relative",
@@ -59,21 +60,16 @@ const StyledCover = styled("img")({
   position: "absolute",
 });
 
-// ----------------------------------------------------------------------
+// -----------------------------CourseCard------------------------------------ //
 
 export const CourseCard = ({ course, index }: any) => {
   const { name, instructor, price, image, slug, paid, category, updatedAt } =
     course;
+  
   // const latestPostLarge = index === 0;
   // const latestPost = index === 1 || index === 2;
   const latestPostLarge = index === -1;
   const latestPost = index === -1 || index === -2;
-
-  //   const POST_INFO: any = [
-  //     { number: comment, icon: 'eva:message-circle-fill' },
-  //     { number: view, icon: 'eva:eye-fill' },
-  //     { number: share, icon: 'eva:share-fill' },
-  //   ];
 
   return (
     <Grid
@@ -181,22 +177,6 @@ export const CourseCard = ({ course, index }: any) => {
                   })
                 : "Free"}
             </Typography>
-            {/* {POST_INFO.map((info: any, index: number) => (
-              <Box
-                key={index}
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  ml: index === 0 ? 0 : 1.5,
-                  ...((latestPostLarge || latestPost) && {
-                    color: 'grey.500',
-                  }),
-                }}
-              >
-            <Iconify icon={info.icon} sx={{ width: 16, height: 16, mr: 0.5 }} /> 
-                <Typography variant="caption">{price}</Typography>
-              </Box>
-            ))} */}
           </StyledInfo>
         </CardContent>
       </Card>
