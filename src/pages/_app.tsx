@@ -10,6 +10,7 @@ import Link from "next/link";
 import { Typography, Stack } from "@mui/material";
 //Component
 import GlobalStyles from "@mui/material/GlobalStyles";
+import ThemeProvider from "../theme";
 
 function Copyright(props: any) {
   return (
@@ -31,25 +32,27 @@ function Copyright(props: any) {
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <Provider store={store}>
-      <UserProvider>
-        <GlobalStyles
-          styles={{ ul: { margin: 0, padding: 0, listStyle: "none" } }}
-        />
-        <ToastContainer position="top-center" />
-        <ResponsiveAppBar />
-        <Component {...pageProps} />
-        <Stack
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Copyright sx={{ mt: 5 }} />
-        </Stack>
-      </UserProvider>
-    </Provider>
+    <ThemeProvider>
+      <Provider store={store}>
+        <UserProvider>
+          <GlobalStyles
+            styles={{ ul: { margin: 0, padding: 0, listStyle: "none" } }}
+          />
+          <ToastContainer position="top-center" />
+          <ResponsiveAppBar />
+          <Component {...pageProps} />
+          <Stack
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Copyright sx={{ mt: 5 }} />
+          </Stack>
+        </UserProvider>
+      </Provider>
+    </ThemeProvider>
   );
 }
 
