@@ -2,8 +2,6 @@ import React from "react";
 import type { NextPage } from "next";
 //3rd party
 import axios from "axios";
-//CSS
-import "../styles/Home.module.css";
 //UI
 import Head from "next/head";
 import Image from "next/image";
@@ -47,10 +45,10 @@ export const Home: NextPage = ({ courses }: any) => {
           alignItems="center"
         >
           <Grid item xs={12} md={6}>
-            <Stack justifyContent="center" alignItems="center" ml={4}>
+            <Stack justifyContent="center" alignItems="center" ml={3}>
               <Typography
-                variant="h1"
-                fontSize={38}
+                variant="h2"
+                fontSize={32}
                 fontWeight="bold"
                 color="#08104D"
               >
@@ -59,7 +57,7 @@ export const Home: NextPage = ({ courses }: any) => {
               </Typography>
               <br />
               <Typography
-                variant="h5"
+                variant="h6"
                 color="#6C708E"
                 fontWeight="bold"
                 component="p"
@@ -82,52 +80,27 @@ export const Home: NextPage = ({ courses }: any) => {
         </Grid>
       </Grid>
       <Divider />
-      <Grid container flexDirection="row">
-        <Grid item xs={12}>
-          <Typography
-            variant="h2"
-            fontSize={20}
-            fontWeight="600"
-            marginY={5}
-            color="#6C708E"
-          >
-            Haftanın öne çıkanları
-          </Typography>
-        </Grid>
-        <Grid item xs={6} md={6} lg={4}>
-          {courses &&
-            courses.map((course: any, index: number) => (
-              <div key={course._id}>
-                <CourseCard course={course} index={index} />
-                <CourseCard course={course} index={index + 3} />
-                <CourseCard course={course} index={index + 6} />
-              </div>
-            ))}
-            
-        </Grid>
-        <Grid item xs={12}>
-          {/* <Typography
-            variant="h2"
-            fontSize={20}
-            fontWeight="600"
-            marginY={5}
-            color="#6C708E"
-          >
-            Tüm kurslar
-          </Typography>
-          <Grid
-            item
-         
-          >
-            {courses &&
-              courses.map((course: any) => (
-                <div key={course._id}>
-                  <CourseCards course={course} />
-                </div>
-              ))}
-          </Grid> */}
-        </Grid>
+      {/* <Grid container> */}
+      <Grid item xs={12}>
+        <Typography
+          variant="h3"
+          fontSize={20}
+          fontWeight="600"
+          marginY={5}
+          color="#6C708E"
+        >
+          Haftanın öne çıkanları
+        </Typography>
       </Grid>
+      <Grid container spacing={3}>
+        {courses &&
+          courses.map((course: any, index: number) => (
+            <CourseCard key={course._id} course={course} index={index} />
+          ))}
+      </Grid>
+
+      {/* </Grid> */}
+      {/* </Grid> */}
     </Container>
   );
 };

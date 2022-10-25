@@ -1,4 +1,3 @@
-import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -35,9 +34,6 @@ function MyApp({ Component, pageProps }: AppProps) {
     <ThemeProvider>
       <Provider store={store}>
         <UserProvider>
-          <GlobalStyles
-            styles={{ ul: { margin: 0, padding: 0, listStyle: "none" } }}
-          />
           <ToastContainer position="top-center" />
           <ResponsiveAppBar />
           <Component {...pageProps} />

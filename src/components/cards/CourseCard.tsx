@@ -10,6 +10,7 @@ import {
   CardContent,
 } from "@mui/material";
 import SvgColor from "./SvgColor";
+
 // utils
 // ----------------------------------------------------------------------
 
@@ -30,6 +31,9 @@ const StyledAvatar = styled(Avatar)(({ theme }) => ({
   zIndex: 9,
   width: 32,
   height: 32,
+  border: 20,
+  borderWidth: 4,
+  borderColor: "white",
   position: "absolute",
   left: theme.spacing(3),
   bottom: theme.spacing(-2),
@@ -55,55 +59,62 @@ const StyledCover = styled("img")({
 
 export const CourseCard = ({ course, index }: any) => {
   const { name, instructor, price, image, slug, paid, category } = course;
-  const latestPostLarge = index === 0;
-  const latestPost = index === 1 || index === 2;
+  // const latestPostLarge = index === 0;
+  // const latestPost = index === 1 || index === 2;
+  const latestPostLarge = index === -1;
+  const latestPost = index === -1 || index === -2;
 
-//   const POST_INFO: any = [
-//     { number: comment, icon: 'eva:message-circle-fill' },
-//     { number: view, icon: 'eva:eye-fill' },
-//     { number: share, icon: 'eva:share-fill' },
-//   ];
+  //   const POST_INFO: any = [
+  //     { number: comment, icon: 'eva:message-circle-fill' },
+  //     { number: view, icon: 'eva:eye-fill' },
+  //     { number: share, icon: 'eva:share-fill' },
+  //   ];
 
   return (
-    <Grid item xs={12} sm={latestPostLarge ? 12 : 6} md={latestPostLarge ? 6 : 3}>
-      <Card sx={{ position: 'relative' }}>
+    <Grid
+      item
+      xs={12}
+      sm={latestPostLarge ? 12 : 6}
+      md={latestPostLarge ? 6 : 3}
+    >
+      <Card sx={{ position: "relative" }}>
         <StyledCardMedia
           sx={{
             ...((latestPostLarge || latestPost) && {
-              pt: 'calc(100% * 4 / 3)',
-              '&:after': {
+              pt: "calc(100% * 4 / 3)",
+              "&:after": {
                 top: 0,
                 content: "''",
-                width: '100%',
-                height: '100%',
-                position: 'absolute',
+                width: "100%",
+                height: "100%",
+                position: "absolute",
                 bgcolor: (theme) => alpha(theme.palette.grey[900], 0.72),
               },
             }),
             ...(latestPostLarge && {
               pt: {
-                xs: 'calc(100% * 4 / 3)',
-                sm: 'calc(100% * 3 / 4.66)',
+                xs: "calc(100% * 4 / 3)",
+                sm: "calc(100% * 3 / 4.66)",
               },
             }),
           }}
         >
           <SvgColor
             color="paper"
-            src="/assets/icons/shape-avatar.svg"
+            src="/shape-avatar.svg"
             sx={{
               width: 80,
               height: 36,
               zIndex: 9,
               bottom: -15,
-              position: 'absolute',
-              color: 'background.paper',
-              ...((latestPostLarge || latestPost) && { display: 'none' }),
+              position: "absolute",
+              color: "background.paper",
+              ...((latestPostLarge || latestPost) && { display: "none" }),
             }}
           />
           <StyledAvatar
             alt={name}
-            src="{author.avatarUrl}"
+            src={image.Location}
             sx={{
               ...((latestPostLarge || latestPost) && {
                 zIndex: 9,
@@ -114,32 +125,35 @@ export const CourseCard = ({ course, index }: any) => {
               }),
             }}
           />
-
-          <StyledCover alt={name} src="{cover}" />
+          <StyledCover alt={name} src={image.Location} />
         </StyledCardMedia>
-
         <CardContent
           sx={{
             pt: 4,
             ...((latestPostLarge || latestPost) && {
               bottom: 0,
-              width: '100%',
-              position: 'absolute',
+              width: "100%",
+              position: "absolute",
             }),
           }}
         >
-          <Typography gutterBottom variant="caption" sx={{ color: 'text.disabled', display: 'block' }}>
+          <Typography
+            gutterBottom
+            variant="caption"
+            sx={{ color: "text.disabled", display: "block" }}
+          >
             {instructor.name}
           </Typography>
 
           <StyledTitle
             color="inherit"
+            href={`/course/${slug}`}
             variant="subtitle2"
             underline="hover"
             sx={{
-              ...(latestPostLarge && { typography: 'h5', height: 60 }),
+              ...(latestPostLarge && { typography: "h5", height: 60 }),
               ...((latestPostLarge || latestPost) && {
-                color: 'common.white',
+                color: "common.white",
               }),
             }}
           >
@@ -168,5 +182,4 @@ export const CourseCard = ({ course, index }: any) => {
       </Card>
     </Grid>
   );
-}
-
+};
