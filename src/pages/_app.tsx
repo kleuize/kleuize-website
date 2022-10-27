@@ -1,7 +1,7 @@
 import type { AppProps } from "next/app";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import ResponsiveAppBar from "../components/Navbar";
+import ResponsiveAppBar from "../components/navbar/ResponsiveAppBar";
 import { UserProvider } from "./../context/UserContext";
 import { Provider } from "react-redux";
 import { store } from "../store/store";
