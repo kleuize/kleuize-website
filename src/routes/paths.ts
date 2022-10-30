@@ -16,10 +16,10 @@ export const PATH_DASHBOARD = {
   },
   user: {
     root: path(ROOTS_USER, "/"),
-    course: path(ROOTS_USER, "/user/course"),
-    list: path(ROOTS_USER, "/user/list"),
+    course: path(ROOTS_USER, "/course"),
     profile: path(ROOTS_USER, "/user/profile"),
     account: path(ROOTS_USER, "/user/account"),
+    becomeInsturctor: path(ROOTS_USER, "/become-instructor"),
   },
   instructor: {
     root: path(ROOTS_INSTRUCTOR, "/"),

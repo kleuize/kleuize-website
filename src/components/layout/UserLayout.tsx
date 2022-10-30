@@ -6,7 +6,11 @@ import { useRotateIconStyles } from "../../utils/RotetesIcon";
 import UserNav from "../nav/UserNav";
 import { Stack, Paper, Box } from "@mui/material";
 
-export const UserRouterWrapper = ({ children }: any) => {
+type LayoutProps = {
+  children?: React.ReactNode;
+};
+
+export const UserLayout = ({ children }: LayoutProps) => {
   const classes = useRotateIconStyles();
   // state
   const [ok, setOk] = useState<boolean>(false);
@@ -48,19 +52,7 @@ export const UserRouterWrapper = ({ children }: any) => {
           <Box>
             <UserNav />
           </Box>
-          <Suspense>
-            <Paper
-              sx={{
-                borderRadius: "unset",
-                boxShadow: "none",
-                // backgroundColor: "#fafafa",
-                minHeight: "calc(100vh - 4rem)",
-                marginLeft: 35,
-              }}
-            >
-              {children}
-            </Paper>
-          </Suspense>
+          <Suspense>{children}</Suspense>
         </Box>
       )}
     </>

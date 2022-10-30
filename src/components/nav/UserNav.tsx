@@ -15,10 +15,12 @@ import {
   Divider,
   MenuList,
   MenuItem,
+  Stack,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useResponsive } from "../../hooks/useResponsive";
 import { useState } from "react";
+import { PATH_DASHBOARD } from "../../routes/paths";
 
 const drawerWidth = 280;
 const drawerHeight = "calc(100% - 96px)";
@@ -31,7 +33,18 @@ const AccountStyle = styled("div")(({ theme }) => ({
   backgroundColor: "white",
 }));
 
-const UserNav: NextPage = () => {
+const USER_LINK = [
+  {
+    label: "Kurslarım",
+    linkTo: PATH_DASHBOARD.user.root,
+  },
+  {
+    label: "Eğitimci ol",
+    linkTo: PATH_DASHBOARD.user.becomeInsturctor,
+  },
+];
+
+const UserNav = () => {
   const [values, setValues] = useState({
     name: "Enes Ünlüer",
     role: "Öğrenci",
@@ -95,14 +108,29 @@ const UserNav: NextPage = () => {
             flexDirection: "column",
           }}
         >
-          <Link href="/user">
+          <Stack>
+            {USER_LINK.map((option) => (
+              <Link key={option.label} href={option.linkTo} passHref>
+                <MenuItem key={option.label}>{option.label}</MenuItem>
+              </Link>
+            ))}
+          </Stack>
+          {/* <Link href="/user">
             <ListItemButton
               selected={selectedIndex === 0}
               onClick={(event) => handleListItemClick(event, 0)}
             >
-              <ListItemText primary="Dashboard" />
+              <ListItemText primary="Kurslarım" />
             </ListItemButton>
           </Link>
+          <Link href="become-instructor">
+            <ListItemButton
+              selected={selectedIndex === 0}
+              onClick={(event) => handleListItemClick(event, 0)}
+            >
+              <ListItemText primary="Eğitimci Ol" />
+            </ListItemButton>
+          </Link> */}
         </List>
       </Box>
     </Drawer>
