@@ -23,9 +23,9 @@ import { UserContext } from "../../context/UserContext";
 import { MyAvatar } from "../MyAvatar";
 import { MenuPopover } from "../MenuPopover";
 
-// ----------------------------------------------------------------------
+// ------------------------------Routes-------------------------------------//
 
-const MENU_OPTIONS = [
+const MENU_OPTIONS_USER = [
   {
     label: "Home",
     linkTo: "/",
@@ -40,7 +40,33 @@ const MENU_OPTIONS = [
   },
 ];
 
-// ----------------------------------------------------------------------
+const MENU_OPTIONS_INSTRUCTOR = [
+  {
+    label: "Home",
+    linkTo: "/",
+  },
+  {
+    label: "Profile",
+    linkTo: PATH_DASHBOARD.instructor.root,
+  },
+  {
+    label: "Settings",
+    linkTo: PATH_DASHBOARD.instructor.root,
+  },
+];
+
+const MENU_OPTIONS_NOTLOGGEDIN = [
+  {
+    label: "Login",
+    linkTo: PATH_DASHBOARD.auth.login,
+  },
+  {
+    label: "Register",
+    linkTo: PATH_DASHBOARD.auth.register,
+  },
+];
+
+// ------------------------------Component-------------------------------------//
 
 export default function AccountPopover() {
   const router = useRouter();
@@ -66,27 +92,10 @@ export default function AccountPopover() {
     router.push("/login");
   };
 
-  return (
-    <>
-      <IconButton
-        onClick={handleOpen}
-        sx={{
-          p: 0,
-          ...(open && {
-            "&:before": {
-              zIndex: 1,
-              content: "''",
-              width: "100%",
-              height: "100%",
-              borderRadius: "50%",
-              position: "absolute",
-              bgcolor: (theme: any) => alpha(theme.palette.grey[900], 0.8),
-            },
-          }),
-        }}
-      >
-        <MyAvatar />
-      </IconButton>
+  // ------------------------------IsUserActive-------------------------------------//
+
+  const IsUserActive = () => {
+    return (
       <MenuPopover
         open={Boolean(open)}
         anchorEl={open}
@@ -109,11 +118,9 @@ export default function AccountPopover() {
             {user?.email}
           </Typography>
         </Box>
-
         <Divider sx={{ borderStyle: "dashed" }} />
-
         <Stack sx={{ p: 1 }}>
-          {MENU_OPTIONS.map((option) => (
+          {MENU_OPTIONS_USER.map((option) => (
             <NextLink key={option.label} href={option.linkTo} passHref>
               <MenuItem key={option.label} onClick={handleClose}>
                 {option.label}
@@ -121,13 +128,126 @@ export default function AccountPopover() {
             </NextLink>
           ))}
         </Stack>
-
         <Divider sx={{ borderStyle: "dashed" }} />
-
         <MenuItem onClick={handleLogout} sx={{ m: 1 }}>
           Logout
         </MenuItem>
       </MenuPopover>
+    );
+  };
+
+  // ------------------------------IsInstructorActive-------------------------------------//
+
+  const IsInstructorActive = () => {
+    return (
+      <MenuPopover
+        open={Boolean(open)}
+        anchorEl={open}
+        onClose={handleClose}
+        sx={{
+          p: 0,
+          mt: 0.5,
+          ml: 2.75,
+          "& .MuiMenuItem-root": {
+            typography: "body2",
+            borderRadius: 0.75,
+          },
+        }}
+      >
+        <Box sx={{ my: 1.5, px: 2.5 }}>
+          <Typography variant="subtitle2" noWrap>
+            {user?.name}
+          </Typography>
+          <Typography variant="body2" sx={{ color: "text.secondary" }} noWrap>
+            {user?.email}
+          </Typography>
+        </Box>
+        <Divider sx={{ borderStyle: "dashed" }} />
+        <Stack sx={{ p: 1 }}>
+          {MENU_OPTIONS_INSTRUCTOR.map((option) => (
+            <NextLink key={option.label} href={option.linkTo} passHref>
+              <MenuItem key={option.label} onClick={handleClose}>
+                {option.label}
+              </MenuItem>
+            </NextLink>
+          ))}
+        </Stack>
+        <Divider sx={{ borderStyle: "dashed" }} />
+        <MenuItem onClick={handleLogout} sx={{ m: 1 }}>
+          Logout
+        </MenuItem>
+      </MenuPopover>
+    );
+  };
+
+  // ------------------------------NotLoggedIn-------------------------------------//
+
+  const NotLoggedIn = () => {
+    return (
+      <MenuPopover
+        open={Boolean(open)}
+        anchorEl={open}
+        onClose={handleClose}
+        sx={{
+          p: 0,
+          mt: 0.5,
+          ml: 2.75,
+          "& .MuiMenuItem-root": {
+            typography: "body2",
+            borderRadius: 0.75,
+          },
+        }}
+      >
+        <Divider sx={{ borderStyle: "dashed" }} />
+        <Stack sx={{ p: 1 }}>
+          {MENU_OPTIONS_NOTLOGGEDIN.map((option) => (
+            <NextLink key={option.label} href={option.linkTo} passHref>
+              <MenuItem key={option.label} onClick={handleClose}>
+                {option.label}
+              </MenuItem>
+            </NextLink>
+          ))}
+        </Stack>
+        <Divider sx={{ borderStyle: "dashed" }} />
+      </MenuPopover>
+    );
+  };
+
+  // ------------------------------TSX-------------------------------------//
+
+  return (
+    <>
+      <IconButton
+        onClick={handleOpen}
+        sx={{
+          p: 0,
+          ...(open && {
+            "&:before": {
+              zIndex: 1,
+              content: "''",
+              width: "100%",
+              height: "100%",
+              borderRadius: "50%",
+              position: "absolute",
+              bgcolor: (theme: any) => alpha(theme.palette.grey[900], 0.8),
+            },
+          }),
+        }}
+      >
+        <MyAvatar />
+      </IconButton>
+      {user ? (
+        <>
+          <IsUserActive />
+          {user && user.role && user.role.includes("Instructor") ? (
+            <IsInstructorActive />
+          ) : (
+            <IsUserActive />
+          )}
+        </>
+      ) : (
+        <NotLoggedIn />
+      )}
     </>
   );
 }

@@ -2,16 +2,30 @@ export const path = (root: any, sublink: any): string => {
   return `${root}${sublink}`;
 };
 
+const ROOTS = "/";
+const ROOTS_AUTH = "/";
 const ROOTS_USER = "/user";
-const ROOTS_DASHBOARD = "/instructor";
+const ROOTS_INSTRUCTOR = "/instructor";
 
 export const PATH_DASHBOARD = {
-  root: ROOTS_DASHBOARD,
+  root: ROOTS,
+  auth: {
+    login: path(ROOTS_AUTH, "/login"),
+    register: path(ROOTS_AUTH, "/register"),
+    logout: path(ROOTS_AUTH, "/logout"),
+  },
   user: {
     root: path(ROOTS_USER, "/"),
-    list: path(ROOTS_USER, "/user/list"),
     course: path(ROOTS_USER, "/user/course"),
+    list: path(ROOTS_USER, "/user/list"),
     profile: path(ROOTS_USER, "/user/profile"),
     account: path(ROOTS_USER, "/user/account"),
+  },
+  instructor: {
+    root: path(ROOTS_INSTRUCTOR, "/"),
+    list: path(ROOTS_INSTRUCTOR, "/user/list"),
+    course: path(ROOTS_INSTRUCTOR, "/user/course"),
+    profile: path(ROOTS_INSTRUCTOR, "/user/profile"),
+    account: path(ROOTS_INSTRUCTOR, "/user/account"),
   },
 };
