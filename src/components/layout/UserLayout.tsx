@@ -1,16 +1,23 @@
 import { useEffect, useState, Suspense } from "react";
+//3rd
 import axios from "axios";
+//router
 import { useRouter } from "next/router";
+//@mui
+import { Stack, Box } from "@mui/material";
+//component
+import UserNav from "../nav/UserNav";
+//icons
 import { SyncOutlined } from "@mui/icons-material";
 import { useRotateIconStyles } from "../../utils/RotetesIcon";
-import UserNav from "../nav/UserNav";
-import { Stack, Paper, Box } from "@mui/material";
 
-export const UserRouterWrapper = ({ children }: any) => {
+type LayoutProps = {
+  children?: React.ReactNode;
+};
+
+export const UserLayout = ({ children }: LayoutProps) => {
   const classes = useRotateIconStyles();
-  // state
   const [ok, setOk] = useState<boolean>(false);
-  // router
   const router = useRouter();
 
   useEffect(() => {
@@ -20,10 +27,8 @@ export const UserRouterWrapper = ({ children }: any) => {
   const fetchUser = async () => {
     try {
       const { data } = await axios.get("/api/current-user");
-      console.log(data);
       if (data.ok) setOk(true);
     } catch (err) {
-      console.log(err);
       setOk(false);
       router.push("/login");
     }
@@ -48,19 +53,7 @@ export const UserRouterWrapper = ({ children }: any) => {
           <Box>
             <UserNav />
           </Box>
-          <Suspense>
-            <Paper
-              sx={{
-                borderRadius: "unset",
-                boxShadow: "none",
-                // backgroundColor: "#fafafa",
-                minHeight: "calc(100vh - 4rem)",
-                marginLeft: 35,
-              }}
-            >
-              {children}
-            </Paper>
-          </Suspense>
+          <Suspense>{children}</Suspense>
         </Box>
       )}
     </>

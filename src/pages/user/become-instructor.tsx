@@ -1,13 +1,13 @@
 import { Button, Typography } from "@mui/material";
 import { useContext, useState } from "react";
 import Box from "@mui/material/Box";
-import type { NextPage } from "next";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { UserContext } from "../../context/UserContext";
+import { UserLayout } from "../../components/layout/UserLayout";
+import { NextPageWithLayout } from "../../types";
 
-const BecomeInstructor: NextPage = () => {
-
+const BecomeInstructor: NextPageWithLayout = () => {
   const [loading, setLoading] = useState(false);
   const {
     state: { user },
@@ -70,3 +70,7 @@ const BecomeInstructor: NextPage = () => {
 };
 
 export default BecomeInstructor;
+
+BecomeInstructor.getLayout = function getLayout(page: React.ReactElement) {
+  return <UserLayout>{page}</UserLayout>;
+};

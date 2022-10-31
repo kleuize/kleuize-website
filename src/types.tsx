@@ -1,3 +1,9 @@
+import { NextPage } from "next";
+
+export type NextPageWithLayout = NextPage & {
+  getLayout?: (page: React.ReactElement) => React.ReactNode
+}
+
 export interface ICreateCourseProps {
   name?: string;
   description?: string;

@@ -1,51 +1,32 @@
+//types
 import type { AppProps } from "next/app";
-import { ToastContainer } from "react-toastify";
+import { NextPageWithLayout } from "../types";
+//toast
 import "react-toastify/dist/ReactToastify.css";
-import ResponsiveAppBar from "../components/navbar/ResponsiveAppBar";
+import { ToastContainer } from "react-toastify";
+//ctx
 import { UserProvider } from "./../context/UserContext";
 import { Provider } from "react-redux";
 import { store } from "../store/store";
-import Link from "next/link";
-import { Typography, Stack } from "@mui/material";
-//Component
-import GlobalStyles from "@mui/material/GlobalStyles";
+//theme
 import ThemeProvider from "../theme";
+//component
+import ResponsiveAppBar from "../components/navbar/ResponsiveAppBar";
 
-function Copyright(props: any) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="/">
-        Kleuize
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return (
+function MyApp({ Component, pageProps }: AppPropsWithLayout) {
+  const getLayout = Component.getLayout ?? ((page) => page);
+
+  return getLayout(
     <ThemeProvider>
       <Provider store={store}>
         <UserProvider>
           <ToastContainer position="top-center" />
           <ResponsiveAppBar />
           <Component {...pageProps} />
-          <Stack
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Copyright sx={{ mt: 5 }} />
-          </Stack>
         </UserProvider>
       </Provider>
     </ThemeProvider>
