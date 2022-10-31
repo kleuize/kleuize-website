@@ -30,52 +30,47 @@ const BecomeInstructor: NextPageWithLayout = () => {
   };
 
   return (
-
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+      }}
+    >
+      <Box>
+        <Typography>Become Instructor</Typography>
+      </Box>
       <Box
         sx={{
-          display: "flex",
+          display: "felx",
           justifyContent: "center",
           alignItems: "center",
-          flexDirection: "column",
         }}
       >
         <Box>
-          <Typography>Become Instructor</Typography>
+          <Typography>Setup payout to publish courses on Kleuize.</Typography>
         </Box>
-        <Box
-          sx={{
-            display: "felx",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
+        <Button
+          onClick={becomeInstructor}
+          disabled={
+            (user && user.role && user.role.includes("Instructor")) || loading
+          }
         >
-          <Box>
-            <Typography>Setup payout to publish courses on Kleuize.</Typography>
-          </Box>
-          <Button
-            onClick={becomeInstructor}
-            disabled={
-              (user && user.role && user.role.includes("Instructor")) || loading
-            }
-          >
-            {loading ? "Processing..." : "Payout Setup"}
-          </Button>
-        </Box>
-        <Box>
-          <Typography>
-            You will be redirected to stripe to complete onboarding process.
-          </Typography>
-        </Box>
+          {loading ? "Processing..." : "Payout Setup"}
+        </Button>
       </Box>
+      <Box>
+        <Typography>
+          You will be redirected to stripe to complete onboarding process.
+        </Typography>
+      </Box>
+    </Box>
   );
 };
 
 export default BecomeInstructor;
 
 BecomeInstructor.getLayout = function getLayout(page: React.ReactElement) {
-  return (
-    <UserLayout>
-      {page}
-    </UserLayout>
-  )
-}
+  return <UserLayout>{page}</UserLayout>;
+};

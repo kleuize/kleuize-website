@@ -1,13 +1,17 @@
+//types
 import type { AppProps } from "next/app";
-import { ToastContainer } from "react-toastify";
+import { NextPageWithLayout } from "../types";
+//toast
 import "react-toastify/dist/ReactToastify.css";
-import ResponsiveAppBar from "../components/navbar/ResponsiveAppBar";
+import { ToastContainer } from "react-toastify";
+//ctx
 import { UserProvider } from "./../context/UserContext";
 import { Provider } from "react-redux";
 import { store } from "../store/store";
-//Component
+//theme
 import ThemeProvider from "../theme";
-import { NextPageWithLayout } from "../types";
+//component
+import ResponsiveAppBar from "../components/navbar/ResponsiveAppBar";
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;

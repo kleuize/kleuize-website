@@ -1,139 +1,173 @@
+import { useState } from "react";
+//Next
 import Link from "next/link";
-import Image from "next/image";
-import type { NextPage } from "next";
-import Box from "@mui/material/Box";
+//paths
+import { PATH_DASHBOARD } from "../../routes/paths";
+//@mui
+import MuiDrawer from "@mui/material/Drawer";
 import {
-  Drawer,
-  Typography,
-  Avatar,
+  Box,
   List,
-  Toolbar,
+  IconButton,
   ListItem,
   ListItemButton,
-  ListItemText,
   ListItemIcon,
+  ListItemText,
   Divider,
-  MenuList,
-  MenuItem,
-  Stack,
 } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import { useResponsive } from "../../hooks/useResponsive";
-import { useState } from "react";
-import { PATH_DASHBOARD } from "../../routes/paths";
+import { styled, Theme, CSSObject } from "@mui/material/styles";
+//icons
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import PlayLessonSharpIcon from "@mui/icons-material/PlayLessonSharp";
+import GroupAddSharpIcon from "@mui/icons-material/GroupAddSharp";
+import SettingsSharpIcon from "@mui/icons-material/SettingsSharp";
+import AccountCircleSharpIcon from "@mui/icons-material/AccountCircleSharp";
 
-const drawerWidth = 280;
-const drawerHeight = "calc(100% - 96px)";
-
-const AccountStyle = styled("div")(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  padding: theme.spacing(2, 2.5),
-  borderRadius: Number(theme.shape.borderRadius) * 1.5,
-  backgroundColor: "white",
-}));
+const drawerWidth = 240;
 
 const USER_LINK = [
   {
     label: "Kurslarım",
     linkTo: PATH_DASHBOARD.user.root,
+    icon: PlayLessonSharpIcon,
   },
   {
-    label: "Eğitimci ol",
-    linkTo: PATH_DASHBOARD.user.becomeInsturctor,
+    label: "Profil",
+    linkTo: PATH_DASHBOARD.user.account,
+    icon: AccountCircleSharpIcon,
+  },
+  {
+    label: "Ayarlar",
+    linkTo: PATH_DASHBOARD.user.setting,
+    icon: SettingsSharpIcon,
+  },
+  {
+    label: "Eğitmen ol",
+    linkTo: PATH_DASHBOARD.user.becomeInstructor,
+    icon: GroupAddSharpIcon,
   },
 ];
 
+const openedMixin = (theme: Theme): CSSObject => ({
+  width: drawerWidth,
+  transition: theme.transitions.create("width", {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.enteringScreen,
+  }),
+  overflowX: "hidden",
+});
+
+const closedMixin = (theme: Theme): CSSObject => ({
+  transition: theme.transitions.create("width", {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  overflowX: "hidden",
+  width: `calc(${theme.spacing(7)} + 1px)`,
+  [theme.breakpoints.up("sm")]: {
+    width: `calc(${theme.spacing(8)} + 1px)`,
+  },
+});
+
+const DrawerHeader = styled("div")(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "flex-end",
+  padding: theme.spacing(0, 1),
+  // necessary for content to be below app bar
+  ...theme.mixins.toolbar,
+}));
+
+const Drawer = styled(MuiDrawer, {
+  shouldForwardProp: (prop) => prop !== "open",
+})(({ theme, open }) => ({
+  width: drawerWidth,
+  flexShrink: 0,
+  whiteSpace: "nowrap",
+  boxSizing: "border-box",
+  ...(open && {
+    ...openedMixin(theme),
+    "& .MuiDrawer-paper": openedMixin(theme),
+  }),
+  ...(!open && {
+    ...closedMixin(theme),
+    "& .MuiDrawer-paper": closedMixin(theme),
+  }),
+}));
+
 const UserNav = () => {
-  const [values, setValues] = useState({
-    name: "Enes Ünlüer",
-    role: "Öğrenci",
-    email: "ensunluer@gmail.com",
-    picture: "",
-  });
-  const [openSideBar, setOpenSideBar] = useState(true);
-  const [selectedIndex, setSelectedIndex] = useState(1);
+  const [open, setOpen] = useState<boolean>(false);
 
-  const handleListItemClick = (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
-    index: number
-  ) => {
-    setSelectedIndex(index);
-  };
-
-  const handleDrawerToggle = () => {
-    setOpenSideBar(!openSideBar);
+  const handleDrawerOpen = () => {
+    setOpen(!open);
   };
 
   return (
-    <Drawer
-      variant="permanent"
-      sx={{
-        width: drawerWidth,
-        [`& .MuiDrawer-paper`]: {
-          width: drawerWidth,
-          marginTop: 10,
-          height: drawerHeight,
-          backgroundColor: "antiquewhite",
-          marginLeft: 2,
-          borderRadius: 5,
-          padding: 2,
-        },
-      }}
-    >
-      <Toolbar />
-      <AccountStyle>
-        <Avatar src={values.picture} alt="photoURL" />
-        <Box sx={{ ml: 2 }}>
-          <Typography variant="subtitle2" sx={{ color: "text.primary" }}>
-            {values.name}
-          </Typography>
-          <Typography variant="body2" sx={{ color: "text.secondary" }}>
-            {values.email}
-          </Typography>
-          <Typography variant="body2" sx={{ color: "text.primary", mt: 0.1 }}>
-            {values.role}
-          </Typography>
+    <Box display="flex">
+      <Drawer variant="permanent" open={open}>
+        <DrawerHeader />
+        <Box>
+          <List
+            sx={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <>
+              <IconButton
+                disableRipple
+                onClick={handleDrawerOpen}
+                sx={{
+                  lineHeight: 0,
+                  transition: (theme) =>
+                    theme.transitions.create("transform", {
+                      duration: theme.transitions.duration.shorter,
+                    }),
+                  ...(open && {
+                    transform: "rotate(180deg)",
+                  }),
+                }}
+              >
+                <ChevronRightIcon />
+              </IconButton>
+              <Divider />
+              {USER_LINK.map((option) => (
+                <ListItem
+                  key={option.label}
+                  disablePadding
+                  sx={{ display: "block" }}
+                >
+                  <Link key={option.label} href={option.linkTo} passHref>
+                    <ListItemButton
+                      sx={{
+                        minHeight: 48,
+                        justifyContent: open ? "initial" : "center",
+                        px: 2.5,
+                      }}
+                    >
+                      <ListItemIcon
+                        sx={{
+                          minWidth: 0,
+                          mr: open ? 3 : "auto",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <option.icon />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={option.label}
+                        sx={{ opacity: open ? 1 : 0 }}
+                      />
+                    </ListItemButton>
+                  </Link>
+                </ListItem>
+              ))}
+            </>
+          </List>
         </Box>
-      </AccountStyle>
-      <Box
-        sx={{
-          mt: 3,
-        }}
-      >
-        <List
-          sx={{
-            width: "100%",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <Stack>
-            {USER_LINK.map((option) => (
-              <Link key={option.label} href={option.linkTo} passHref>
-                <MenuItem key={option.label}>{option.label}</MenuItem>
-              </Link>
-            ))}
-          </Stack>
-          {/* <Link href="/user">
-            <ListItemButton
-              selected={selectedIndex === 0}
-              onClick={(event) => handleListItemClick(event, 0)}
-            >
-              <ListItemText primary="Kurslarım" />
-            </ListItemButton>
-          </Link>
-          <Link href="become-instructor">
-            <ListItemButton
-              selected={selectedIndex === 0}
-              onClick={(event) => handleListItemClick(event, 0)}
-            >
-              <ListItemText primary="Eğitimci Ol" />
-            </ListItemButton>
-          </Link> */}
-        </List>
-      </Box>
-    </Drawer>
+      </Drawer>
+    </Box>
   );
 };
 
