@@ -19,32 +19,38 @@ import { styled, Theme, CSSObject } from "@mui/material/styles";
 //icons
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import PlayLessonSharpIcon from "@mui/icons-material/PlayLessonSharp";
-import GroupAddSharpIcon from "@mui/icons-material/GroupAddSharp";
 import SettingsSharpIcon from "@mui/icons-material/SettingsSharp";
 import AccountCircleSharpIcon from "@mui/icons-material/AccountCircleSharp";
+import DataSaverOnSharpIcon from '@mui/icons-material/DataSaverOnSharp';
+import ReceiptSharpIcon from '@mui/icons-material/ReceiptSharp';
 
 const drawerWidth = 240;
 
 const INSTRUCTOR_LINK = [
   {
     label: "Kurslarım",
-    linkTo: PATH_DASHBOARD.user.root,
+    linkTo: PATH_DASHBOARD.instructor.root,
     icon: PlayLessonSharpIcon,
   },
   {
+    label: "Yeni Kurs",
+    linkTo: PATH_DASHBOARD.instructor.create,
+    icon: DataSaverOnSharpIcon,
+  },
+  {
     label: "Profil",
-    linkTo: PATH_DASHBOARD.user.account,
+    linkTo: PATH_DASHBOARD.instructor.account,
     icon: AccountCircleSharpIcon,
   },
   {
     label: "Ayarlar",
-    linkTo: PATH_DASHBOARD.user.setting,
+    linkTo: PATH_DASHBOARD.instructor.setting,
     icon: SettingsSharpIcon,
   },
   {
-    label: "Eğitmen ol",
-    linkTo: PATH_DASHBOARD.user.becomeInstructor,
-    icon: GroupAddSharpIcon,
+    label: "Ödemeler",
+    linkTo: PATH_DASHBOARD.instructor.revenue,
+    icon: ReceiptSharpIcon,
   },
 ];
 
@@ -173,102 +179,10 @@ const InstructorNav = () => {
 
 export default InstructorNav;
 
-// import { useState, useEffect } from "react";
-// import { useRouter } from "next/router";
-// import Link from "next/link";
 
-// import { styled } from "@mui/material/styles";
-// import {
-//   Drawer,
-//   Toolbar,
-//   Button,
-//   Avatar,
-//   Typography,
-//   Box,
-//   List,
-//   ListItemButton,
-//   ListItemText,
-// } from "@mui/material";
 
-// const drawerWidth = 280;
-// const drawerHeight = "calc(100% - 96px)";
 
-// const AccountStyle = styled("div")(({ theme }) => ({
-//   display: "flex",
-//   alignItems: "center",
-//   padding: theme.spacing(2, 2.5),
-//   borderRadius: Number(theme.shape.borderRadius) * 1.5,
-//   backgroundColor: "white",
-// }));
 
-// const InstructorNav = () => {
-//   const [current, setCurrent] = useState<string>("");
-//   const [value, setValue] = useState<number>(0);
-//   const [selectedIndex, setSelectedIndex] = useState<number>();
-
-//   const [values, setValues] = useState({
-//     name: "Enes Ünlüer",
-//     role: "Eğitmen",
-//     email: "ensunluer@gmail.com",
-//     picture: "",
-//   });
-
-//   const router = useRouter();
-
-//   const handleListItemClick = (
-//     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
-//     index: number
-//   ) => {
-//     setSelectedIndex(index);
-//   };
-
-//   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-//     setValue(newValue);
-//   };
-
-//   return (
-//     <nav>
-//       <Drawer
-//         variant="permanent"
-//         sx={{
-//           width: drawerWidth,
-//           [`& .MuiDrawer-paper`]: {
-//             width: drawerWidth,
-//             marginTop: 10,
-//             height: drawerHeight,
-//             backgroundColor: "antiquewhite",
-//             marginLeft: 2,
-//             borderRadius: 5,
-//             padding: 2,
-//           },
-//         }}
-//       >
-//         <Toolbar />
-//         <AccountStyle>
-//           <Avatar src={values.picture} alt="photoURL" />
-//           <Box sx={{ ml: 2 }}>
-//             <Typography variant="subtitle2" sx={{ color: "text.primary" }}>
-//               {values.name}
-//             </Typography>
-//             <Typography variant="body2" sx={{ color: "text.secondary" }}>
-//               {values.email}
-//             </Typography>
-//             <Typography variant="body2" sx={{ color: "text.primary", mt: 0.1 }}>
-//               {values.role}
-//             </Typography>
-//           </Box>
-//         </AccountStyle>
-//         <Box
-//           sx={{
-//             mt: 3,
-//           }}
-//         >
-//           <List
-//             sx={{
-//               width: "100%",
-//               display: "flex",
-//               flexDirection: "column",
-//             }}
 //           >
 //             <Link href="/instructor">
 //               <ListItemButton

@@ -24,9 +24,11 @@ export const PATH_DASHBOARD = {
   },
   instructor: {
     root: path(ROOTS_INSTRUCTOR, "/"),
-    list: path(ROOTS_INSTRUCTOR, "/user/list"),
-    course: path(ROOTS_INSTRUCTOR, "/user/course"),
-    profile: path(ROOTS_INSTRUCTOR, "/user/profile"),
-    account: path(ROOTS_INSTRUCTOR, "/user/account"),
+    list: path(ROOTS_INSTRUCTOR, "list"),
+    create: path(ROOTS_INSTRUCTOR, "/course/create"),
+    revenue: path(ROOTS_INSTRUCTOR, "/revenue"),
+    profile: path(ROOTS_INSTRUCTOR, "/profile"),
+    account: path(ROOTS_INSTRUCTOR, "/account"),
+    setting: path(ROOTS_INSTRUCTOR, "/setting"),
   },
 };
