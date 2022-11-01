@@ -14,7 +14,6 @@ import {
 // utils
 import { fDate } from "../../utils/formatTime";
 import { Capitalize } from "../../utils/Capitalize";
-import { currencyFormatter } from "../../utils/helpers";
 
 // -----------------------------Styled------------------------------------ //
 
@@ -23,13 +22,13 @@ const StyledCardMedia = styled("div")({
   paddingTop: "calc(100% * 3 / 4)",
 });
 
-const StyledTitle = styled(Link)({
+const StyledTitle = styled(Link)(({ theme }) => ({
   height: 44,
   overflow: "hidden",
   WebkitLineClamp: 2,
   display: "-webkit-box",
   WebkitBoxOrient: "vertical",
-});
+}));
 
 const StyledAvatar = styled(Avatar)(({ theme }) => ({
   zIndex: 9,
@@ -64,12 +63,9 @@ const StyledCover = styled("img")({
 export const InstructorCard = ({ course, index }: any) => {
   const {
     name,
-    instructor,
-    price,
+    slug,
     image,
     published,
-    paid,
-    category,
     updatedAt,
   } = course;
 
@@ -150,22 +146,25 @@ export const InstructorCard = ({ course, index }: any) => {
             variant="caption"
             sx={{ color: "text.disabled", display: "block" }}
           >
-            {`${Capitalize(instructor.name)}`}
+            {/*
+            //@ts-ignore  */}
+            {` Son güncelleme: ${fDate(updatedAt)}`}
           </Typography>
           <Typography
             gutterBottom
             variant="caption"
+            noWrap
             sx={{ color: "text.disabled", display: "block" }}
           >
             {course.lessons.length < 5
-              ? "At least 5 lessons are required to publish a course"
-              : course.published
-              ? "Your course is live in the marketplace"
-              : "Your course is ready to be published"}
+              ? "Yayınlamak için 5 ders gerekli"
+              : published
+              ? "Kurs yayında"
+              : "Kurs yayınlanmaya hazır"}
           </Typography>
           <StyledTitle
             color="inherit"
-            href={`/user/course/${course.slug}`}
+            href={`/user/course/${slug}`}
             variant="subtitle2"
             underline="hover"
             sx={{
@@ -177,9 +176,13 @@ export const InstructorCard = ({ course, index }: any) => {
           >
             {Capitalize(name)}
           </StyledTitle>
+
           <StyledInfo>
-            <Typography color="inherit" variant="subtitle1">
-              {course.published ? "Yayınlandı" : "Yayınlanmadı"}
+            <Typography
+              color={published ? "#27DF97" : "#EF5D51"}
+              variant="subtitle1"
+            >
+              {published ? "Yayınlandı" : "Yayınlanmadı"}
             </Typography>
           </StyledInfo>
         </CardContent>

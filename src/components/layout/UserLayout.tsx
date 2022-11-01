@@ -1,22 +1,19 @@
 import { useEffect, useState, Suspense } from "react";
+//next
+import { useRouter } from "next/router";
 //3rd
 import axios from "axios";
-//router
-import { useRouter } from "next/router";
 //@mui
-import { Stack, Box } from "@mui/material";
-//component
+import Box from "@mui/material/Box";
+//components
 import UserNav from "../nav/UserNav";
-//icons
-import { SyncOutlined } from "@mui/icons-material";
-import { useRotateIconStyles } from "../../utils/RotetesIcon";
+import { LoadingSpinner } from "../LoadingSpinner";
 
 type LayoutProps = {
   children?: React.ReactNode;
 };
 
 export const UserLayout = ({ children }: LayoutProps) => {
-  const classes = useRotateIconStyles();
   const [ok, setOk] = useState<boolean>(false);
   const router = useRouter();
 
@@ -37,17 +34,7 @@ export const UserLayout = ({ children }: LayoutProps) => {
   return (
     <>
       {!ok ? (
-        <Stack
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            width: "100%",
-            height: "100%",
-          }}
-        >
-          <SyncOutlined className={classes.rotateIcon} />
-        </Stack>
+        <LoadingSpinner />
       ) : (
         <Box sx={{ display: "flex", flexDirection: "row" }}>
           <Box>

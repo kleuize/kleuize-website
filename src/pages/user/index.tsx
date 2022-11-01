@@ -46,8 +46,8 @@ const UserIndex: NextPageWithLayout = () => {
         justifyContent="center"
         alignItems="center"
         marginTop={10}
-        marginLeft={2}
-        marginRight={2}
+        marginLeft={5}
+        marginRight={5}
       >
         <Grid item container spacing={3}>
           {courses.map((course) => (
