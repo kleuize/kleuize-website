@@ -12,6 +12,9 @@ import Link from "next/link";
 import { UserCard } from "../../components/cards/UserCard";
 import { NextPageWithLayout } from "../../types";
 import UserNav from "../../components/nav/UserNav";
+import Page from "../../components/Page";
+import { LoadingSpinner } from "../../components/LoadingSpinner";
+import Head from "next/head";
 
 const UserIndex: NextPageWithLayout = () => {
   const classes = useRotateIconStyles();
@@ -40,7 +43,13 @@ const UserIndex: NextPageWithLayout = () => {
 
   return (
     <>
-      {loading && <SyncOutlined className={classes.rotateIcon} />}
+      {loading && <LoadingSpinner />}
+      <Head>
+        <title>Kullanıcı Sayfası: Kurslarım | Kleuize </title>
+        <meta>
+          Satın almış olduğunuz bir çok kursa bu alandan ulaşabilirsiniz.
+        </meta>
+      </Head>
       <Grid
         container
         xs={12}
