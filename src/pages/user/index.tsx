@@ -1,29 +1,20 @@
-import { useEffect, useState, useContext, Fragment } from "react";
-import { UserContext } from "../../context/UserContext";
-import axios from "axios";
-import Container from "@mui/material/Container";
-import { Avatar, Box, Stack } from "@mui/material";
-import { UserLayout } from "../../components/layout/UserLayout";
-import { PlayCircleOutlined, SyncOutlined } from "@mui/icons-material";
-import { useRotateIconStyles } from "../../utils/RotetesIcon";
-import { styled } from "@mui/material/styles";
-import { Typography, Grid } from "@mui/material";
-import Link from "next/link";
-import { UserCard } from "../../components/cards/UserCard";
-import { NextPageWithLayout } from "../../types";
-import UserNav from "../../components/nav/UserNav";
-import Page from "../../components/Page";
-import { LoadingSpinner } from "../../components/LoadingSpinner";
+import { useEffect, useState, Fragment } from "react";
+//next
 import Head from "next/head";
+import { NextPageWithLayout } from "../../types";
+//3rd
+import axios from "axios";
+//layout
+import { UserLayout } from "../../components/layout/UserLayout";
+//@mui
+import { Grid } from "@mui/material";
+//component
+import { UserCard } from "../../components/cards/UserCard";
+import { LoadingSpinner } from "../../components/LoadingSpinner";
 
 const UserIndex: NextPageWithLayout = () => {
-  const classes = useRotateIconStyles();
   const [courses, setCourses] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
-
-  const {
-    state: { user },
-  } = useContext(UserContext);
 
   useEffect(() => {
     loadCourses();
@@ -36,7 +27,6 @@ const UserIndex: NextPageWithLayout = () => {
       setCourses(data);
       setLoading(false);
     } catch (err) {
-      console.log(err);
       setLoading(false);
     }
   };
@@ -52,7 +42,6 @@ const UserIndex: NextPageWithLayout = () => {
       </Head>
       <Grid
         container
-        xs={12}
         direction="row"
         justifyContent="center"
         alignItems="center"
