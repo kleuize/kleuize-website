@@ -1,17 +1,21 @@
-import Typography from "@mui/material/Typography";
-import axios from "axios";
-import type { NextPage } from "next";
 import { useState } from "react";
-import { ICreateCourseProps } from "../../../types";
+//@types-next
 import { useRouter } from "next/router";
+import { ICreateCourseProps, NextPageWithLayout } from "../../../types";
+//3rd
+import axios from "axios";
 import Resizer from "react-image-file-resizer";
 import { toast } from "react-toastify";
-import Container from "@mui/material/Container";
+//@mui
+import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+//form
 import { CourseCreateForm } from "../../../components/form/CourseCreateForm";
-import InstructorRouteWrapper from "../../../components/layout/InstructorLayout";
+//components
+import Page from "../../../components/Page";
+import InstructorLayout from "../../../components/layout/InstructorLayout";
 
-const CreateCourse: NextPage = () => {
+const CreateCourse: NextPageWithLayout = () => {
   const [values, setValues] = useState<ICreateCourseProps>({
     name: "",
     description: "",
@@ -89,33 +93,35 @@ const CreateCourse: NextPage = () => {
   };
 
   return (
-    <InstructorRouteWrapper>
-      <Container>
-        <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Typography variant="h4" color={"blue"}>
-            Yeni Kurs Oluştur
-          </Typography>
-          <CourseCreateForm
-            handleSubmit={handleSubmit}
-            handleImage={handleImage}
-            handleChange={handleChange}
-            values={values}
-            setValues={setValues}
-            preview={preview}
-            uploadButtonText={uploadButtonText}
-            handleImageRemove={handleImageRemove}
-          />
-        </Box>
-      </Container>
-    </InstructorRouteWrapper>
+    <Page title="Eğitimci: Kurs Oluştur">
+      <Box
+        sx={{
+          marginTop: 10,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Typography variant="h4" color={"blue"}>
+          Yeni Kurs Oluştur
+        </Typography>
+        <CourseCreateForm
+          handleSubmit={handleSubmit}
+          handleImage={handleImage}
+          handleChange={handleChange}
+          values={values}
+          setValues={setValues}
+          preview={preview}
+          uploadButtonText={uploadButtonText}
+          handleImageRemove={handleImageRemove}
+        />
+      </Box>
+    </Page>
   );
 };
 
 export default CreateCourse;
+
+CreateCourse.getLayout = function getLayout(page: React.ReactElement) {
+  return <InstructorLayout>{page}</InstructorLayout>;
+};
