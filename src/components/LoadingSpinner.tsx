@@ -34,14 +34,3 @@ export const LoadingSpinner = () => {
     </Stack>
   );
 };
-
-// justifyContent: "center",
-// alignItems: "center",
-// height: "100%",
-// width: "100%",
-// position: "absolute",
-// padding: 0,
-// margin: 0,
-// background: "rgba(0, 0, 0, 0.4)",
-// z-index: 999,
-// position: "fixed"
