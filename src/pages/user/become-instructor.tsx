@@ -1,11 +1,19 @@
-import { Button, Typography } from "@mui/material";
 import { useContext, useState } from "react";
-import Box from "@mui/material/Box";
-import { toast } from "react-toastify";
-import axios from "axios";
-import { UserContext } from "../../context/UserContext";
-import { UserLayout } from "../../components/layout/UserLayout";
+//next-type
 import { NextPageWithLayout } from "../../types";
+//3rd
+import axios from "axios";
+import { toast } from "react-toastify";
+//ctx
+import { UserContext } from "../../context/UserContext";
+//layout
+import { UserLayout } from "../../components/layout/UserLayout";
+//@mui
+import { Box, Button, Typography } from "@mui/material";
+//components
+import { LoadingSpinner } from "../../components/LoadingSpinner";
+import BeInstructorFaq from "../../components/faqs/BeInstructorFaq";
+import Page from "../../components/Page";
 
 const BecomeInstructor: NextPageWithLayout = () => {
   const [loading, setLoading] = useState(false);
@@ -14,7 +22,6 @@ const BecomeInstructor: NextPageWithLayout = () => {
   } = useContext(UserContext);
 
   const becomeInstructor = () => {
-    // console.log("become instructor");
     setLoading(true);
     axios
       .post("/api/make-instructor")
@@ -24,48 +31,52 @@ const BecomeInstructor: NextPageWithLayout = () => {
       })
       .catch((err: any) => {
         console.log(err.response.status);
-        toast("Stripe onboarding failed. Try again.");
+        toast("Stripe bağlanamadı. Yeniden Deneyin.");
         setLoading(false);
       });
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "column",
-      }}
-    >
-      <Box>
-        <Typography>Become Instructor</Typography>
-      </Box>
-      <Box
-        sx={{
-          display: "felx",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Box>
-          <Typography>Setup payout to publish courses on Kleuize.</Typography>
-        </Box>
-        <Button
-          onClick={becomeInstructor}
-          disabled={
-            (user && user.role && user.role.includes("Instructor")) || loading
-          }
+    <>
+      {loading && <LoadingSpinner />}
+      <Page title="Kullanıcı: Eğitmen Ol">
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            marginTop: 10,
+            marginLeft: 5,
+            marginRight: 5,
+          }}
         >
-          {loading ? "Processing..." : "Payout Setup"}
-        </Button>
-      </Box>
-      <Box>
-        <Typography>
-          You will be redirected to stripe to complete onboarding process.
-        </Typography>
-      </Box>
-    </Box>
+          <Typography variant="subtitle1" fontSize={28} mb={2}>
+            Eğitmen Ol
+          </Typography>
+
+          <Typography variant="caption" fontSize={18} mb={2}>
+            Kleuize'de kurs yayınlayabilmek için ödeme ayarlarını düzenleyin.
+            Ödeme ayarlarını tamamlamak için Stripe hesabımıza
+            yönlendirileceksiniz. Ardından eğitimci profilinizi
+            oluşturabilirsiniz.
+          </Typography>
+
+          <Button
+            onClick={becomeInstructor}
+            disabled={
+              (user && user.role && user.role.includes("Instructor")) || loading
+            }
+          >
+            {loading ? "Yükleniyor..." : "Ödeme Ayarları"}
+          </Button>
+          <br />
+          <Typography variant="subtitle1">
+            Eğitmenlik için sıkça sorulan sorular
+          </Typography>
+          <br />
+          <BeInstructorFaq />
+        </Box>
+      </Page>
+    </>
   );
 };
 
