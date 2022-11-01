@@ -11,6 +11,7 @@ import { UserLayout } from "../../components/layout/UserLayout";
 //@mui
 import { Box, Button, Divider, Typography } from "@mui/material";
 import BeInstructorFaq from "../../components/faqs/BeInstructorFaq";
+import Page from "../../components/Page";
 
 const BecomeInstructor: NextPageWithLayout = () => {
   const [loading, setLoading] = useState(false);
@@ -34,39 +35,44 @@ const BecomeInstructor: NextPageWithLayout = () => {
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        width: "100%",
-        marginTop: 10,
-        marginLeft: 2,
-        marginRight: 2,
-      }}
-    >
-      <Typography variant="subtitle1" fontSize={32}>
-        Eğitmen Ol
-      </Typography>
-      <br />
-      <Typography variant="caption" fontSize={20}>
-        Kleuize'de kurs yayınlayabilmek için ödeme ayarlarını düzenleyin. Ödeme
-        ayarlarını tamamlamak için Stripe hesabımıza yönlendirileceksiniz.
-      </Typography>
-      <Button
-        onClick={becomeInstructor}
-        disabled={
-          (user && user.role && user.role.includes("Instructor")) || loading
-        }
+    <Page title="Kullanıcı: Eğitmen Ol">
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          width: "100%",
+          marginTop: 10,
+          marginLeft: 2,
+          marginRight: 2,
+        }}
       >
-        {loading ? "Yükleniyor..." : "Ödeme Ayarları"}
-      </Button>
-      <br />
-      <Typography variant="subtitle1">
-        Eğitmenlik için sıkça sorulan sorular
-      </Typography>
-      <br />
-      <BeInstructorFaq />
-    </Box>
+        <Typography variant="subtitle1" fontSize={28}>
+          Eğitmen Ol
+        </Typography>
+        <br />
+        <Typography variant="caption" fontSize={18}>
+          Kleuize'de kurs yayınlayabilmek için ödeme ayarlarını düzenleyin.
+          Ödeme ayarlarını tamamlamak için Stripe hesabımıza
+          yönlendirileceksiniz. Ardından eğitimci profilinizi
+          oluşturabilirsiniz.
+        </Typography>
+        <br />
+        <Button
+          onClick={becomeInstructor}
+          disabled={
+            (user && user.role && user.role.includes("Instructor")) || loading
+          }
+        >
+          {loading ? "Yükleniyor..." : "Ödeme Ayarları"}
+        </Button>
+        <br />
+        <Typography variant="subtitle1">
+          Eğitmenlik için sıkça sorulan sorular
+        </Typography>
+        <br />
+        <BeInstructorFaq />
+      </Box>
+    </Page>
   );
 };
 
