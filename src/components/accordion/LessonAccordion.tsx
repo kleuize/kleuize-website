@@ -81,6 +81,7 @@ export const LessonAccordion = () => {
   return (
     <Box
       sx={{
+        mr: 3,
         bgcolor: openedItemId
           ? "rgba(71, 98, 120, 0.2)"
           : "rgba(41, 98, 120, 0.2)",
