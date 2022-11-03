@@ -110,7 +110,7 @@ const quiz = () => {
                                   <Item
                                     sx={{
                                       backgroundColor: isCorrect
-                                        ? "green"
+                                        ? "#ACFFC8"
                                         : null,
                                     }}
                                   >
