@@ -1,16 +1,20 @@
-import Typography from "@mui/material/Typography";
-import axios from "axios";
-import type { NextPage } from "next";
 import { useEffect, useState } from "react";
-import { ICreateCourseProps } from "../../../../types";
+//next
 import { useRouter } from "next/router";
+import { ICreateCourseProps, NextPageWithLayout } from "../../../../types";
+//3rd
+import axios from "axios";
 import Resizer from "react-image-file-resizer";
 import { toast } from "react-toastify";
+//@mui
+import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
+//components
 import { CourseCreateForm } from "../../../../components/form/CourseCreateForm";
+import InstructorLayout from "../../../../components/layout/InstructorLayout";
 
-const CourseUpdate: NextPage = () => {
+const CourseUpdate: NextPageWithLayout = () => {
   const [values, setValues] = useState<ICreateCourseProps>({
     name: "",
     description: "",
@@ -130,3 +134,7 @@ const CourseUpdate: NextPage = () => {
 };
 
 export default CourseUpdate;
+
+CourseUpdate.getLayout = function getLayout(page: React.ReactElement) {
+  return <InstructorLayout>{page}</InstructorLayout>;
+};

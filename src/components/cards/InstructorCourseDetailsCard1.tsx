@@ -58,21 +58,13 @@ const StyledCover = styled("img")({
   position: "absolute",
 });
 
-// -----------------------------InstructorCard------------------------------------ //
+// -----------------------------InstructorCourseDetailsCard ------------------------------------ //
 
-export const InstructorCard = ({ course, index }: any) => {
-  const {
-    name,
-    slug,
-    image,
-    published,
-    updatedAt,
-  } = course;
+export const InstructorCourseDetailsCard1 = ({ course, index }: any) => {
+  const { name, slug, image, published, updatedAt, category } = course;
 
-  // const latestPostLarge = index === 0;
-  // const latestPost = index === 1 || index === 2;
-  const latestPostLarge = index === -1;
-  const latestPost = index === -1 || index === -2;
+  const latestPostLarge = index === 0;
+  const latestPost = index === 1 || index === 2;
 
   return (
     <Grid
@@ -118,7 +110,8 @@ export const InstructorCard = ({ course, index }: any) => {
           />
           <StyledAvatar
             alt={name}
-            src={image.Location}
+            src={course && course.image ? course.image.Location : "/course.jpg"}
+            // src={image.Location}
             sx={{
               ...((latestPostLarge || latestPost) && {
                 zIndex: 9,
@@ -129,7 +122,10 @@ export const InstructorCard = ({ course, index }: any) => {
               }),
             }}
           />
-          <StyledCover alt={name} src={image.Location} />
+          <StyledCover
+            alt={name}
+            src={course && course.image ? course.image.Location : "/course.jpg"}
+          />
         </StyledCardMedia>
         <CardContent
           sx={{
@@ -156,11 +152,7 @@ export const InstructorCard = ({ course, index }: any) => {
             noWrap
             sx={{ color: "text.disabled", display: "block" }}
           >
-            {course.lessons.length < 5
-              ? "Yayınlamak için 5 ders gerekli"
-              : published
-              ? "Kurs yayında"
-              : "Kurs yayınlanmaya hazır"}
+          {category}
           </Typography>
           <StyledTitle
             color="inherit"
@@ -174,7 +166,7 @@ export const InstructorCard = ({ course, index }: any) => {
               }),
             }}
           >
-            {Capitalize(name)}
+            {/* {Capitalize(name)} */} test
           </StyledTitle>
 
           <StyledInfo>

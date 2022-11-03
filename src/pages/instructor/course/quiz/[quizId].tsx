@@ -1,19 +1,20 @@
 import { useEffect, useState } from "react";
-
-import axios from "axios";
+//next
 import { useRouter } from "next/router";
-//UI
+//3rd
+import axios from "axios";
+//@mui-styled
+import { Tooltip } from "@material-ui/core";
+import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
 import Paper from "@mui/material/Paper";
-import { styled } from "@mui/material/styles";
 import Divider from "@mui/material/Divider";
 import Button from "@mui/material/Button";
-
+//icons
 import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
-import { Tooltip } from "@material-ui/core";
+//component
 import InstructorRouteWrapper from "../../../../components/layout/InstructorLayout";
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -43,7 +44,6 @@ export async function getServerSideProps() {
   };
 }
 
-
 const quiz = () => {
   const router = useRouter();
   const { quizId } = router.query;
@@ -58,7 +58,6 @@ const quiz = () => {
     const { data } = await axios.get("/api/instructor-courses");
     setCourses(data);
   };
-
 
   return (
     <InstructorRouteWrapper>
@@ -111,7 +110,7 @@ const quiz = () => {
                                   <Item
                                     sx={{
                                       backgroundColor: isCorrect
-                                        ? "green"
+                                        ? "#ACFFC8"
                                         : null,
                                     }}
                                   >

@@ -1,7 +1,9 @@
 import { useState, useEffect, useContext } from "react";
+//next
+import { useRouter } from "next/router";
+//3rd
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useRouter } from "next/router";
 import { loadStripe } from "@stripe/stripe-js";
 //Context
 import { UserContext } from "../../../src/context/UserContext";
@@ -9,7 +11,7 @@ import { UserContext } from "../../../src/context/UserContext";
 import { SingleCourseJumbotron } from "../../components/cards/SingleCourseJumbotron";
 import { CoursePreviewModal } from "../../components/modals/CoursePreviewModal";
 import { SingleCourseLessons } from "../../components/cards/SingleCourseLessons";
-//UI
+//@mui
 import Container from "@mui/material/Container";
 
 export async function getServerSideProps({ query }: any) {
