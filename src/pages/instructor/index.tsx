@@ -6,7 +6,6 @@ import axios from "axios";
 //@mui
 import Grid from "@mui/material/Grid";
 //components
-import Page from "../../components/Page";
 import InstructorLayout from "../../components/layout/InstructorLayout";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { InstructorCard } from "../../components/cards/InstructorCard";
