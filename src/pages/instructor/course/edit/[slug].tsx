@@ -8,11 +8,11 @@ import Resizer from "react-image-file-resizer";
 import { toast } from "react-toastify";
 //@mui
 import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 //components
 import { CourseCreateForm } from "../../../../components/form/CourseCreateForm";
 import InstructorLayout from "../../../../components/layout/InstructorLayout";
+import Page from "../../../../components/Page";
 
 const CourseUpdate: NextPageWithLayout = () => {
   const [values, setValues] = useState<ICreateCourseProps>({
@@ -105,7 +105,7 @@ const CourseUpdate: NextPageWithLayout = () => {
   };
 
   return (
-    <Container component="main" maxWidth="lg">
+    <Page title="Mevcut Kursu Düzenle">
       <Box
         sx={{
           marginTop: 8,
@@ -114,7 +114,7 @@ const CourseUpdate: NextPageWithLayout = () => {
           alignItems: "center",
         }}
       >
-        <Typography variant="h4" color={"blue"}>
+        <Typography variant="h5" color={"blue"}>
           Mevcut Kursu Güncelle
         </Typography>
         <CourseCreateForm
@@ -129,7 +129,7 @@ const CourseUpdate: NextPageWithLayout = () => {
           editPage={true}
         />
       </Box>
-    </Container>
+    </Page>
   );
 };
 
