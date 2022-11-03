@@ -17,9 +17,9 @@ const Page = forwardRef(
         {meta}
       </Head>
 
-      <Box ref={ref} {...other}>
+      {/* <Box ref={ref} {...other}> */}
         {children}
-      </Box>
+      {/* </Box> */}
     </>
   )
 );

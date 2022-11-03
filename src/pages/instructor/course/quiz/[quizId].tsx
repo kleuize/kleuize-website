@@ -7,6 +7,7 @@ import axios from "axios";
 import { Tooltip } from "@material-ui/core";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
+
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
 import Paper from "@mui/material/Paper";
@@ -15,25 +16,8 @@ import Button from "@mui/material/Button";
 //icons
 import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 //component
-import InstructorRouteWrapper from "../../../../components/layout/InstructorLayout";
-
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-  marginTop: 5,
-}));
-
-const style = {
-  width: "50%",
-  height: "100%",
-  boxShadow: 24,
-  justifyContent: "center",
-  alignItems: "center",
-  p: 4,
-};
+import Page from "../../../../components/Page";
+import InstructorLayout from "../../../../components/layout/InstructorLayout";
 
 export async function getServerSideProps() {
   const { data } = await axios.get(`${process.env.API}/courses`);
@@ -44,7 +28,16 @@ export async function getServerSideProps() {
   };
 }
 
-const quiz = () => {
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: "center",
+  color: theme.palette.text.secondary,
+  marginTop: 5,
+}));
+
+const Quiz = () => {
   const router = useRouter();
   const { quizId } = router.query;
 
@@ -60,7 +53,7 @@ const quiz = () => {
   };
 
   return (
-    <InstructorRouteWrapper>
+    <Page title="Test Görünümü">
       <Container component="main" maxWidth="lg">
         <Box
           sx={{
@@ -135,8 +128,12 @@ const quiz = () => {
           </Stack>
         </Box>
       </Container>
-    </InstructorRouteWrapper>
+    </Page>
   );
 };
 
-export default quiz;
+export default Quiz;
+
+Quiz.getLayout = function getLayout(page: React.ReactElement) {
+  return <InstructorLayout>{page}</InstructorLayout>;
+};
