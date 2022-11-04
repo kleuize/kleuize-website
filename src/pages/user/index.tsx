@@ -35,10 +35,6 @@ const UserIndex: NextPageWithLayout = () => {
     <>
       {loading && <LoadingSpinner />}
       <Head>
-        <title>Kullanıcı Sayfası: Kurslarım | Kleuize </title>
-        <meta>
-          Satın almış olduğunuz bir çok kursa bu alandan ulaşabilirsiniz.
-        </meta>
       </Head>
       <Grid
         container

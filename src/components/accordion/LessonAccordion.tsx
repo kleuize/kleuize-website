@@ -89,7 +89,7 @@ export const LessonAccordion = () => {
     >
       {course &&
         course.lessons?.map(({ lessonTitle, quiz, _id, index }: any) => (
-          <div>
+          <div key={_id}>
             {quiz != null ? (
               <>
                 <ListItem
@@ -123,7 +123,7 @@ export const LessonAccordion = () => {
                 >
                   {openedItemId &&
                     quiz.map(({ _id, quizTitle }: any) => (
-                      <Link href={`/instructor/course/quiz/${_id}`}>
+                      <Link key={_id} href={`/instructor/course/quiz/${_id}`}>
                         <ListItemButton
                           sx={{ martinLeft: 2 }}
                           id={_id}

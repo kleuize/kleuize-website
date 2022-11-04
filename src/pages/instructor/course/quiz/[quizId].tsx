@@ -68,8 +68,8 @@ const Quiz = () => {
               lessons.map(({ quiz }: any) =>
                 quiz
                   .filter((id: any) => id._id === quizId)
-                  .map(({ quizTitle, questions }: any) => (
-                    <Box sx={{ width: "80%" }}>
+                  .map(({ quizTitle, questions, _id}: any) => (
+                    <Box key={_id} sx={{ width: "80%" }}>
                       <Stack>
                         <Item
                           sx={{ marginBottom: 3 }}
@@ -78,7 +78,7 @@ const Quiz = () => {
                       <Divider />
                       {questions.map(
                         ({ answers, content }: any, index: number) => (
-                          <Box>
+                          <Box key={index}>
                             <Stack>
                               <Item
                                 sx={{
@@ -98,8 +98,8 @@ const Quiz = () => {
                                 mt: 2,
                               }}
                             >
-                              {answers.map(({ text, isCorrect }: any) => (
-                                <Stack spacing={2}>
+                              {answers.map(({ text, isCorrect }: any, index: number) => (
+                                <Stack key={index} spacing={2}>
                                   <Item
                                     sx={{
                                       backgroundColor: isCorrect

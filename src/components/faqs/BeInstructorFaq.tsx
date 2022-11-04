@@ -65,7 +65,7 @@ export default function BeInstructorFaq() {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            Hayır, Kleuize'de eğitmen olmak tamamen ücretsizdir.
+            {"Hayır, Kleuize'de eğitmen olmak tamamen ücretsizdir."}
           </Typography>
         </AccordionDetails>
       </Accordion>

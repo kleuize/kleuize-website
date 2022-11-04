@@ -266,14 +266,13 @@ export const EditQuiz = ({
                     >
                       {currentQuestion.answers.map(
                         (answer: any, index: any) => (
-                          <Grid container item xs={12} md={12} mb={1}>
+                          <Grid key={index} container item xs={12} md={12} mb={1}>
                             <FormControlLabel
                               key={answer.id}
                               value={answer.id}
                               control={
                                 <Radio
                                   inputProps={{
-                                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                                     // @ts-ignore
                                     "data-testid": `answer-radio-${index + 1}`,
                                   }}
