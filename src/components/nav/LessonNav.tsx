@@ -21,8 +21,7 @@ import Link from "next/link";
 import { styled, Theme, CSSObject } from "@mui/material/styles";
 import { useRouter } from "next/router";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { resetState } from "../../store/create-quiz/create-quiz-slice";
-import { getQuizByCode } from "../../store/quiz/quiz-slice";
+import { getQuizByCode, resetQuiz } from "../../store/quiz/quiz-slice";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
 const drawerWidth = 330;
@@ -125,7 +124,7 @@ export const LessonNav = ({ lessons, slug }: any) => {
       { shallow: true }
     );
     dispatch(getQuizByCode(slug, quizId));
-    dispatch(resetState());
+    dispatch(resetQuiz());
   };
 
   return (
@@ -202,7 +201,7 @@ export const LessonNav = ({ lessons, slug }: any) => {
                                   <ExpandMore />
                                 </ListItemIcon>
                               )}
-                              <ListItemText 
+                              <ListItemText
                                 primary={`Ders ${index + 1}: ${lessonTitle}`}
                               />
                             </ListItemButton>

@@ -5,11 +5,12 @@ import Fade from "@mui/material/Fade";
 import Typography from "@mui/material/Typography";
 import { CardBox } from "./CardBox";
 import { resetState, getQuizByCode } from "../../store/quiz/quiz-slice";
-import { Loading } from "./Loading";
+
 import { QuizIntro } from "./QuizIntro";
 import { QuizTest } from "./quiz-test/index";
 import { QuizResult } from "./QuizResult";
-import { useRouter } from "next/router";
+import { Capitalize } from "../../utils/Capitalize";
+import { LoadingSpinner } from "../LoadingSpinner";
 
 const Quizzes = ({ slug, quizId }: any) => {
   const {
@@ -30,7 +31,7 @@ const Quizzes = ({ slug, quizId }: any) => {
   }, []);
 
   if (isLoading || isSubmitting) {
-    return <Loading />;
+    return <LoadingSpinner />;
   }
 
   if (errorMessage) {
@@ -58,7 +59,7 @@ const Quizzes = ({ slug, quizId }: any) => {
   }
 
   return (
-    <Box sx={{ width: "100%", height: "100vh", textAlign: "center", }}>
+    <Box sx={{ width: "100%", height: "100vh", textAlign: "center" }}>
       <Typography color="secondary" variant="h4" component="div" mb={1}>
         {quizDetails.quizTitle}
       </Typography>

@@ -65,7 +65,6 @@ const initialState: CreateLessonState = {
   errorMessage: "",
 };
 
-
 export const createQuizSlice = createSlice({
   name: "create-quiz",
   initialState,
@@ -210,8 +209,9 @@ export const selectCreateQuiz = (state: RootState) => state.createQuiz;
 export const createQuiz = (): AppThunk => async (dispatch, getState) => {
   dispatch(validateForm());
 
-  const { quizTitle, questions, selectedAnswers, isValid } =
-    selectCreateQuiz(getState());
+  const { quizTitle, questions, selectedAnswers, isValid } = selectCreateQuiz(
+    getState()
+  );
 
   // If the form is valid, we send a request to the api
   if (isValid) {

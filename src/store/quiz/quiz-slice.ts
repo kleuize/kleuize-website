@@ -47,6 +47,9 @@ export const quizSlice = createSlice({
   name: "quiz",
   initialState,
   reducers: {
+    resetQuiz: (state) => {
+      state.quizStarted = false;
+    },
     resetState: () => initialState,
     setQuiz: (state, action: PayloadAction<QuizDetail>) => {
       state.quizDetails = { ...action.payload };
@@ -95,6 +98,7 @@ export const {
   setSubmitting,
   submitFail,
   submitSuccess,
+  resetQuiz,
 } = quizSlice.actions;
 
 export const selectQuiz = (state: RootState) => state.quiz;
@@ -121,31 +125,26 @@ export const getQuizByCode =
     }
   };
 
-export const getQuizResult =
-  (): AppThunk =>
-  async (dispatch, getState) => {
-    dispatch(setSubmitting());
+export const getQuizResult = (): AppThunk => async (dispatch, getState) => {
+  dispatch(setSubmitting());
 
+  //@ts-ignore
+  const { quizDetails, selectedAnswers } = selectQuiz(getState());
+
+  const quizId = quizDetails._id;
+
+  try {
+    const res: AxiosResponse = await axios.post(`${quizId}`, {
+      selectedAnswers,
+    });
+    dispatch(submitSuccess(res.data));
+  } catch (error) {
+    const { response } = error as AxiosError;
+
+    const errorMessage = response?.data || "Something unexpected happend!";
     //@ts-ignore
-    const { quizDetails, selectedAnswers } = selectQuiz(getState());
-
-    const quizId = quizDetails._id;
-
-    try {
-      const res: AxiosResponse = await axios.post(
-        `${quizId}`,
-        {
-          selectedAnswers,
-        }
-      );
-      dispatch(submitSuccess(res.data));
-    } catch (error) {
-      const { response } = error as AxiosError;
-
-      const errorMessage = response?.data || "Something unexpected happend!";
-      //@ts-ignore
-      dispatch(submitFail(errorMessage));
-    }
-  };
+    dispatch(submitFail(errorMessage));
+  }
+};
 
 export default quizSlice.reducer;
