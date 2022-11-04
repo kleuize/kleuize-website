@@ -1,8 +1,18 @@
+//next
+import { useRouter } from "next/router";
+import Image from "next/image";
 // @mui
 import { styled } from "@mui/material/styles";
-import { Typography, Button, Card, CardContent, Stack, Box } from "@mui/material";
+import {
+  Typography,
+  Button,
+  Card,
+  CardContent,
+  Stack,
+  Box,
+} from "@mui/material";
+//util
 import { fDate } from "../../utils/formatTime";
-import { useRouter } from "next/router";
 
 const RootStyle = styled(Card)(({ theme }) => ({
   boxShadow: "none",
@@ -75,7 +85,7 @@ export const InstructorCourseDetailsCard = ({
         </Typography>
         <Typography variant="caption">{`Kategori: ${category}`}</Typography>
         <Typography variant="inherit">{`Fiyat: ₺${price}`}</Typography>
-        <Box sx={{mb: 2, mt: 2}}>
+        <Box sx={{ mb: 2, mt: 2 }}>
           {lessons && lessons.length < 5 ? (
             <Typography>
               {`Kursu yayınlamak için 5 ders gerekli. Mevcut ders sayısı ${lessons.length}`}
@@ -104,13 +114,15 @@ export const InstructorCourseDetailsCard = ({
       <Stack
         sx={{
           p: 3,
-          width: 560,
+      
           margin: { xs: "auto", md: "inherit" },
         }}
       >
-        <img
+        <Image
           alt={name}
           src={course && course.image ? course.image.Location : "/course.jpg"}
+          width={460}
+          height={360}
         />
       </Stack>
     </RootStyle>

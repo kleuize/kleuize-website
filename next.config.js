@@ -2,6 +2,9 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  images: {
+    domains: ["kleuize-bucket.s3.amazonaws.com"],
+  },
   
 }
 
