@@ -20,13 +20,13 @@ type AppPropsWithLayout = AppProps & {
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page);
 
-  return getLayout(
+  return (
     <ThemeProvider>
       <Provider store={store}>
         <UserProvider>
           <ToastContainer position="top-center" />
           <ResponsiveAppBar />
-          <Component {...pageProps} />
+          {getLayout(<Component {...pageProps} />)}
         </UserProvider>
       </Provider>
     </ThemeProvider>

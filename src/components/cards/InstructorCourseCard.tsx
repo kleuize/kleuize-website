@@ -58,13 +58,21 @@ const StyledCover = styled("img")({
   position: "absolute",
 });
 
-// -----------------------------InstructorCourseDetailsCard ------------------------------------ //
+// -----------------------------InstructorCard------------------------------------ //
 
-export const InstructorCourseDetailsCard1 = ({ course, index }: any) => {
-  const { name, slug, image, published, updatedAt, category } = course;
+export const InstructorCourseCard = ({ course, index }: any) => {
+  const {
+    name,
+    slug,
+    image,
+    published,
+    updatedAt,
+  } = course;
 
-  const latestPostLarge = index === 0;
-  const latestPost = index === 1 || index === 2;
+  // const latestPostLarge = index === 0;
+  // const latestPost = index === 1 || index === 2;
+  const latestPostLarge = index === -1;
+  const latestPost = index === -1 || index === -2;
 
   return (
     <Grid
@@ -110,8 +118,7 @@ export const InstructorCourseDetailsCard1 = ({ course, index }: any) => {
           />
           <StyledAvatar
             alt={name}
-            src={course && course.image ? course.image.Location : "/course.jpg"}
-            // src={image.Location}
+            src={image.Location}
             sx={{
               ...((latestPostLarge || latestPost) && {
                 zIndex: 9,
@@ -122,10 +129,7 @@ export const InstructorCourseDetailsCard1 = ({ course, index }: any) => {
               }),
             }}
           />
-          <StyledCover
-            alt={name}
-            src={course && course.image ? course.image.Location : "/course.jpg"}
-          />
+          <StyledCover alt={name} src={image.Location} />
         </StyledCardMedia>
         <CardContent
           sx={{
@@ -152,7 +156,11 @@ export const InstructorCourseDetailsCard1 = ({ course, index }: any) => {
             noWrap
             sx={{ color: "text.disabled", display: "block" }}
           >
-          {category}
+            {course.lessons.length < 5
+              ? "Yayınlamak için 5 ders gerekli"
+              : published
+              ? "Kurs yayında"
+              : "Kurs yayınlanmaya hazır"}
           </Typography>
           <StyledTitle
             color="inherit"
@@ -166,7 +174,7 @@ export const InstructorCourseDetailsCard1 = ({ course, index }: any) => {
               }),
             }}
           >
-            {/* {Capitalize(name)} */} test
+            {Capitalize(name)}
           </StyledTitle>
 
           <StyledInfo>

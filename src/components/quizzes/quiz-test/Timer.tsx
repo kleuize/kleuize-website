@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
+//ctx
 import { useAppSelector } from "../../../store/hooks";
 import { store } from "../../../store/store";
 import { changeTimer } from "../../../store/quiz/quiz-slice";
+//utils
 import { timeFormatter } from "../../../utils/helpers";
 
 export const Timer: React.FC = () => {

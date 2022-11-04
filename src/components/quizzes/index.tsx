@@ -1,17 +1,20 @@
 import React, { useEffect } from "react";
+//hooks
 import { useAppSelector, useAppDispatch } from "../../store/hooks";
-import Box from "@mui/material/Box";
-import Fade from "@mui/material/Fade";
-import Typography from "@mui/material/Typography";
-import { CardBox } from "./CardBox";
+//ctx
 import { resetState, getQuizByCode } from "../../store/quiz/quiz-slice";
-import { Loading } from "./Loading";
 import { QuizIntro } from "./QuizIntro";
 import { QuizTest } from "./quiz-test/index";
 import { QuizResult } from "./QuizResult";
-import { useRouter } from "next/router";
+//@mui
+import Box from "@mui/material/Box";
+import Fade from "@mui/material/Fade";
+import Typography from "@mui/material/Typography";
+//components
+import { CardBox } from "./CardBox";
+import { LoadingSpinner } from "../LoadingSpinner";
 
-const Quiz = ({slug, quizId}: any) => {
+const Quizzes = ({ slug, quizId }: any) => {
   const {
     quizDetails,
     isLoading,
@@ -21,7 +24,7 @@ const Quiz = ({slug, quizId}: any) => {
     errorMessage,
   } = useAppSelector((state) => state.quiz);
   const dispatch = useAppDispatch();
- 
+
   // Getting quiz
   useEffect(() => {
     dispatch(resetState());
@@ -30,9 +33,8 @@ const Quiz = ({slug, quizId}: any) => {
   }, []);
 
   if (isLoading || isSubmitting) {
-    return <Loading />;
+    return <LoadingSpinner />;
   }
-
 
   if (errorMessage) {
     return (
@@ -52,14 +54,14 @@ const Quiz = ({slug, quizId}: any) => {
   if (quizResult >= 0) {
     return (
       <CardBox>
-        Test 
+        Test
         <QuizResult score={quizResult} />
       </CardBox>
     );
   }
 
   return (
-    <CardBox>
+    <Box sx={{ width: "100%", height: "100vh", textAlign: "center" }}>
       <Typography color="secondary" variant="h4" component="div" mb={1}>
         {quizDetails.quizTitle}
       </Typography>
@@ -88,8 +90,8 @@ const Quiz = ({slug, quizId}: any) => {
           </div>
         </Fade>
       </Box>
-    </CardBox>
+    </Box>
   );
 };
 
-export default Quiz;
+export default Quizzes;

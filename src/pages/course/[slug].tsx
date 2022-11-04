@@ -13,6 +13,7 @@ import { CoursePreviewModal } from "../../components/modals/CoursePreviewModal";
 import { SingleCourseLessons } from "../../components/cards/SingleCourseLessons";
 //@mui
 import Container from "@mui/material/Container";
+import Page from "../../components/Page";
 
 export async function getServerSideProps({ query }: any) {
   const { data } = await axios.get(`${process.env.API}/course/${query.slug}`);
@@ -93,6 +94,7 @@ const SingleCourse = ({ course }: any) => {
   };
 
   return (
+    <Page title="Kurs İçeriği">
     <Container sx={{ mt: 10 }}>
       <SingleCourseJumbotron
         course={course}
@@ -121,6 +123,7 @@ const SingleCourse = ({ course }: any) => {
         />
       )}
     </Container>
+    </Page>
   );
 };
 

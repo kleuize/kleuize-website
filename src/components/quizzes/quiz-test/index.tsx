@@ -4,13 +4,14 @@ import { makeStyles } from "@mui/styles";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Fade from "@mui/material/Fade";
-import { nextQuestion, getQuizResult } from "../../../store/quiz/quiz-slice";
+import { nextQuestion, getQuizResult, resetState } from "../../../store/quiz/quiz-slice";
 
 import { Timer } from "./Timer";
 import { Progress } from "./Progress";
 import { Question } from "./Question";
 import { Answers } from "./Answer";
 import { useRouter } from "next/router";
+import { Grid } from "@mui/material";
 
 const useStyles = makeStyles(() => ({
   button: {
@@ -20,7 +21,6 @@ const useStyles = makeStyles(() => ({
 }));
 
 export const QuizTest = () => {
-
   const { quizDetails, questionIndex, selectedAnswers } = useAppSelector(
     (state) => state.quiz
   );
@@ -28,16 +28,18 @@ export const QuizTest = () => {
 
   const { questions } = quizDetails;
 
-  return (
-    <>
-      <Timer />
+  const handleSubmit = () => {
+    dispatch(getQuizResult());
+  };
 
+  return (
+    <Grid>
+      <Timer />
       <Progress
         currentQuestion={questionIndex + 1}
         totalQuestions={questions.length}
       />
-
-      <Box mb={3}>
+      <Box mb={2}>
         {questions.map((question: any, index: number) => (
           <Fade
             key={question._id}
@@ -51,7 +53,6 @@ export const QuizTest = () => {
           >
             <div>
               <Question content={question.content} />
-
               <Answers
                 answers={question.answers}
                 selectedAnswer={selectedAnswers[index]}
@@ -65,10 +66,10 @@ export const QuizTest = () => {
         <Button
           variant="contained"
           color="primary"
-          onClick={() => dispatch(getQuizResult())}
+          onClick={handleSubmit}
           disabled={!selectedAnswers[questionIndex]}
         >
-          Submit
+          Tamamla
         </Button>
       ) : (
         <Button
@@ -80,6 +81,6 @@ export const QuizTest = () => {
           Next
         </Button>
       )}
-    </>
+    </Grid>
   );
 };

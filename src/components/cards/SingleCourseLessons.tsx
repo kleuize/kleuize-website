@@ -38,8 +38,8 @@ export const SingleCourseLessons = ({
       <Box
         sx={{
           bgcolor: openedItemId
-            ? "rgba(71, 98, 120, 0.2)"
-            : "rgba(41, 98, 120, 0.2)",
+            ? "rgba(71, 98, 120, 0.05)"
+            : "rgba(41, 98, 120, 0.05)",
         }}
       >
         {lessons.map(({ lessonTitle, quiz, _id }: any) => (

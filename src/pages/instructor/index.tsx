@@ -8,7 +8,7 @@ import Grid from "@mui/material/Grid";
 //components
 import InstructorLayout from "../../components/layout/InstructorLayout";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
-import { InstructorCard } from "../../components/cards/InstructorCard";
+import { InstructorCourseCard } from "../../components/cards/InstructorCourseCard";
 import Page from "../../components/Page";
 
 interface ICoursesProps {
@@ -49,7 +49,7 @@ const InstructorIndex: NextPageWithLayout = () => {
           {courses &&
             courses.map((course) => (
               <Fragment key={course._id}>
-                <InstructorCard course={course} />
+                <InstructorCourseCard course={course} />
               </Fragment>
             ))}
         </Grid>
