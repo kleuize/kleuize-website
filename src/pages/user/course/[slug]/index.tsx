@@ -1,5 +1,14 @@
-export {};
-import { Container, Box, Button, Stack, Drawer, Toolbar } from "@mui/material";
+import {
+  Container,
+  Box,
+  Button,
+  Stack,
+  Drawer,
+  Grid,
+  Typography,
+} from "@mui/material";
+//next
+import Image from "next/image";
 import { StudentLayout } from "../../../../components/layout/StudentLayout";
 import { useRouter } from "next/router";
 import { styled } from "@mui/material/styles";
@@ -9,6 +18,7 @@ import { LessonAccordion } from "../../../../components/accordion/LessonAccordio
 import { SingleCourseLessons } from "../../../../components/cards/SingleCourseLessons";
 import Quiz from "../../../../components/quizzes";
 import Page from "../../../../components/Page";
+import Started from "../../../../../public/start.png";
 
 const drawerWidth = 280;
 
@@ -52,7 +62,26 @@ const SingleCourse = () => {
     setCourse(data);
   };
 
-  return <Page title="Soru Çözümü">Başlamak için seçim yapın</Page>;
+  return (
+    <Page title="Soru Çözümü">
+      <Grid
+        container
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+        marginTop={10}
+        marginLeft={5}
+        marginRight={5}
+      >
+        <Grid item>
+          <Image src={Started} alt="start" width="300px" height="300px" />
+        </Grid>
+        <Grid item>
+          <Typography variant="body1">Başlamak için seçim yapın</Typography>
+        </Grid>
+      </Grid>
+    </Page>
+  );
 };
 
 export default SingleCourse;

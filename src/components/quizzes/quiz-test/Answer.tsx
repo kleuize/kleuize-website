@@ -36,7 +36,7 @@ export const Answers = ({ answers, selectedAnswer }: AnswersProps) => {
     <Grid container spacing={2} direction="row">
       <Grid item container xs={12} spacing={2}>
         {answers.map((answer, index) => (
-          <Grid item xs={12} md={6}>
+          <Grid key={answer._id} item xs={12} md={6}>
             <ButtonBase
               key={answer._id}
               sx={{ width: "100%", borderRadius: 2 }}

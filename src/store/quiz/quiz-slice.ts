@@ -127,7 +127,6 @@ export const getQuizByCode =
 
 export const getQuizResult = (): AppThunk => async (dispatch, getState) => {
   dispatch(setSubmitting());
-
   //@ts-ignore
   const { quizDetails, selectedAnswers } = selectQuiz(getState());
 

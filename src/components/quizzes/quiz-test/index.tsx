@@ -30,7 +30,6 @@ export const QuizTest = () => {
 
   const handleSubmit = () => {
     dispatch(getQuizResult());
-    dispatch(resetState());
   };
 
   return (
@@ -70,7 +69,7 @@ export const QuizTest = () => {
           onClick={handleSubmit}
           disabled={!selectedAnswers[questionIndex]}
         >
-          Submit
+          Tamamla
         </Button>
       ) : (
         <Button

@@ -4,10 +4,12 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Collapse from "@material-ui/core/Collapse";
 import ListItemButton from "@mui/material/ListItemButton";
 import Box from "@mui/material/Box";
-//Icon
-import { ExpandLess } from "@mui/icons-material";
-import { ExpandMore } from "@mui/icons-material";
-//Component
+//next
+import { useRouter } from "next/router";
+//ctx
+import { getQuizByCode, resetQuiz } from "../../store/quiz/quiz-slice";
+import { useAppDispatch } from "../../store/hooks";
+//@mui
 import MuiDrawer from "@mui/material/Drawer";
 import {
   Divider,
@@ -17,11 +19,10 @@ import {
   IconButton,
   ListItemIcon,
 } from "@mui/material";
-import Link from "next/link";
 import { styled, Theme, CSSObject } from "@mui/material/styles";
-import { useRouter } from "next/router";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { getQuizByCode, resetQuiz } from "../../store/quiz/quiz-slice";
+//icons
+import { ExpandLess } from "@mui/icons-material";
+import { ExpandMore } from "@mui/icons-material";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
 const drawerWidth = 330;
@@ -74,22 +75,20 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export const LessonNav = ({ lessons, slug }: any) => {
-  const [openedItemId, setOpenedItemId] = useState(true);
-  const [quizId, setQuizId] = useState();
-
+  const dispatch = useAppDispatch();
+  const router = useRouter();
   const [open, setOpen] = useState<boolean>(false);
+  const [openedItemId, setOpenedItemId] = useState<boolean>(true);
+  const [quizId, setQuizId] = useState();
+  const [checked, setChecked] = useState(true);
 
   const handleDrawerOpen = () => {
     setOpen(!open);
   };
 
-  const [checked, setChecked] = React.useState(true);
-
-  const router = useRouter();
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setChecked(event.target.checked);
-  };
+  // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setChecked(event.target.checked);
+  // };
 
   const handleClick = (e: any) => {
     let clickedItemId = e.currentTarget.id;
@@ -101,21 +100,9 @@ export const LessonNav = ({ lessons, slug }: any) => {
     }
   };
 
-  // const MyButton = forwardRef(({ onClick, href }, ref) => {
-  //   return (
-  //     <a href={href} onClick={onClick} ref={ref}>
-  //       Click Me
-  //     </a>
-  //   )
-  // })
-
-  // const { quizStarted } = useAppSelector((state) => state.quiz);
-  const dispatch = useAppDispatch();
-
-  const handleQuizId = (e: any) => {
-    let currentQuizId = e.currentTarget.id;
+  const handleQuizId = (e: React.MouseEvent<HTMLElement>) => {
+    let currentQuizId: any = e.currentTarget.id;
     setQuizId(currentQuizId);
-    // router.push(`/user/course/${slug}/${quizId}`)
     router.push(
       {
         pathname: "/user/course/[slug]/[quizId]",

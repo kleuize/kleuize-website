@@ -15,7 +15,7 @@ export const QuizResult: React.FC<QuizResultProps> = ({ score }) => {
       </Typography>
 
       <Box mb={4}>
-        <CircularProgressWithLabel value={score} />
+        <CircularProgressWithLabel value={100} />
       </Box>
 
       <Typography variant="h6" mb={1}>
