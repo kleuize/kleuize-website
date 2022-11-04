@@ -149,7 +149,7 @@ export const LessonNav = ({ lessons, slug }: any) => {
                 <>
                   {lessons?.map(
                     ({ lessonTitle, quiz, _id }: any, index: number) => (
-                      <div>
+                      <div key={_id}>
                         {quiz != null ? (
                           <>
                             <ListItemButton
@@ -199,6 +199,7 @@ export const LessonNav = ({ lessons, slug }: any) => {
                               {openedItemId &&
                                 quiz.map(({ _id, quizTitle }: any) => (
                                   <Stack
+                                  key={_id}
                                     sx={{
                                       display: "flex",
                                       flexDirection: "row",

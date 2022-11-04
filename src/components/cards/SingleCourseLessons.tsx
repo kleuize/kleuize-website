@@ -43,7 +43,7 @@ export const SingleCourseLessons = ({
         }}
       >
         {lessons.map(({ lessonTitle, quiz, _id }: any) => (
-          <div>
+          <div key={_id}>
             {quiz != null ? (
               <>
                 <ListItem id={_id} onClick={handleClick}>
@@ -58,7 +58,7 @@ export const SingleCourseLessons = ({
                 >
                   {openedItemId &&
                     quiz.map(({ _id, quizTitle }: any) => (
-                      <ListItemButton sx={{ martinLeft: 2 }} id={_id}>
+                      <ListItemButton key={_id} sx={{ martinLeft: 2 }} id={_id}>
                         <ListItemText primary={quizTitle} />
                       </ListItemButton>
                     ))}

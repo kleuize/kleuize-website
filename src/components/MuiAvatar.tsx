@@ -19,6 +19,7 @@ type AvatarType = {
     | "error" 
 };
 
+// eslint-disable-next-line react/display-name
 export const MuiAvatar = forwardRef(
   ({ color = "default", children, sx, ...other }: AvatarType, ref) => {
     const theme = useTheme();

@@ -55,15 +55,16 @@ export const Home: NextPage = ({ courses }: any) => {
                 {/* <a href="/">Kleuize</a>  */}
                 Öğrenmenin daha fazlasına göz atın.
               </Typography>
-              <br />
+              <Stack sx={{ mb: 1 }}></Stack>
               <Typography
                 variant="h6"
                 color="#6C708E"
                 fontWeight="bold"
                 component="p"
               >
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry's standard.
+                {
+                  " Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard."
+                }
               </Typography>
             </Stack>
           </Grid>

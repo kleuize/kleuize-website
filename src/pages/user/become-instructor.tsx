@@ -9,7 +9,7 @@ import { UserContext } from "../../context/UserContext";
 //layout
 import { UserLayout } from "../../components/layout/UserLayout";
 //@mui
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Typography, Stack } from "@mui/material";
 //components
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import BeInstructorFaq from "../../components/faqs/BeInstructorFaq";
@@ -54,10 +54,9 @@ const BecomeInstructor: NextPageWithLayout = () => {
           </Typography>
 
           <Typography variant="caption" fontSize={18} mb={2}>
-            Kleuize'de kurs yayınlayabilmek için ödeme ayarlarını düzenleyin.
-            Ödeme ayarlarını tamamlamak için Stripe hesabımıza
-            yönlendirileceksiniz. Ardından eğitimci profilinizi
-            oluşturabilirsiniz.
+            {
+              " Kleuize'de kurs yayınlayabilmek için ödeme ayarlarını düzenleyin. Ödeme ayarlarını tamamlamak için Stripe hesabımıza yönlendirileceksiniz. Ardından eğitimci profilinizi oluşturabilirsiniz. "
+            }
           </Typography>
 
           <Button
@@ -68,11 +67,11 @@ const BecomeInstructor: NextPageWithLayout = () => {
           >
             {loading ? "Yükleniyor..." : "Ödeme Ayarları"}
           </Button>
-          <br />
-          <Typography variant="subtitle1">
-            Eğitmenlik için sıkça sorulan sorular
-          </Typography>
-          <br />
+          <Stack sx={{ mb: 1, mt: 1 }}>
+            <Typography variant="subtitle1">
+              Eğitmenlik için sıkça sorulan sorular
+            </Typography>
+          </Stack>
           <BeInstructorFaq />
         </Box>
       </Page>

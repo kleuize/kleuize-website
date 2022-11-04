@@ -9,6 +9,7 @@ type Page = {
   title: string;
   meta?: React.ReactNode;
 };
+// eslint-disable-next-line react/display-name
 const Page = forwardRef(
   ({ children, title = "", meta, ...other }: Page, ref) => (
     <>

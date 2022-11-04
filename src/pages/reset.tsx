@@ -27,11 +27,9 @@ const Copyright = (props: any) => {
       {...props}
     >
       {"Copyright © "}
-      <a color="inherit" href="/">
-        Kleuize{" "}
-      </a>
+      Kleuize
       {new Date().getFullYear()}
-      {"."}
+
     </Typography>
   );
 };

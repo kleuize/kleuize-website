@@ -7,6 +7,7 @@ type SvgColor = {
   sx: {};
 };
 
+// eslint-disable-next-line react/display-name
 const SvgColor = forwardRef(({ src, sx, ...other }: any, ref: any) => (
   <Box
     component="span"
