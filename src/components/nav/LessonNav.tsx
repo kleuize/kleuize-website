@@ -18,6 +18,7 @@ import {
   Checkbox,
   IconButton,
   ListItemIcon,
+  Typography,
 } from "@mui/material";
 import { styled, Theme, CSSObject } from "@mui/material/styles";
 //icons
@@ -130,7 +131,7 @@ export const LessonNav = ({ lessons, slug }: any) => {
               disableRipple
               onClick={handleDrawerOpen}
               sx={{
-                lineHeight: 0,
+                color: "#08104D",
                 transition: (theme) =>
                   theme.transitions.create("transform", {
                     duration: theme.transitions.duration.shorter,
@@ -143,13 +144,7 @@ export const LessonNav = ({ lessons, slug }: any) => {
               <ChevronRightIcon />
             </IconButton>
             <Divider />
-            <Box
-              sx={{
-                bgcolor: openedItemId
-                  ? "rgba(41, 98, 174, 0.1)"
-                  : "rgba(41, 98, 174, 0.2)",
-              }}
-            >
+            <Box>
               {open ? (
                 <>
                   {lessons?.map(
@@ -188,9 +183,12 @@ export const LessonNav = ({ lessons, slug }: any) => {
                                   <ExpandMore />
                                 </ListItemIcon>
                               )}
-                              <ListItemText
+                              {/* <ListItemText
                                 primary={`Ders ${index + 1}: ${lessonTitle}`}
-                              />
+                              /> */}
+                              <Typography variant="body2">{`Ders ${
+                                index + 1
+                              }: ${lessonTitle}`}</Typography>
                             </ListItemButton>
                             <Divider />
                             <Collapse
@@ -210,7 +208,13 @@ export const LessonNav = ({ lessons, slug }: any) => {
                                       id={_id}
                                       onClick={handleQuizId}
                                     >
-                                      <ListItemText primary={quizTitle} />
+                                      {/* //   <ListItemText primary={quizTitle} /> */}
+                                      <Typography
+                                        variant="body2"
+                                        sx={{ ml: 2 }}
+                                      >
+                                        {quizTitle}
+                                      </Typography>
                                     </ListItemButton>
 
                                     <Checkbox

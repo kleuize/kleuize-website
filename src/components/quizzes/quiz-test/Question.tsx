@@ -10,10 +10,10 @@ interface QuestionProps {
 
 export const Question = ({ content }: QuestionProps) => {
   return (
-    <Card sx={{ minWidth: 275, mb: 2 }}>
+    <Card sx={{ minWidth: 275, mb: 2, border: 0.2 }}>
       <CardContent>
         <Typography sx={{ color: "#08104D" }} variant="body1">
-          {content}
+          <strong> {content}</strong>
         </Typography>
       </CardContent>
     </Card>

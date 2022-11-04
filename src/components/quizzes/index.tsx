@@ -1,15 +1,17 @@
 import React, { useEffect } from "react";
+//hooks
 import { useAppSelector, useAppDispatch } from "../../store/hooks";
-import Box from "@mui/material/Box";
-import Fade from "@mui/material/Fade";
-import Typography from "@mui/material/Typography";
-import { CardBox } from "./CardBox";
+//ctx
 import { resetState, getQuizByCode } from "../../store/quiz/quiz-slice";
-
 import { QuizIntro } from "./QuizIntro";
 import { QuizTest } from "./quiz-test/index";
 import { QuizResult } from "./QuizResult";
-import { Capitalize } from "../../utils/Capitalize";
+//@mui
+import Box from "@mui/material/Box";
+import Fade from "@mui/material/Fade";
+import Typography from "@mui/material/Typography";
+//components
+import { CardBox } from "./CardBox";
 import { LoadingSpinner } from "../LoadingSpinner";
 
 const Quizzes = ({ slug, quizId }: any) => {
