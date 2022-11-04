@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 //UI
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
@@ -15,9 +15,11 @@ import Button from "@mui/material/Button";
 import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 import { Tooltip } from "@material-ui/core";
 
-import { StudentRouterWrapper } from "../../../../components/layout/StudentLayout";
+import { StudentLayout } from "../../../../components/layout/StudentLayout";
 import { QuizTest } from "../../../../components/quizzes/quiz-test";
-import Quiz from "../../../../components/quizzes";
+import Quizzes from "../../../../components/quizzes";
+import { NextPageWithLayout } from "../../../../types";
+import Page from "../../../../components/Page";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -46,7 +48,7 @@ export async function getServerSideProps() {
   };
 }
 
-const quiz = () => {
+const Quiz: NextPageWithLayout = () => {
   const [course, setCourse] = useState<any>();
   const router = useRouter();
   const { slug, quizId } = router.query;
@@ -61,13 +63,30 @@ const quiz = () => {
   };
 
   return (
-    <StudentRouterWrapper>
-    
-              <Quiz slug={slug} quizId={quizId} />
-  
-    </StudentRouterWrapper>
+    <Page title="Test Çözüm">
+      <Grid
+        container
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+        marginTop={10}
+        marginLeft={5}
+        marginRight={5}
+      >
+        <Grid item container>
+          <Quizzes slug={slug} quizId={quizId} />
+        </Grid>
+      </Grid>
+    </Page>
   );
 };
+
+export default Quiz;
+
+Quiz.getLayout = function getLayout(page: React.ReactElement) {
+  return <StudentLayout>{page}</StudentLayout>;
+};
+
 //   return (
 //     <StudentRouterWrapper />
 //       {/* <Container component="main" maxWidth="lg">
@@ -147,5 +166,3 @@ const quiz = () => {
 
 //   );
 // };
-
-export default quiz;

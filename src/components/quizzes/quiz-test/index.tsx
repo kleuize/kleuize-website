@@ -11,6 +11,7 @@ import { Progress } from "./Progress";
 import { Question } from "./Question";
 import { Answers } from "./Answer";
 import { useRouter } from "next/router";
+import { Grid } from "@mui/material";
 
 const useStyles = makeStyles(() => ({
   button: {
@@ -20,7 +21,6 @@ const useStyles = makeStyles(() => ({
 }));
 
 export const QuizTest = () => {
-
   const { quizDetails, questionIndex, selectedAnswers } = useAppSelector(
     (state) => state.quiz
   );
@@ -29,7 +29,7 @@ export const QuizTest = () => {
   const { questions } = quizDetails;
 
   return (
-    <>
+    <Grid>
       <Timer />
 
       <Progress
@@ -37,7 +37,7 @@ export const QuizTest = () => {
         totalQuestions={questions.length}
       />
 
-      <Box mb={3}>
+      <Box mb={2}>
         {questions.map((question: any, index: number) => (
           <Fade
             key={question._id}
@@ -80,6 +80,6 @@ export const QuizTest = () => {
           Next
         </Button>
       )}
-    </>
+    </Grid>
   );
 };

@@ -11,7 +11,7 @@ import { QuizTest } from "./quiz-test/index";
 import { QuizResult } from "./QuizResult";
 import { useRouter } from "next/router";
 
-const Quiz = ({slug, quizId}: any) => {
+const Quizzes = ({ slug, quizId }: any) => {
   const {
     quizDetails,
     isLoading,
@@ -21,7 +21,7 @@ const Quiz = ({slug, quizId}: any) => {
     errorMessage,
   } = useAppSelector((state) => state.quiz);
   const dispatch = useAppDispatch();
- 
+
   // Getting quiz
   useEffect(() => {
     dispatch(resetState());
@@ -32,7 +32,6 @@ const Quiz = ({slug, quizId}: any) => {
   if (isLoading || isSubmitting) {
     return <Loading />;
   }
-
 
   if (errorMessage) {
     return (
@@ -52,14 +51,14 @@ const Quiz = ({slug, quizId}: any) => {
   if (quizResult >= 0) {
     return (
       <CardBox>
-        Test 
+        Test
         <QuizResult score={quizResult} />
       </CardBox>
     );
   }
 
   return (
-    <CardBox>
+    <Box sx={{ width: "100%", height: "100vh", textAlign: "center", }}>
       <Typography color="secondary" variant="h4" component="div" mb={1}>
         {quizDetails.quizTitle}
       </Typography>
@@ -88,8 +87,8 @@ const Quiz = ({slug, quizId}: any) => {
           </div>
         </Fade>
       </Box>
-    </CardBox>
+    </Box>
   );
 };
 
-export default Quiz;
+export default Quizzes;

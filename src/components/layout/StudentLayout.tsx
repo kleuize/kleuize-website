@@ -8,6 +8,7 @@ import { Box, Paper } from "@mui/material";
 import { ICourseViewProps } from "../../types";
 import { UserContext } from "../../context/UserContext";
 import Quiz from "../quizzes";
+import { LoadingSpinner } from "../LoadingSpinner";
 
 // export async function getServerSideProps({ query }: any) {
 //   const { data } = await axios.get(
@@ -22,7 +23,7 @@ import Quiz from "../quizzes";
 //   };
 // }
 
-export const StudentRouterWrapper = ({
+export const StudentLayout = ({
   children,
   showNav = true,
   data,
@@ -33,9 +34,7 @@ export const StudentRouterWrapper = ({
   const [course, setCourse] = useState<any>({});
   // router
   const router = useRouter();
-  const {slug} = router.query
-
- 
+  const { slug } = router.query;
 
   useEffect(() => {
     fetchUser();
@@ -54,8 +53,6 @@ export const StudentRouterWrapper = ({
     setCourse(data);
   };
 
-  console.log(course);
-
   const fetchUser = async () => {
     try {
       const { data } = await axios.get("/api/current-user");
@@ -71,25 +68,13 @@ export const StudentRouterWrapper = ({
   return (
     <>
       {!ok ? (
-        <SyncOutlined className={classes.rotateIcon} />
+        <LoadingSpinner />
       ) : (
-        <Box sx={{ mt: 10 }}>
+        <Box sx={{ display: "flex", flexDirection: "row" }}>
           <Box>
             <LessonNav lessons={course.lessons} slug={course.slug} />
           </Box>
-          <Suspense>
-            <Paper
-              sx={{
-                borderRadius: "unset",
-                boxShadow: "none",
-                // backgroundColor: "#fafafa",
-                minHeight: "calc(100vh - 4rem)",
-                marginLeft: 40,
-              }}
-            >
-              {children}
-            </Paper>
-          </Suspense>
+          <Suspense>{children}</Suspense>
         </Box>
       )}
     </>

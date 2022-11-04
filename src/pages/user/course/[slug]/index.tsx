@@ -1,5 +1,6 @@
-export {};import { Container, Box, Button, Stack, Drawer, Toolbar } from "@mui/material";
-import { StudentRouterWrapper } from "../../../../components/layout/StudentLayout";
+export {};
+import { Container, Box, Button, Stack, Drawer, Toolbar } from "@mui/material";
+import { StudentLayout } from "../../../../components/layout/StudentLayout";
 import { useRouter } from "next/router";
 import { styled } from "@mui/material/styles";
 import { useEffect, useState } from "react";
@@ -7,6 +8,7 @@ import axios from "axios";
 import { LessonAccordion } from "../../../../components/accordion/LessonAccordion";
 import { SingleCourseLessons } from "../../../../components/cards/SingleCourseLessons";
 import Quiz from "../../../../components/quizzes";
+import Page from "../../../../components/Page";
 
 const drawerWidth = 280;
 
@@ -25,7 +27,7 @@ const LessonLayout = styled("div")(({ theme }) => ({
   width: "75%",
   height: 500,
   marginTop: 5,
-  marginLeft: 30
+  marginLeft: 30,
 }));
 
 const SingleCourse = () => {
@@ -50,12 +52,11 @@ const SingleCourse = () => {
     setCourse(data);
   };
 
-  
-  return (
-    <StudentRouterWrapper>
-        Başlamak için seçim yapın
-    </StudentRouterWrapper>
-  );
+  return <Page title="Soru Çözümü">Başlamak için seçim yapın</Page>;
 };
 
 export default SingleCourse;
+
+SingleCourse.getLayout = function getLayout(page: React.ReactElement) {
+  return <StudentLayout>{page}</StudentLayout>;
+};

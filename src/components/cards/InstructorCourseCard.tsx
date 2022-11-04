@@ -60,7 +60,7 @@ const StyledCover = styled("img")({
 
 // -----------------------------InstructorCard------------------------------------ //
 
-export const InstructorCard = ({ course, index }: any) => {
+export const InstructorCourseCard = ({ course, index }: any) => {
   const {
     name,
     slug,
