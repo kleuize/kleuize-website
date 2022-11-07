@@ -8,7 +8,7 @@ import Box from "@mui/material/Box";
 import { useRouter } from "next/router";
 //ctx
 import { getQuizByCode, resetQuiz } from "../../store/quiz/quiz-slice";
-import { useAppDispatch } from "../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 //@mui
 import MuiDrawer from "@mui/material/Drawer";
 import {
@@ -25,6 +25,7 @@ import { styled, Theme, CSSObject } from "@mui/material/styles";
 import { ExpandLess } from "@mui/icons-material";
 import { ExpandMore } from "@mui/icons-material";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import { useCompletedQuiz } from "../../context/CompletedQuiz";
 
 const drawerWidth = 330;
 
@@ -83,6 +84,7 @@ export const LessonNav = ({ lessons, slug }: any) => {
   const [quizId, setQuizId] = useState();
   const [checked, setChecked] = useState(true);
 
+  const { setClickedQuizIndex } = useCompletedQuiz();
   const handleDrawerOpen = () => {
     setOpen(!open);
   };
@@ -101,9 +103,10 @@ export const LessonNav = ({ lessons, slug }: any) => {
     }
   };
 
-  const handleQuizId = (e: React.MouseEvent<HTMLElement>) => {
+  const handleQuizId = (e: React.MouseEvent<HTMLElement>, index: number) => {
     let currentQuizId: any = e.currentTarget.id;
     setQuizId(currentQuizId);
+    setClickedQuizIndex(index)
     router.push(
       {
         pathname: "/user/course/[slug]/[quizId]",
@@ -199,7 +202,7 @@ export const LessonNav = ({ lessons, slug }: any) => {
                               {openedItemId &&
                                 quiz.map(({ _id, quizTitle }: any) => (
                                   <Stack
-                                  key={_id}
+                                    key={_id}
                                     sx={{
                                       display: "flex",
                                       flexDirection: "row",
@@ -207,9 +210,8 @@ export const LessonNav = ({ lessons, slug }: any) => {
                                   >
                                     <ListItemButton
                                       id={_id}
-                                      onClick={handleQuizId}
+                                      onClick={(event) => handleQuizId(event, index)}
                                     >
-                                      {/* //   <ListItemText primary={quizTitle} /> */}
                                       <Typography
                                         variant="body2"
                                         sx={{ ml: 2 }}
@@ -217,8 +219,8 @@ export const LessonNav = ({ lessons, slug }: any) => {
                                         {quizTitle}
                                       </Typography>
                                     </ListItemButton>
-
                                     <Checkbox
+                                      checked={false}
                                       inputProps={{
                                         "aria-label": "controlled",
                                       }}

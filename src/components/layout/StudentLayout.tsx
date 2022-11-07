@@ -23,12 +23,7 @@ import { LoadingSpinner } from "../LoadingSpinner";
 //   };
 // }
 
-export const StudentLayout = ({
-  children,
-  showNav = true,
-  data,
-}: any) => {
-  const classes = useRotateIconStyles();
+export const StudentLayout = ({ children, showNav = true, data }: any) => {
   // state
   const [ok, setOk] = useState(false);
   const [course, setCourse] = useState<any>({});
@@ -72,7 +67,10 @@ export const StudentLayout = ({
       ) : (
         <Box sx={{ display: "flex", flexDirection: "row" }}>
           <Box>
-            <LessonNav lessons={course.lessons} slug={course.slug} />
+            <LessonNav
+              lessons={course.lessons}
+              slug={course.slug}
+            />
           </Box>
           <Suspense>{children}</Suspense>
         </Box>

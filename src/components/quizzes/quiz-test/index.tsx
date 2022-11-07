@@ -17,6 +17,7 @@ import { Question } from "./Question";
 import { Answers } from "./Answer";
 import { useRouter } from "next/router";
 import { Grid } from "@mui/material";
+import { useCompletedQuiz } from "../../../context/CompletedQuiz";
 
 const useStyles = makeStyles(() => ({
   button: {
@@ -31,8 +32,14 @@ export const QuizTest = (slug: any) => {
   );
 
   const dispatch = useAppDispatch();
+  const { markCompleted } = useCompletedQuiz();
 
   const { questions } = quizDetails;
+
+  const handleSubmitQuiz = () => {
+    markCompleted();
+    dispatch(getQuizResult());
+  };
 
   return (
     <Grid>
@@ -67,18 +74,18 @@ export const QuizTest = (slug: any) => {
       {questionIndex + 1 >= questions.length ? (
         <>
           <Button
-           sx={{mr: 3}}
+            sx={{ mr: 3 }}
             variant="contained"
             color="primary"
             onClick={() => dispatch(previousQuestion())}
             disabled={questionIndex === 0}
           >
-           Önceki Soru
+            Önceki Soru
           </Button>
           <Button
             variant="contained"
             color="primary"
-            onClick={() => dispatch(getQuizResult())}
+            onClick={handleSubmitQuiz}
             disabled={!selectedAnswers[questionIndex]}
           >
             Tamamla
@@ -87,7 +94,7 @@ export const QuizTest = (slug: any) => {
       ) : (
         <>
           <Button
-          sx={{mr: 3}}
+            sx={{ mr: 3 }}
             variant="contained"
             color="primary"
             onClick={() => dispatch(previousQuestion())}
