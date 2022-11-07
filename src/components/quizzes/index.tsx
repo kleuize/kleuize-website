@@ -60,6 +60,8 @@ const Quizzes = ({ slug, quizId }: any) => {
     );
   }
 
+  console.log(quizResult)
+
   return (
     <Box sx={{ width: "100%", height: "100vh", textAlign: "center" }}>
       <Typography color="secondary" variant="h4" component="div" mb={1}>
@@ -86,7 +88,7 @@ const Quizzes = ({ slug, quizId }: any) => {
           unmountOnExit
         >
           <div>
-            <QuizTest />
+            <QuizTest slug={slug}/>
           </div>
         </Fade>
       </Box>

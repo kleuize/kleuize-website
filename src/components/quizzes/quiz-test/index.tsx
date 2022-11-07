@@ -4,7 +4,12 @@ import { makeStyles } from "@mui/styles";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Fade from "@mui/material/Fade";
-import { nextQuestion, getQuizResult, resetState } from "../../../store/quiz/quiz-slice";
+import {
+  nextQuestion,
+  getQuizResult,
+  resetState,
+  previousQuestion,
+} from "../../../store/quiz/quiz-slice";
 
 import { Timer } from "./Timer";
 import { Progress } from "./Progress";
@@ -20,17 +25,14 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export const QuizTest = () => {
+export const QuizTest = (slug: any) => {
   const { quizDetails, questionIndex, selectedAnswers } = useAppSelector(
     (state) => state.quiz
   );
+
   const dispatch = useAppDispatch();
 
   const { questions } = quizDetails;
-
-  const handleSubmit = () => {
-    dispatch(getQuizResult());
-  };
 
   return (
     <Grid>
@@ -63,23 +65,45 @@ export const QuizTest = () => {
       </Box>
 
       {questionIndex + 1 >= questions.length ? (
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleSubmit}
-          disabled={!selectedAnswers[questionIndex]}
-        >
-          Tamamla
-        </Button>
+        <>
+          <Button
+           sx={{mr: 3}}
+            variant="contained"
+            color="primary"
+            onClick={() => dispatch(previousQuestion())}
+            disabled={questionIndex === 0}
+          >
+           Önceki Soru
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => dispatch(getQuizResult())}
+            disabled={!selectedAnswers[questionIndex]}
+          >
+            Tamamla
+          </Button>
+        </>
       ) : (
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => dispatch(nextQuestion())}
-          disabled={!selectedAnswers[questionIndex]}
-        >
-          Next
-        </Button>
+        <>
+          <Button
+          sx={{mr: 3}}
+            variant="contained"
+            color="primary"
+            onClick={() => dispatch(previousQuestion())}
+            disabled={questionIndex === 0}
+          >
+            Önceki Soru
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => dispatch(nextQuestion())}
+            disabled={!selectedAnswers[questionIndex]}
+          >
+            Sonraki Soru
+          </Button>
+        </>
       )}
     </Grid>
   );
