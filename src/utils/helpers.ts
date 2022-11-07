@@ -17,7 +17,6 @@ export const currencyFormatter = (data: any) => {
       return `${minutesString}:${secondsString}`;
     } else {
       const hoursString = hours.toString().padStart(2, "0");
-  
       return `${hoursString}:${minutesString}:${secondsString}`;
     }
   };
