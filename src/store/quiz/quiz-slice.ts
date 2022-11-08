@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppThunk, RootState } from "../store";
+import { useCompletedQuiz } from "../../context/CompletedQuiz";
 
 export interface QuestionAnswer {
   id: string;
@@ -131,22 +132,42 @@ export const getQuizByCode =
     }
   };
 
-export const getQuizResult = (): AppThunk => async (dispatch, getState) => {
+export const getQuizResult = (course: any): AppThunk => async (dispatch, getState) => {
+  
   dispatch(setSubmitting());
   //@ts-ignore
   const { quizDetails, selectedAnswers } = selectQuiz(getState());
 
-  const quizId = quizDetails._id;
+  const { questions } = quizDetails;
+  let correctAnswersCount = 0;
+
+  questions.forEach((question: any, questionIndex: number) => {
+    // We check if the selected answer equals one of the answers, if yes, we increment the correctAnswers count
+    const { answers } = question;
+    for (let index = 0; index < answers.length; index++) {
+      const answer: any = answers[index];
+      const isSelected = selectedAnswers[questionIndex] === answer._id;
+
+      if (isSelected) {
+        // If the selected answer is correct, we increase the count
+        if (answer.isCorrect) {
+          correctAnswersCount++;
+        }
+        break;
+      }
+    }
+  });
+  const score = Math.round((100 * correctAnswersCount) / questions.length);
 
   try {
-    const res: AxiosResponse = await axios.post(
-      `/user/course/result/${quizId}`,
-      {
-        selectedAnswers,
-      }
-    );
+    const res = await axios.post(`/api/mark-completed`, {
+      courseId: course._id,
+      quizId: quizDetails._id,
+      score,
+    });
 
-    dispatch(submitSuccess(res.data));
+    console.log(res.data)
+    dispatch(submitSuccess(score));
   } catch (error) {
     const { response } = error as AxiosError;
 

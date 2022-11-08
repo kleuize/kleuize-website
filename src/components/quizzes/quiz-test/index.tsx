@@ -1,6 +1,8 @@
 import React from "react";
+//ctx
+import { useCompletedQuiz } from "../../../context/CompletedQuiz";
 import { useAppSelector, useAppDispatch } from "../../../store/hooks";
-import { makeStyles } from "@mui/styles";
+//@mui
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Fade from "@mui/material/Fade";
@@ -10,36 +12,22 @@ import {
   resetState,
   previousQuestion,
 } from "../../../store/quiz/quiz-slice";
-
+//components
 import { Timer } from "./Timer";
 import { Progress } from "./Progress";
 import { Question } from "./Question";
 import { Answers } from "./Answer";
-import { useRouter } from "next/router";
 import { Grid } from "@mui/material";
-import { useCompletedQuiz } from "../../../context/CompletedQuiz";
 
-const useStyles = makeStyles(() => ({
-  button: {
-    width: "115px",
-    padding: "10px",
-  },
-}));
+export const QuizTest = () => {
+  const dispatch = useAppDispatch();
+  const { course } = useCompletedQuiz();
 
-export const QuizTest = (slug: any) => {
   const { quizDetails, questionIndex, selectedAnswers } = useAppSelector(
     (state) => state.quiz
   );
 
-  const dispatch = useAppDispatch();
-  const { markCompleted } = useCompletedQuiz();
-
   const { questions } = quizDetails;
-
-  const handleSubmitQuiz = () => {
-    markCompleted();
-    dispatch(getQuizResult());
-  };
 
   return (
     <Grid>
@@ -85,7 +73,7 @@ export const QuizTest = (slug: any) => {
           <Button
             variant="contained"
             color="primary"
-            onClick={handleSubmitQuiz}
+            onClick={() => dispatch(getQuizResult(course))}
             disabled={!selectedAnswers[questionIndex]}
           >
             Tamamla

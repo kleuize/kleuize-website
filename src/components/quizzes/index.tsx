@@ -14,7 +14,7 @@ import Typography from "@mui/material/Typography";
 import { CardBox } from "./CardBox";
 import { LoadingSpinner } from "../LoadingSpinner";
 
-const Quizzes = ({ slug, quizId }: any) => {
+const Quizzes = ({ slug, quizId,  }: any) => {
   const {
     quizDetails,
     isLoading,
@@ -86,7 +86,7 @@ const Quizzes = ({ slug, quizId }: any) => {
           unmountOnExit
         >
           <div>
-            <QuizTest slug={slug} />
+            <QuizTest />
           </div>
         </Fade>
       </Box>

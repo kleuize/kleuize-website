@@ -25,7 +25,6 @@ import { styled, Theme, CSSObject } from "@mui/material/styles";
 import { ExpandLess } from "@mui/icons-material";
 import { ExpandMore } from "@mui/icons-material";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { useCompletedQuiz } from "../../context/CompletedQuiz";
 
 const drawerWidth = 330;
 
@@ -84,7 +83,6 @@ export const LessonNav = ({ lessons, slug }: any) => {
   const [quizId, setQuizId] = useState();
   const [checked, setChecked] = useState(true);
 
-  const { setClickedQuizIndex } = useCompletedQuiz();
   const handleDrawerOpen = () => {
     setOpen(!open);
   };
@@ -103,10 +101,9 @@ export const LessonNav = ({ lessons, slug }: any) => {
     }
   };
 
-  const handleQuizId = (e: React.MouseEvent<HTMLElement>, index: number) => {
+  const handleQuizId = (e: React.MouseEvent<HTMLElement>) => {
     let currentQuizId: any = e.currentTarget.id;
     setQuizId(currentQuizId);
-    setClickedQuizIndex(index)
     router.push(
       {
         pathname: "/user/course/[slug]/[quizId]",
@@ -210,7 +207,7 @@ export const LessonNav = ({ lessons, slug }: any) => {
                                   >
                                     <ListItemButton
                                       id={_id}
-                                      onClick={(event) => handleQuizId(event, index)}
+                                      onClick={handleQuizId}
                                     >
                                       <Typography
                                         variant="body2"
