@@ -1,5 +1,6 @@
 import React, { forwardRef, useState } from "react";
 //UI
+import { blue } from "@mui/material/colors";
 import ListItemText from "@material-ui/core/ListItemText";
 import Collapse from "@material-ui/core/Collapse";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -8,14 +9,14 @@ import Box from "@mui/material/Box";
 import { useRouter } from "next/router";
 //ctx
 import { getQuizByCode, resetQuiz } from "../../store/quiz/quiz-slice";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { useAppDispatch } from "../../store/hooks";
+import { useCompletedQuiz } from "../../context/CompletedQuiz";
 //@mui
 import MuiDrawer from "@mui/material/Drawer";
 import {
   Divider,
   List,
   Stack,
-  Checkbox,
   IconButton,
   ListItemIcon,
   Typography,
@@ -25,6 +26,7 @@ import { styled, Theme, CSSObject } from "@mui/material/styles";
 import { ExpandLess } from "@mui/icons-material";
 import { ExpandMore } from "@mui/icons-material";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
 
 const drawerWidth = 330;
 
@@ -83,6 +85,7 @@ export const LessonNav = ({ lessons, slug }: any) => {
   const [quizId, setQuizId] = useState();
   const [checked, setChecked] = useState(true);
 
+  const { completedQuiz } = useCompletedQuiz();
   const handleDrawerOpen = () => {
     setOpen(!open);
   };
@@ -183,9 +186,6 @@ export const LessonNav = ({ lessons, slug }: any) => {
                                   <ExpandMore />
                                 </ListItemIcon>
                               )}
-                              {/* <ListItemText
-                                primary={`Ders ${index + 1}: ${lessonTitle}`}
-                              /> */}
                               <Typography variant="body2">{`Ders ${
                                 index + 1
                               }: ${lessonTitle}`}</Typography>
@@ -206,6 +206,9 @@ export const LessonNav = ({ lessons, slug }: any) => {
                                     }}
                                   >
                                     <ListItemButton
+                                      disabled={completedQuiz.find(
+                                        (id: any) => id.quizId === _id
+                                      )}
                                       id={_id}
                                       onClick={handleQuizId}
                                     >
@@ -215,13 +218,21 @@ export const LessonNav = ({ lessons, slug }: any) => {
                                       >
                                         {quizTitle}
                                       </Typography>
+
+                                      <ListItemIcon
+                                        sx={{
+                                          ml: "auto",
+                                          mr: -5,
+                                          color: completedQuiz.find(
+                                            (id: any) => id.quizId === _id
+                                          )
+                                            ? blue[900]
+                                            : "white",
+                                        }}
+                                      >
+                                        <DoneOutlinedIcon />
+                                      </ListItemIcon>
                                     </ListItemButton>
-                                    <Checkbox
-                                      checked={false}
-                                      inputProps={{
-                                        "aria-label": "controlled",
-                                      }}
-                                    />
                                   </Stack>
                                 ))}
                               <Divider />

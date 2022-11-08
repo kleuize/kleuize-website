@@ -42,6 +42,7 @@ export const CompletedQuizContextProvider: React.FC<Children> = ({
 
   const values = {
     course,
+    completedQuiz
   };
 
   return (
