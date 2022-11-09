@@ -33,7 +33,11 @@ const Quizzes = ({ slug, quizId }: any) => {
   }, []);
 
   if (isLoading || isSubmitting) {
-    return <LoadingSpinner />;
+    return (
+      <Box sx={{ width: "100%", height: "100vh", textAlign: "center" }}>
+        <LoadingSpinner />
+      </Box>
+    );
   }
 
   if (errorMessage) {
@@ -53,14 +57,11 @@ const Quizzes = ({ slug, quizId }: any) => {
 
   if (quizResult >= 0) {
     return (
-      <CardBox>
-        Test
+      <Box sx={{ width: "100%", height: "100vh", textAlign: "center" }}>
         <QuizResult score={quizResult} />
-      </CardBox>
+      </Box>
     );
   }
-
-  console.log(quizResult)
 
   return (
     <Box sx={{ width: "100%", height: "100vh", textAlign: "center" }}>
@@ -88,7 +89,7 @@ const Quizzes = ({ slug, quizId }: any) => {
           unmountOnExit
         >
           <div>
-            <QuizTest slug={slug}/>
+            <QuizTest />
           </div>
         </Fade>
       </Box>

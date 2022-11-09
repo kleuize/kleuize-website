@@ -1,5 +1,6 @@
-import React, { forwardRef, useState } from "react";
+import React, { forwardRef, useEffect, useState } from "react";
 //UI
+import { blue } from "@mui/material/colors";
 import ListItemText from "@material-ui/core/ListItemText";
 import Collapse from "@material-ui/core/Collapse";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -7,15 +8,15 @@ import Box from "@mui/material/Box";
 //next
 import { useRouter } from "next/router";
 //ctx
-import { getQuizByCode, resetQuiz } from "../../store/quiz/quiz-slice";
-import { useAppDispatch } from "../../store/hooks";
+import { completeQuiz, getQuizByCode, loadCompletedQuiz, resetQuiz, resetState } from "../../store/quiz/quiz-slice";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { useCompletedQuiz } from "../../context/CompletedQuiz";
 //@mui
 import MuiDrawer from "@mui/material/Drawer";
 import {
   Divider,
   List,
   Stack,
-  Checkbox,
   IconButton,
   ListItemIcon,
   Typography,
@@ -25,6 +26,7 @@ import { styled, Theme, CSSObject } from "@mui/material/styles";
 import { ExpandLess } from "@mui/icons-material";
 import { ExpandMore } from "@mui/icons-material";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
 
 const drawerWidth = 330;
 
@@ -75,13 +77,23 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-export const LessonNav = ({ lessons, slug }: any) => {
+export const LessonNav = ({  course, lessons, slug }: any) => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const [open, setOpen] = useState<boolean>(false);
   const [openedItemId, setOpenedItemId] = useState<boolean>(true);
   const [quizId, setQuizId] = useState();
   const [checked, setChecked] = useState(true);
+
+  const {
+    completedQuiz
+  } = useAppSelector((state) => state.quiz);
+
+  const { completedQuizzes } = useCompletedQuiz();
+
+  useEffect(() => {
+    dispatch(loadCompletedQuiz(course))
+  }, [])
 
   const handleDrawerOpen = () => {
     setOpen(!open);
@@ -113,6 +125,7 @@ export const LessonNav = ({ lessons, slug }: any) => {
     );
     dispatch(getQuizByCode(slug, quizId));
     dispatch(resetQuiz());
+    dispatch(resetState());
   };
 
   return (
@@ -183,9 +196,6 @@ export const LessonNav = ({ lessons, slug }: any) => {
                                   <ExpandMore />
                                 </ListItemIcon>
                               )}
-                              {/* <ListItemText
-                                primary={`Ders ${index + 1}: ${lessonTitle}`}
-                              /> */}
                               <Typography variant="body2">{`Ders ${
                                 index + 1
                               }: ${lessonTitle}`}</Typography>
@@ -199,30 +209,45 @@ export const LessonNav = ({ lessons, slug }: any) => {
                               {openedItemId &&
                                 quiz.map(({ _id, quizTitle }: any) => (
                                   <Stack
-                                  key={_id}
+                                    key={_id}
                                     sx={{
                                       display: "flex",
                                       flexDirection: "row",
                                     }}
                                   >
                                     <ListItemButton
+                                      disabled={completedQuizzes.find(
+                                        (id: any) => id.quizId === _id
+                                      ) || completedQuiz === _id}
+                                      // disabled={completedQuiz === _id}
                                       id={_id}
                                       onClick={handleQuizId}
                                     >
-                                      {/* //   <ListItemText primary={quizTitle} /> */}
                                       <Typography
                                         variant="body2"
                                         sx={{ ml: 2 }}
                                       >
                                         {quizTitle}
                                       </Typography>
-                                    </ListItemButton>
 
-                                    <Checkbox
-                                      inputProps={{
-                                        "aria-label": "controlled",
-                                      }}
-                                    />
+                                      <ListItemIcon
+                                        sx={{
+                                          ml: "auto",
+                                          mr: -5,
+                                          color: completedQuizzes.find(
+                                            (id: any) => id.quizId === _id
+                                          ) || completedQuiz === _id
+                                            ? blue[900]
+                                            : "white",
+                                          //  color: completedQuiz === _id
+                                         
+                                          //   ? blue[900]
+                                          //   : "white",
+                                        }}
+                                      >
+                                        <DoneOutlinedIcon />
+                                      </ListItemIcon>
+                                    </ListItemButton>
                                   </Stack>
                                 ))}
                               <Divider />

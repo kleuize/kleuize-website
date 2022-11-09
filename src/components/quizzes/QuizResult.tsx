@@ -15,14 +15,14 @@ export const QuizResult: React.FC<QuizResultProps> = ({ score }) => {
       </Typography>
 
       <Box mb={4}>
-        <CircularProgressWithLabel value={100} />
+        <CircularProgressWithLabel value={score} />
       </Box>
 
       <Typography variant="h6" mb={1}>
-        You have completed the quiz.
+        Tebrikler, testi tamamladınız. Sıradaki teste geçebilirsiniz.
       </Typography>
       <Typography variant="h6">
-        You answered <strong> {score}%</strong> of the questions correctly.
+        Sorulara <strong>%{score}</strong> oranında doğru cevap verdiniz.
       </Typography>
     </>
   );

@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppThunk, RootState } from "../store";
-import { ParsedUrlQuery } from "querystring";
+import { useCompletedQuiz } from "../../context/CompletedQuiz";
 
 export interface QuestionAnswer {
   id: string;
@@ -30,9 +30,23 @@ export interface QuizState {
   isSubmitting: boolean;
   quizResult: number;
   errorMessage: any;
+  completedQuiz?: Array<any>;
 }
 
 const initialState: QuizState = {
+  quizDetails: {} as QuizDetail,
+  questionIndex: 0,
+  selectedAnswers: [],
+  completedQuiz: [],
+  isLoading: true,
+  quizStarted: false,
+  quizTimer: "00:00",
+  isSubmitting: false,
+  quizResult: -1, // After getting the result from backend, it becomes 0 or higher
+  errorMessage: "",
+};
+
+const initialState1: QuizState = {
   quizDetails: {} as QuizDetail,
   questionIndex: 0,
   selectedAnswers: [],
@@ -90,6 +104,9 @@ export const quizSlice = createSlice({
       state.quizResult = action.payload;
       state.isSubmitting = false;
     },
+    completeQuiz: (state, action: PayloadAction<any>) => {
+      state.completedQuiz = action.payload;
+    },
   },
 });
 
@@ -106,6 +123,7 @@ export const {
   submitFail,
   submitSuccess,
   resetQuiz,
+  completeQuiz,
 } = quizSlice.actions;
 
 export const selectQuiz = (state: RootState) => state.quiz;
@@ -117,7 +135,6 @@ export const getQuizByCode =
       const res: AxiosResponse = await axios.get(`/api/user/lessons/${slug}/`);
       const course = res.data;
       const Alllesson = course.lessons;
-      console.log(Alllesson);
       Alllesson.forEach((element: any) =>
         element.quiz
           .filter((id: any) => id._id === quizId)
@@ -132,24 +149,54 @@ export const getQuizByCode =
     }
   };
 
+export const loadCompletedQuiz =
+  (course: any): AppThunk =>
+  async (dispatch) => {
+    const { data } = await axios.post(`/api/list-completed`, {
+      courseId: course._id,
+    });
+    console.log("COMPLETED LESSONS => ", data);
+    dispatch(completeQuiz(data));
+  };
+
 export const getQuizResult =
-  (): AppThunk =>
+  (course: any): AppThunk =>
   async (dispatch, getState) => {
     dispatch(setSubmitting());
     //@ts-ignore
     const { quizDetails, selectedAnswers } = selectQuiz(getState());
 
-    const quizId = quizDetails._id;
+    const { questions } = quizDetails;
+    let correctAnswersCount = 0;
+
+    questions.forEach((question: any, questionIndex: number) => {
+      // We check if the selected answer equals one of the answers, if yes, we increment the correctAnswers count
+      const { answers } = question;
+      for (let index = 0; index < answers.length; index++) {
+        const answer: any = answers[index];
+        const isSelected = selectedAnswers[questionIndex] === answer._id;
+
+        if (isSelected) {
+          // If the selected answer is correct, we increase the count
+          if (answer.isCorrect) {
+            correctAnswersCount++;
+          }
+          break;
+        }
+      }
+    });
+    const score = Math.round((100 * correctAnswersCount) / questions.length);
 
     try {
-      const res: AxiosResponse = await axios.post(
-        `/user/course/result/${quizId}`,
-        {
-          selectedAnswers,
-        }
-      );
+      const res = await axios.post(`/api/mark-completed`, {
+        courseId: course._id,
+        quizId: quizDetails._id,
+        score,
+      });
 
-      dispatch(submitSuccess(res.data));
+      console.log("res", res);
+      dispatch(submitSuccess(score));
+      dispatch(completeQuiz(quizDetails._id));
     } catch (error) {
       const { response } = error as AxiosError;
 

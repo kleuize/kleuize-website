@@ -5,7 +5,9 @@ import { NextPageWithLayout } from "../types";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 //ctx
+import { CompletedQuizContextProvider } from "../context/CompletedQuiz";
 import { UserProvider } from "./../context/UserContext";
+//redux
 import { Provider } from "react-redux";
 import { store } from "../store/store";
 //theme
@@ -24,9 +26,11 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     <ThemeProvider>
       <Provider store={store}>
         <UserProvider>
-          <ToastContainer position="top-center" />
-          <ResponsiveAppBar />
-          {getLayout(<Component {...pageProps} />)}
+          <CompletedQuizContextProvider>
+            <ToastContainer position="top-center" />
+            <ResponsiveAppBar />
+            {getLayout(<Component {...pageProps} />)}
+          </CompletedQuizContextProvider>
         </UserProvider>
       </Provider>
     </ThemeProvider>
