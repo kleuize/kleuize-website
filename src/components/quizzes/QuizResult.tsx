@@ -22,7 +22,7 @@ export const QuizResult: React.FC<QuizResultProps> = ({ score }) => {
         Tebrikler, testi tamamladınız. Sıradaki teste geçebilirsiniz.
       </Typography>
       <Typography variant="h6">
-        <strong> {score}%</strong> soruya doğru cevap verdiniz.
+        Sorulara <strong>%{score}</strong> oranında doğru cevap verdiniz.
       </Typography>
     </>
   );
