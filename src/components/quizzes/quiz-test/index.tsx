@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 //ctx
 import { useCompletedQuiz } from "../../../context/CompletedQuiz";
 import { useAppSelector, useAppDispatch } from "../../../store/hooks";
@@ -22,6 +22,8 @@ import { Grid } from "@mui/material";
 export const QuizTest = () => {
   const dispatch = useAppDispatch();
   const { course } = useCompletedQuiz();
+
+ 
 
   const { quizDetails, questionIndex, selectedAnswers } = useAppSelector(
     (state) => state.quiz

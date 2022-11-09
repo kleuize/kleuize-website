@@ -68,6 +68,7 @@ export const StudentLayout = ({ children, showNav = true, data }: any) => {
         <Box sx={{ display: "flex", flexDirection: "row" }}>
           <Box>
             <LessonNav
+              course={course}
               lessons={course.lessons}
               slug={course.slug}
             />

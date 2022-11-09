@@ -13,7 +13,7 @@ export const CompletedQuizContext = createContext<any | null>(null);
 export const CompletedQuizContextProvider: React.FC<Children> = ({
   children,
 }) => {
-  const [completedQuiz, setCompletedQuiz] = useState([]);
+  const [completedQuizzes, setCompletedQuizzes] = useState([]);
   const [course, setCourse] = useState<any>();
 
   const router = useRouter();
@@ -37,12 +37,12 @@ export const CompletedQuizContextProvider: React.FC<Children> = ({
       courseId: course._id,
     });
     console.log("COMPLETED LESSONS => ", data);
-    setCompletedQuiz(data);
+    setCompletedQuizzes(data);
   };
 
   const values = {
     course,
-    completedQuiz
+    completedQuizzes
   };
 
   return (

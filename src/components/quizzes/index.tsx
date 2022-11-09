@@ -54,7 +54,6 @@ const Quizzes = ({ slug, quizId,  }: any) => {
   if (quizResult >= 0) {
     return (
       <CardBox>
-        Test
         <QuizResult score={quizResult} />
       </CardBox>
     );

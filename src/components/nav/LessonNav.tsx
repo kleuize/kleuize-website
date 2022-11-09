@@ -1,4 +1,4 @@
-import React, { forwardRef, useState } from "react";
+import React, { forwardRef, useEffect, useState } from "react";
 //UI
 import { blue } from "@mui/material/colors";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -8,8 +8,8 @@ import Box from "@mui/material/Box";
 //next
 import { useRouter } from "next/router";
 //ctx
-import { getQuizByCode, resetQuiz } from "../../store/quiz/quiz-slice";
-import { useAppDispatch } from "../../store/hooks";
+import { completeQuiz, getQuizByCode, loadCompletedQuiz, resetQuiz, resetState } from "../../store/quiz/quiz-slice";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { useCompletedQuiz } from "../../context/CompletedQuiz";
 //@mui
 import MuiDrawer from "@mui/material/Drawer";
@@ -77,7 +77,7 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-export const LessonNav = ({ lessons, slug }: any) => {
+export const LessonNav = ({  course, lessons, slug }: any) => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const [open, setOpen] = useState<boolean>(false);
@@ -85,7 +85,16 @@ export const LessonNav = ({ lessons, slug }: any) => {
   const [quizId, setQuizId] = useState();
   const [checked, setChecked] = useState(true);
 
-  const { completedQuiz } = useCompletedQuiz();
+  const {
+    completedQuiz
+  } = useAppSelector((state) => state.quiz);
+
+  const { completedQuizzes } = useCompletedQuiz();
+
+  useEffect(() => {
+    dispatch(loadCompletedQuiz(course))
+  }, [])
+
   const handleDrawerOpen = () => {
     setOpen(!open);
   };
@@ -116,6 +125,7 @@ export const LessonNav = ({ lessons, slug }: any) => {
     );
     dispatch(getQuizByCode(slug, quizId));
     dispatch(resetQuiz());
+    dispatch(resetState());
   };
 
   return (
@@ -206,9 +216,10 @@ export const LessonNav = ({ lessons, slug }: any) => {
                                     }}
                                   >
                                     <ListItemButton
-                                      disabled={completedQuiz.find(
+                                      disabled={completedQuizzes.find(
                                         (id: any) => id.quizId === _id
-                                      )}
+                                      ) || completedQuiz === _id}
+                                      // disabled={completedQuiz === _id}
                                       id={_id}
                                       onClick={handleQuizId}
                                     >
@@ -223,11 +234,15 @@ export const LessonNav = ({ lessons, slug }: any) => {
                                         sx={{
                                           ml: "auto",
                                           mr: -5,
-                                          color: completedQuiz.find(
+                                          color: completedQuizzes.find(
                                             (id: any) => id.quizId === _id
-                                          )
+                                          ) || completedQuiz === _id
                                             ? blue[900]
                                             : "white",
+                                          //  color: completedQuiz === _id
+                                         
+                                          //   ? blue[900]
+                                          //   : "white",
                                         }}
                                       >
                                         <DoneOutlinedIcon />
