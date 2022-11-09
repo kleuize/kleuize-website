@@ -14,7 +14,7 @@ import Typography from "@mui/material/Typography";
 import { CardBox } from "./CardBox";
 import { LoadingSpinner } from "../LoadingSpinner";
 
-const Quizzes = ({ slug, quizId,  }: any) => {
+const Quizzes = ({ slug, quizId }: any) => {
   const {
     quizDetails,
     isLoading,
@@ -33,7 +33,11 @@ const Quizzes = ({ slug, quizId,  }: any) => {
   }, []);
 
   if (isLoading || isSubmitting) {
-    return <LoadingSpinner />;
+    return (
+      <Box sx={{ width: "100%", height: "100vh", textAlign: "center" }}>
+        <LoadingSpinner />
+      </Box>
+    );
   }
 
   if (errorMessage) {
@@ -53,9 +57,9 @@ const Quizzes = ({ slug, quizId,  }: any) => {
 
   if (quizResult >= 0) {
     return (
-      <CardBox>
+      <Box sx={{ width: "100%", height: "100vh", textAlign: "center" }}>
         <QuizResult score={quizResult} />
-      </CardBox>
+      </Box>
     );
   }
 
