@@ -39,8 +39,8 @@ const theme = createTheme();
 
 const Register: NextPage = () => {
   const [name, setName] = useState("");
+  const [surName, setSurName] = useState("");
   const [email, setEmail] = useState("");
-  const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -65,14 +65,16 @@ const Register: NextPage = () => {
       console.table({ name, email, password });
       const { data } = await axios.post(`/api/register`, {
         name,
+        surName,
         email,
         password,
       });
       console.log("REGISTER RESPONSE", data);
       //gonna do the toast alert here
-      toast.success("Registertation successful. please log in");
+      toast.success("Kayıt başarılı, ana sayfaya yönlendiriliyorsunuz...");
 
       setName("");
+      setSurName("");
       setEmail("");
       setPassword("");
       setLoading(false);
@@ -125,12 +127,12 @@ const Register: NextPage = () => {
                 <TextField
                   required
                   fullWidth
-                  id="lastName"
+                  id="surName"
                   label="Last Name"
-                  name="lastName"
+                  name="surName"
                   autoComplete="family-name"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
+                  value={surName}
+                  onChange={(e) => setSurName(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
