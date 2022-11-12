@@ -1,5 +1,6 @@
 //next
 import Image from "next/image";
+import Link from "next/link";
 // @mui
 import { styled } from "@mui/material/styles";
 import {
@@ -38,8 +39,17 @@ export const SingleCourseJumbotron = ({
   handleFreeEnrollment,
   enrolled,
 }: any) => {
-  const { name, description, instructor, updatedAt, price, paid, category } =
-    course;
+  const {
+    _id,
+    name,
+    description,
+    instructor,
+    updatedAt,
+    price,
+    image,
+    paid,
+    category,
+  } = course;
 
   return (
     <RootStyle>
@@ -68,12 +78,12 @@ export const SingleCourseJumbotron = ({
           {description}
         </Typography>
         <Chip variant="outlined" label={category} />
-        <Stack sx={{mb: 1, mt:1}}>
-        <Typography variant="body2" >
-          {/*
+        <Stack sx={{ mb: 1, mt: 1 }}>
+          <Typography variant="body2">
+            {/*
             //@ts-ignore  */}
-          {` Son güncelleme: ${fDate(updatedAt)}`}
-        </Typography>
+            {` Son güncelleme: ${fDate(updatedAt)}`}
+          </Typography>
         </Stack>
         <Typography
           variant="body2"
@@ -82,28 +92,56 @@ export const SingleCourseJumbotron = ({
           {`Hazırlayan: ${Capitalize(instructor.name)}`}
         </Typography>
 
-        <Typography variant="inherit" color="success" >
+        <Typography variant="inherit" color="success">
           {paid ? (
             currencyFormatter({
               amount: price,
-              currency: "usd",
+              currency: "TRY",
             })
           ) : (
             <strong> Ücretsiz</strong>
           )}
         </Typography>
-  
+
         {loading ? (
           <LoadingSpinner />
         ) : (
           <div>
-            <Button
+            {/* <Button
               variant="contained"
               onClick={paid ? handlePaidEnrollment : handleFreeEnrollment}
               sx={{ mt:1}}
             >
               {user ? (enrolled.status ? "Kursa Git" : "Kayıt Ol") : "Kayıtlı"}
-            </Button>
+            </Button> */}
+            {paid ? (
+              <Link
+                href={{
+                  pathname: "/payment",
+                  query: {
+                    courseId: _id,
+                    courseName: name,
+                    coursePrice: price,
+                    courseImage: image.Location,
+                    courseCategory: category,
+                  },
+                }}
+              >
+                Satın Al
+              </Link>
+            ) : (
+              <Button
+                variant="contained"
+                onClick={handleFreeEnrollment}
+                sx={{ mt: 1 }}
+              >
+                {user
+                  ? enrolled.status
+                    ? "Kursa Git"
+                    : "Kayıt Ol"
+                  : "Kayıtlı"}
+              </Button>
+            )}
           </div>
         )}
       </CardContent>

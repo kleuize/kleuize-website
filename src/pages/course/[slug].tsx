@@ -58,11 +58,13 @@ const SingleCourse = ({ course }: any) => {
       if (enrolled.status)
         //@ts-ignore
         return router.push(`/user/course/${enrolled.course.slug}`);
-      const { data } = await axios.post(`/api/paid-enrollment/${course._id}`);
-      //@ts-ignore
-      const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY);
-      //@ts-ignore
-      stripe.redirectToCheckout({ sessionId: data });
+
+      router.push("/payment")
+      // const { data } = await axios.post(`/api/paid-enrollment/${course._id}`);
+      // //@ts-ignore
+      // const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY);
+      // //@ts-ignore
+      // stripe.redirectToCheckout({ sessionId: data });
     } catch (err) {
       toast("Enrollment failed, try again.");
       console.log(err);
