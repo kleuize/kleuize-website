@@ -1,20 +1,37 @@
-// @mui
-import { Typography, TextField, Stack, Container, Box } from "@mui/material";
+//next
 import { useRouter } from "next/router";
-import { useState } from "react";
+//3rd
+import axios from "axios";
+// @mui
+import { Typography, Stack, Container, Button } from "@mui/material";
+//components
 import { PaymentCourseCard } from "../../components/cards/PaymentCourseCard";
+import { PaymentForm } from "../../components/form/PaymentForm";
 import Page from "../../components/Page";
 
 // ----------------------------------------------------------------------
 
 const PaymentBillingAddress = () => {
-  
   const router = useRouter();
-
   const course = router.query;
 
-  console.log(course)
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    const price = course.coursePrice;
+    try {
+      // console.log(values);
+      const res = await axios.post(`/checkout/initialize/payment`, {
+        price,
+      });
 
+      const data = res;
+      console.log(data);
+
+      router.push(`/payments/compeleted`);
+    } catch (err: any) {
+      console.log(err.response.data);
+    }
+  };
   return (
     <Page title="Ödeme Sayfası">
       <Container sx={{ mt: 10 }}>
@@ -23,13 +40,8 @@ const PaymentBillingAddress = () => {
           <Typography variant="subtitle2">Kurs Bilgileri</Typography>
           <PaymentCourseCard course={course} />
         </Stack>
-        <Stack spacing={3} mt={5}>
-          <Typography variant="subtitle2">Adres Bilgileri</Typography>
-          <TextField label="Person name" />
-          <TextField label="Ülke" defaultValue="Türkiye" />
-          <TextField label="Şehir" />
-          <TextField label="Adres" />
-        </Stack>
+        <PaymentForm />
+        <Button onClick={handleSubmit}>Ödeme Sayfasına Geç</Button>
       </Container>
     </Page>
   );
